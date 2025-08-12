@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model MenuItem {
+  id        String   @id @default(cuid())
+  title     String
+  href      String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  parentId  String?
+  parent    MenuItem? @relation("MenuItemToMenuItem", fields: [parentId], references: [id])
+  children  MenuItem[] @relation("MenuItemToMenuItem")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("menu_items")
+}
+
+model Section {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  title       String
+  subtitle    String?
+  content     String?
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  sectionType String   // hero, services, about, contact, etc.
+  data        String?  // JSON string for flexible data storage
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("sections")
+}
+
+model SiteConfig {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("site_config")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  role      String   @default("admin") // admin, editor, viewer
+  isActive  Boolean  @default(true)
+  lastLogin DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}

@@ -1,0 +1,214 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+/* Al Salamah Transportation Color Palette */
+:root {
+  /* Brand colors from client guide */
+  --color-primary: #273d97; /* Main blue */
+  --color-primary-light: #b8c4f3; /* Light blue */
+  --color-primary-medium: #6f87e0; /* Medium blue */
+  --color-primary-alt: #828ec5; /* Alternative blue */
+  --color-white: #fdf3ff; /* Custom white */
+  --color-background: #fdf3ff; /* Background white */
+  
+  /* Additional utility colors */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-700: #374151;
+  --color-gray-900: #111827;
+  
+  /* Default theme variables for compatibility */
+  --background: var(--color-background);
+  --foreground: var(--color-gray-900);
+  
+  /* Admin UI variables */
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 221.2 83.2% 53.3%;
+  --primary: 221.2 83.2% 53.3%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222.2 84% 4.9%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96%;
+  --accent-foreground: 222.2 84% 4.9%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Custom scrollbar for smooth scrolling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-medium);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Base body styles */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-gray-900);
+  line-height: 1.6;
+}
+
+/* Parallax container */
+.parallax-container {
+  overflow-x: hidden;
+}
+
+/* Custom gradient backgrounds */
+.gradient-primary {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-medium) 50%, var(--color-primary-light) 100%);
+}
+
+.gradient-primary-reverse {
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary-medium) 50%, var(--color-primary) 100%);
+}
+
+/* Text gradients */
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-medium));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Hero section styles */
+.hero-blue-bg {
+  background-color: var(--color-primary);
+}
+
+.hero-arrow {
+  fill: var(--color-primary-medium);
+  opacity: 0.3;
+}
+
+/* Section padding utilities */
+.section-padding {
+  padding: 6rem 0;
+}
+
+.section-padding-sm {
+  padding: 4rem 0;
+}
+
+/* 3D Canvas container */
+/*
+* z-index: 20 so it's above other sections, but below hero-section.
+* position: fixed makes it stay in place as the user scrolls.
+*/
+.canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Content layers */
+/*
+* These sections are the "back" layer. They scroll normally with the page.
+* z-index: 10 makes them appear behind the canvas.
+*/
+.content-layer {
+  position: relative;
+  z-index: 10;
+}
+
+/* Hero section - MUST be the frontmost layer to act as curtain */
+/*
+* z-index: 30 so it's above canvas and all other content.
+* position: relative allows it to scroll with the page, revealing the fixed canvas below.
+*/
+.hero-section {
+  position: relative;
+  z-index: 30;
+  background-color: var(--color-primary) !important;
+}
+
+/* Other sections - behind the truck so truck appears over them */
+.reveal-section,
+.mission-section {
+  position: relative;
+  z-index: 10;
+}
+
+/* Animation utilities */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in-up.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Button styles */
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-medium) 100%);
+  color: var(--color-white);
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(39, 61, 151, 0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(39, 61, 151, 0.4);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-primary);
+  padding: 0.75rem 2rem;
+  border: 2px solid var(--color-primary);
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: var(--color-primary);
+  color: var(--color-white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(39, 61, 151, 0.2);
+}
