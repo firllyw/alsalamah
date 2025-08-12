@@ -12,8 +12,12 @@ const bricolage = Bricolage_Grotesque({
   display: 'swap',
 });
 
-const TruckRevealSection = () => {
-  const { truckReveal } = homeContent;
+interface TruckRevealSectionProps {
+  data?: any;
+}
+
+const TruckRevealSection = ({ data }: TruckRevealSectionProps) => {
+  const truckReveal = data || homeContent.truckReveal;
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,

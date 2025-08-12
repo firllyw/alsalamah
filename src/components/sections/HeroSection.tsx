@@ -16,8 +16,14 @@ const bricolage = Bricolage_Grotesque({
   display: 'swap',
 });
 
-const HeroSection = () => {
-  const { hero } = homeContent;
+interface HeroSectionProps {
+  data?: any;
+  siteConfig?: any;
+}
+
+const HeroSection = ({ data, siteConfig }: HeroSectionProps) => {
+  // Use passed data or fallback to content.ts
+  const hero = data || homeContent.hero;
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -54,8 +60,8 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.1 }}
         >
           <Image
-            src="/logo.png"
-            alt="Al Salamah Logo"
+            src={siteConfig?.company?.logo || "/logo.png"}
+            alt={`${siteConfig?.company?.name || "Al Salamah"} Logo`}
             width={220}
             height={220}
             priority
@@ -77,7 +83,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          {hero.mainTitle}
+          {hero.title || hero.mainTitle}
         </motion.h1>
         
         {/* Subtitle - now includes the "in 30 years" text, left aligned, lighter */}
@@ -89,10 +95,10 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.5 }}
         >
           <span className="block">
-            {hero.yearText}
+            {hero.data?.yearText || hero.yearText}
           </span>
           <span className="block">
-            {hero.subtitle}
+            {hero.subtitle || siteConfig?.company?.tagline}
           </span>
         </motion.p>
       </div>
@@ -138,7 +144,7 @@ const HeroSection = () => {
           }}
         >
           <span className="text-[#FFC76A] font-bold tracking-widest text-base lg:text-lg mx-auto" style={{ letterSpacing: "0.15em" }}>
-            {hero.scrollText}
+            {hero.content || hero.data?.scrollText || hero.scrollText}
           </span>
         </div>
       </motion.div>

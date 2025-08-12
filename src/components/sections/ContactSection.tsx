@@ -2,10 +2,8 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { useSiteConfig, useSection } from '@/hooks/useCMS';
 import { Bricolage_Grotesque } from 'next/font/google';
 import Image from 'next/image';
-import { footerContent } from '@/data/content';
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -14,7 +12,12 @@ const bricolage = Bricolage_Grotesque({
   display: 'swap',
 });
 
-const ContactSection = () => {
+interface ContactSectionProps {
+  data?: any;
+  siteConfig?: any;
+}
+
+const ContactSection = ({ data, siteConfig }: ContactSectionProps) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
   
@@ -101,10 +104,10 @@ const ContactSection = () => {
                 
                 <div className="space-y-2">
                   <p className="text-lg">
-                    <span className="font-medium">Email:</span> alsalamahtrans@sbtcgroup.com
+                    <span className="font-medium">Email:</span> {siteConfig?.contact?.headOffice?.email || "alsalamahtrans@sbtcgroup.com"}
                   </p>
                   <p className="text-lg">
-                    <span className="font-medium">Phone:</span> +966 50 946 3389
+                    <span className="font-medium">Phone:</span> {siteConfig?.contact?.headOffice?.phone || "+966 50 946 3389"}
                   </p>
                 </div>
               </div>

@@ -46,8 +46,13 @@ const stats = [
   },
 ];
 
-const StatSection = () => {
+interface StatSectionProps {
+  data?: any;
+}
+
+const StatSection = ({ data }: StatSectionProps) => {
   const [hoveredStat, setHoveredStat] = useState<number | null>(null);
+  const statsData = data?.data || stats;
 
   return (
     <section

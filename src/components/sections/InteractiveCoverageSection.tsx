@@ -67,7 +67,11 @@ const regionStyles = {
   }
 };
 
-const InteractiveCoverageSection = () => {
+interface InteractiveCoverageSectionProps {
+  data?: any;
+}
+
+const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) => {
   const { areaCoverage } = homeContent;
   const sectionRef = useRef(null);
   const mapRef = useRef<any>(null);
@@ -76,7 +80,7 @@ const InteractiveCoverageSection = () => {
   const [selectedRegion, setSelectedRegion] = useState<Region | null>(null);
 
   // Enhanced regions with polygon boundaries and zoom levels
-  const regions: Region[] = [
+  const regions: Region[] = data?.data?.regions || [
     {
       name: "WESTERN",
       branches: 6,
@@ -229,9 +233,9 @@ const InteractiveCoverageSection = () => {
 
           {/* Headquarters Marker */}
           <CircleMarker
-            center={areaCoverage.section1.headquarters.coordinates}
+            center={data?.data?.headquarters?.coordinates || areaCoverage.section1.headquarters.coordinates}
             radius={10}
-            fillColor={areaCoverage.section1.headquarters.color}
+            fillColor={data?.data?.headquarters?.color || areaCoverage.section1.headquarters.color}
             color="#ffffff"
             weight={3}
             opacity={1}
@@ -379,7 +383,7 @@ const InteractiveCoverageSection = () => {
                   <div className="flex items-center space-x-3">
                     <div 
                       className="w-4 h-4 rounded-full"
-                      style={{ backgroundColor: areaCoverage.section1.headquarters.color, border: '1.5px solid #fff' }}
+                      style={{ backgroundColor: data?.data?.headquarters?.color || areaCoverage.section1.headquarters.color, border: '1.5px solid #fff' }}
                     ></div>
                     <span 
                       className="font-bold"
@@ -398,7 +402,7 @@ const InteractiveCoverageSection = () => {
                       fontFamily: 'var(--font-bricolage-grotesque)'
                     }}
                   >
-                    {areaCoverage.section1.headquarters.name}
+                    {data?.data?.headquarters?.name || areaCoverage.section1.headquarters.name}
                   </span>
                 </div>
               </div>

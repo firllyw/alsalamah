@@ -12,7 +12,7 @@ const bricolage = Bricolage_Grotesque({
 });
 
 // Gallery images and features (replace with real data as needed)
-const galleryImages = [
+const defaultGalleryImages = [
   {
     src: '/showcase/fleet.jpg',
     alt: 'Fleet',
@@ -35,7 +35,7 @@ const galleryImages = [
   },
 ];
 
-const features = [
+const defaultFeatures = [
   { label: 'Maintenance System', icon: <i className="fa-solid fa-screwdriver-wrench" /> },
   { label: 'GPS Tracking', icon: <i className="fa-solid fa-location-dot" /> },
   { label: 'Route Optimization', icon: <i className="fa-solid fa-route" /> },
@@ -45,9 +45,17 @@ const features = [
 const IMAGE_MARQUEE_DURATION = 30;
 const TEXT_MARQUEE_DURATION = 18;
 
-const ShowcaseSection = () => {
+interface ShowcaseSectionProps {
+  data?: any;
+}
+
+const ShowcaseSection = ({ data }: ShowcaseSectionProps) => {
   const sectionRef = useRef(null);
   const [isMounted, setIsMounted] = useState(false);
+  
+  // Use data from props or fallback to defaults
+  const galleryImages = data?.data?.images || defaultGalleryImages;
+  const features = data?.data?.features || defaultFeatures;
   
   useEffect(() => {
     setIsMounted(true);

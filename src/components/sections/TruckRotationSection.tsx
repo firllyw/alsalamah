@@ -12,8 +12,12 @@ const bricolage = Bricolage_Grotesque({
   display: 'swap',
 });
 
-const TruckRotationSection = () => {
-  const { truckRotation } = homeContent;
+interface TruckRotationSectionProps {
+  data?: any;
+}
+
+const TruckRotationSection = ({ data }: TruckRotationSectionProps) => {
+  const truckRotation = data || homeContent.truckRotation;
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -71,7 +75,7 @@ const TruckRotationSection = () => {
                       fontFamily: 'var(--font-bricolage-grotesque)'
                     }}
                   >
-                    {truckRotation.sections[0].number}
+                    {truckRotation.data?.sections?.[0]?.number || truckRotation.sections?.[0]?.number}
                   </span>
                   <div className="w-16 h-px bg-blue-300"></div>
                 </div>

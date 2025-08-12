@@ -108,7 +108,11 @@ function ServiceCard({ service, active }: { service: any; active: boolean }) {
   );
 }
 
-const ServicesSection = () => {
+interface ServicesSectionProps {
+  data?: any;
+}
+
+const ServicesSection = ({ data }: ServicesSectionProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = useState(false);
   
@@ -126,7 +130,7 @@ const ServicesSection = () => {
 
   // Card slider state
   const [activeIdx, setActiveIdx] = useState(0);
-  const services = servicesContent.services || [];
+  const services = data?.data || servicesContent.services || [];
 
   useEffect(() => {
     return scrollYProgress.on('change', (v) => {

@@ -4,7 +4,11 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
-const Header = () => {
+interface HeaderProps {
+  siteData?: any;
+}
+
+const Header = ({ siteData }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -42,10 +46,10 @@ const Header = () => {
             />
             <div className="ml-2">
               <div className={`font-bold text-lg ${scrolled ? 'text-gray-900' : 'text-white'}`}>
-                AL SALAMAH
+                {siteData?.siteConfig?.company?.name || "AL SALAMAH"}
               </div>
               <div className={`text-xs ${scrolled ? 'text-gray-600' : 'text-blue-200'}`}>
-                Holding Company
+                {siteData?.siteConfig?.company?.parentCompany || "Holding Company"}
               </div>
             </div>
           </div>

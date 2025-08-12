@@ -12,7 +12,7 @@ const bricolage = Bricolage_Grotesque({
   display: 'swap',
 });
 
-const features = [
+const defaultFeatures = [
   {
     iconContent: (isActive: boolean) => (
       <>
@@ -54,7 +54,13 @@ const features = [
   },
 ];
 
-const RecordSection = () => {
+interface RecordSectionProps {
+  data?: any;
+}
+
+const RecordSection = ({ data }: RecordSectionProps) => {
+  // Use data from props or fallback to defaults
+  const features = data?.data?.features || defaultFeatures;
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null);
 
   return (
