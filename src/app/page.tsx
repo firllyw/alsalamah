@@ -81,7 +81,7 @@ export default function Home() {
           </div>
         </div>
       ) : (
-        <div className="parallax-container">
+        <div className="parallax-container" style={{ backgroundColor: '#f6f5f5' }}>
           {/* Fixed 3D Truck Scene */}
           <TruckScene />
 

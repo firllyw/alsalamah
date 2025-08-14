@@ -2,15 +2,9 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Bricolage_Grotesque } from 'next/font/google';
-import Image from 'next/image';
 
-const bricolage = Bricolage_Grotesque({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-bricolage-grotesque',
-  display: 'swap',
-});
+// Next.js specific imports have been removed to ensure the code can compile
+// Font and Image loading will now be handled with standard HTML/CSS
 
 interface ContactSectionProps {
   data?: any;
@@ -26,9 +20,17 @@ const ContactSection = ({ data, siteConfig }: ContactSectionProps) => {
     <section 
       id="contact" 
       ref={sectionRef}
-      className={`min-h-screen bg-gradient-to-br from-blue-900 to-blue-600 relative overflow-hidden ${bricolage.variable}`}
-      style={{ fontFamily: 'var(--font-bricolage-grotesque)',background: '#273d97'  }}
+      className={`min-h-screen relative overflow-hidden`}
+      style={{ fontFamily: 'Bricolage Grotesque, sans-serif', background: '#273d97' }}
     >
+      <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&display=swap');
+          .font-bricolage {
+            font-family: 'Bricolage Grotesque', sans-serif;
+          }
+        `}
+      </style>
       {/* Background geometric elements */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-full h-full">
@@ -118,17 +120,24 @@ const ContactSection = ({ data, siteConfig }: ContactSectionProps) => {
               <div className="flex items-center space-x-4">
                 <span className="text-white text-lg font-medium">Part of</span>
                 <div className="flex items-center space-x-3">
-                  <Image
+                  <img
                     src="/sbtc_logo.png"
                     alt="SBTC Logo"
-                    width={80}
-                    height={40}
                     className="h-10 w-auto"
                   />
                 </div>
               </div>
             </div>
           </motion.div>
+        </div>
+        
+        {/* Right side with image */}
+        <div className="flex-1 flex items-center justify-center pr-12">
+            <img
+                src={"/footer_truck.png"}
+                alt="Truck illustration"
+                className="w-auto h-auto max-w-full max-h-full object-contain"
+            />
         </div>
       </div>
     </section>

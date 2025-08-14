@@ -2,44 +2,36 @@
 
 import { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Bricolage_Grotesque } from 'next/font/google';
-
-const bricolage = Bricolage_Grotesque({
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
-  variable: '--font-bricolage-grotesque',
-  display: 'swap',
-});
 
 // Gallery images and features (replace with real data as needed)
 const defaultGalleryImages = [
   {
-    src: '/showcase/fleet.jpg',
+    src: 'https://placehold.co/1280x800/1e40af/fff?text=Fleet', // Placeholder for fleet.jpg
     alt: 'Fleet',
     fallback: 'https://placehold.co/1280x800/1e40af/fff?text=Fleet',
   },
   {
-    src: '/showcase/loading.jpg',
+    src: 'https://placehold.co/1280x800/1e40af/fff?text=Loading', // Placeholder for loading.jpg
     alt: 'Loading',
     fallback: 'https://placehold.co/1280x800/1e40af/fff?text=Loading',
   },
   {
-    src: '/showcase/warehouse.jpg',
+    src: 'https://placehold.co/1280x800/1e40af/fff?text=Warehouse', // Placeholder for warehouse.jpg
     alt: 'Warehouse',
     fallback: 'https://placehold.co/1280x800/1e40af/fff?text=Warehouse',
   },
   {
-    src: '/showcase/pallets.jpg',
+    src: 'https://placehold.co/1280x800/1e40af/fff?text=Pallets', // Placeholder for pallets.jpg
     alt: 'Pallets',
     fallback: 'https://placehold.co/1280x800/1e40af/fff?text=Pallets',
   },
 ];
 
 const defaultFeatures = [
-  { label: 'Maintenance System', icon: <i className="fa-solid fa-screwdriver-wrench" /> },
-  { label: 'GPS Tracking', icon: <i className="fa-solid fa-location-dot" /> },
-  { label: 'Route Optimization', icon: <i className="fa-solid fa-route" /> },
-  { label: 'Compliance', icon: <i className="fa-solid fa-user-shield" /> },
+  { label: 'Maintenance System', icon: <i className="fa-solid fa-screwdriver-wrench text-2xl text-white" /> },
+  { label: 'GPS Tracking', icon: <i className="fa-solid fa-location-dot text-2xl text-white" /> },
+  { label: 'Route Optimization', icon: <i className="fa-solid fa-route text-2xl text-white" /> },
+  { label: 'Compliance', icon: <i className="fa-solid fa-user-shield text-2xl text-white" /> },
 ];
 
 const IMAGE_MARQUEE_DURATION = 30;
@@ -79,25 +71,33 @@ const ShowcaseSection = ({ data }: ShowcaseSectionProps) => {
   return (
     <section
       ref={sectionRef}
-      className={`relative min-h-screen h-screen w-full flex flex-col justify-end items-center bg-[#273d97] ${bricolage.className}`}
+      className={`relative min-h-screen h-screen w-full flex flex-col items-center justify-center bg-[#273d97] font-bricolage`}
       style={{
         background: 'linear-gradient(120deg, #273d97 80%, #1e2a6b 100%)',
         padding: 0,
         overflow: 'hidden',
       }}
     >
+      <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;700&display=swap');
+          .font-bricolage {
+            font-family: 'Bricolage Grotesque', sans-serif;
+          }
+        `}
+      </style>
       {/* Marquee Gallery */}
-      <div className="relative z-10 w-full flex items-start justify-center overflow-hidden" style={{ height: '80vh', marginTop: 0 }}>
+      <div className="relative z-10 w-full flex items-center justify-center overflow-hidden" style={{ height: '60vh' }}>
         <motion.div
-          className="absolute left-0 top-0 flex flex-row gap-16"
+          className="absolute left-0 flex flex-row gap-16"
           style={{
             width: 'max-content',
-            height: '80vh',
-            minHeight: 400,
-            alignItems: 'flex-start',
+            height: '60vh',
+            minHeight: 350,
+            alignItems: 'center',
           }}
           animate={{
-            x: ['0%', '50%'],
+            x: ['0%', '-50%'], // Right to left
           }}
           transition={{
             repeat: Infinity,
@@ -106,23 +106,19 @@ const ShowcaseSection = ({ data }: ShowcaseSectionProps) => {
             duration: IMAGE_MARQUEE_DURATION,
           }}
         >
-          {/* 
-            To create a seamless infinite loop, we repeat the images array 2x and set the marquee to move -50% (not 50%) so the second set of images follows the first.
-            We also reduce the image size and the gap below the gallery.
+          {/* To create a seamless infinite loop, we repeat the images array 2x and set the marquee to move -50%
           */}
           {images.map((img, idx) => (
             <div
               key={img.alt + idx}
               className="relative group rounded-2xl overflow-hidden shadow-xl bg-[#1e2a6b] border-2 border-[#3b4db7] flex items-end"
               style={{
-                width: '38vw',
-                maxWidth: 520,
-                minWidth: 260,
-                height: '38vh',
-                minHeight: 180,
-                maxHeight: 340,
-                marginRight: 32,
-                marginLeft: 0,
+                width: '50vw',
+                maxWidth: 700,
+                minWidth: 350,
+                height: '50vh',
+                minHeight: 250,
+                maxHeight: 450,
                 display: 'flex',
                 alignItems: 'flex-end',
                 justifyContent: 'center',
@@ -144,7 +140,7 @@ const ShowcaseSection = ({ data }: ShowcaseSectionProps) => {
               />
               <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-6 py-4">
-                <span className="text-2xl md:text-4xl font-extrabold text-white drop-shadow-lg" style={{ fontFamily: 'var(--font-bricolage-grotesque), sans-serif' }}>
+                <span className="text-2xl md:text-4xl font-extrabold text-white drop-shadow-lg font-bricolage">
                   {img.alt}
                 </span>
               </div>
@@ -154,9 +150,9 @@ const ShowcaseSection = ({ data }: ShowcaseSectionProps) => {
       </div>
 
       {/* Features Marquee Bar */}
-      <div className="relative z-20 w-full overflow-hidden h-[80px] md:h-[110px] flex items-center" style={{ marginTop: '-10px' }}>
+      <div className="relative z-20 w-full overflow-hidden h-[80px] md:h-[110px] flex items-center -mt-8">
         <motion.div
-          className="flex flex-row gap-x-24"
+          className="flex flex-row gap-x-12"
           style={{
             y: featuresY,
             opacity: featuresOpacity,
@@ -165,7 +161,7 @@ const ShowcaseSection = ({ data }: ShowcaseSectionProps) => {
             height: '100%',
           }}
           animate={{
-            x: ['0%', '-50%'],
+            x: ['-50%', '0%'], // Left to right (opposite of images)
           }}
           transition={{
             repeat: Infinity,
@@ -176,22 +172,19 @@ const ShowcaseSection = ({ data }: ShowcaseSectionProps) => {
         >
           {featuresMarquee.map((feature, idx) => (
             <div
-              key={feature.title + idx}
-              className="flex items-center gap-6 text-white text-3xl md:text-5xl font-extrabold px-8"
+              key={feature.label + idx}
+              className="flex items-center gap-4 text-white text-2xl md:text-4xl font-extrabold px-6"
               style={{
-                fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
+                fontFamily: 'Bricolage Grotesque, sans-serif',
                 textShadow: '0 2px 16px rgba(0,0,0,0.18)',
                 letterSpacing: '0.01em',
                 whiteSpace: 'nowrap',
               }}
             >
-              <span className="inline-block align-middle text-4xl md:text-5xl">
-
-                <svg width="40" height="40" fill="currentColor" className="text-white/70">
-                  <circle cx="20" cy="20" r="16" />
-                </svg>
+              <span className="inline-block align-middle text-3xl md:text-4xl">
+                {feature.icon}
               </span>
-              <span className="align-middle">{feature.title}</span>
+              <span className="align-middle">{feature.label}</span>
             </div>
           ))}
         </motion.div>

@@ -29,44 +29,6 @@ interface Region {
   zoom: number;
 }
 
-const regionStyles = {
-  WESTERN: {
-    fillColor: '#FFB84D',
-    borderColor: '#E09E2F',
-    fillOpacity: 0.45,
-    highlightFillOpacity: 0.7,
-    highlightBorderColor: '#FF9800',
-  },
-  CENTRAL: {
-    fillColor: '#E6A8E6',
-    borderColor: '#B97CB9',
-    fillOpacity: 0.45,
-    highlightFillOpacity: 0.7,
-    highlightBorderColor: '#B97CB9',
-  },
-  EASTERN: {
-    fillColor: '#9F7FD1',
-    borderColor: '#7B5FA8',
-    fillOpacity: 0.45,
-    highlightFillOpacity: 0.7,
-    highlightBorderColor: '#7B5FA8',
-  },
-  SOUTHERN: {
-    fillColor: '#B8860B',
-    borderColor: '#8C6A0A',
-    fillOpacity: 0.45,
-    highlightFillOpacity: 0.7,
-    highlightBorderColor: '#8C6A0A',
-  },
-  NORTHERN: {
-    fillColor: '#5FB3A3',
-    borderColor: '#3B8C7A',
-    fillOpacity: 0.45,
-    highlightFillOpacity: 0.7,
-    highlightBorderColor: '#3B8C7A',
-  }
-};
-
 interface InteractiveCoverageSectionProps {
   data?: any;
 }
@@ -77,10 +39,22 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
   const mapRef = useRef<any>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
   const [isMapReady, setIsMapReady] = useState(false);
-  const [selectedRegion, setSelectedRegion] = useState<Region | null>(null);
+  const [selectedRegion, setSelectedRegion] = useState<Region | null>({
+    name: "WESTERN",
+    branches: 6,
+    subBranches: 2,
+    color: "#FFB84D",
+    coordinates: [21.4225, 39.8262],
+    zoom: 7,
+    bounds: [
+      [21.0, 36.0], [22.5, 36.0], [24.0, 37.5], [25.5, 38.0],
+      [26.0, 39.5], [25.0, 41.0], [22.0, 42.0], [19.0, 41.0],
+      [17.0, 40.0], [17.5, 38.0], [19.0, 36.5], [21.0, 36.0]
+    ]
+  });
 
   // Enhanced regions with polygon boundaries and zoom levels
-  const regions: Region[] = data?.data?.regions || [
+  const regions: Region[] = [
     {
       name: "WESTERN",
       branches: 6,
@@ -198,9 +172,7 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
           touchZoom={false}
           keyboard={false}
           ref={mapRef}
-          whenCreated={(mapInstance) => {
-            mapRef.current = mapInstance;
-          }}
+          
         >
           <TileLayer
             url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
@@ -209,19 +181,17 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
           
           {/* Region Polygons */}
           {regions.map((region: any, index: number) => {
-            const style = regionStyles[region.name as keyof typeof regionStyles];
             const isSelected = selectedRegion?.name === region.name;
             return (
               <Polygon
                 key={index}
                 positions={region.bounds}
                 pathOptions={{
-                  fillColor: '#FFB84D',
-                  color: isSelected ? '#FF9800' : '#E09E2F',
+                  fillColor: region.color,
+                  color: isSelected ? region.color : '#e5e7eb',
                   fillOpacity: isSelected ? 0.7 : 0.45,
                   weight: isSelected ? 4 : 2,
                   opacity: 1,
-                  dashArray: isSelected ? '6' : undefined,
                 }}
                 eventHandlers={{
                   click: () => handleRegionClick(region),
@@ -244,11 +214,10 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
         </MapContainer>
       </div>
 
-      {/* Floating Cards Overlay */}
-      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none">
-        {/* Header Card */}
+      {/* Floating Card Overlay - Only One Card, on the Left */}
+      <div className="absolute inset-0 z-10 flex items-start justify-start pointer-events-none">
         <motion.div
-          className="fixed md:absolute top-8 left-1/2 md:left-8 transform -translate-x-1/2 md:translate-x-0 bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-2xl pointer-events-auto max-w-md w-[90vw] md:w-auto"
+          className="fixed md:absolute top-8 left-1/2 md:left-8 transform -translate-x-1/2 md:translate-x-0 bg-white rounded-2xl p-6 shadow-2xl pointer-events-auto max-w-sm w-[90vw] md:w-auto"
           initial={{ opacity: 0, y: -30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
           transition={{ duration: 0.8 }}
@@ -258,74 +227,28 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
             boxShadow: '0 8px 32px 0 rgba(39,61,151,0.10)'
           }}
         >
-          <div className="mb-4">
-            <span 
-              className="text-lg font-bold tracking-wider px-4 py-2 rounded-full inline-block"
-              style={{ 
-                background: '#FFA500',
-                color: 'white',
-                fontFamily: 'var(--font-bricolage-grotesque)'
-              }}
-            >
-              AREA COVERAGE
-            </span>
-          </div>
-          
-          <h2 
-            className="text-3xl font-bold mb-4"
-            style={{ 
-              fontFamily: 'var(--font-bricolage-grotesque)',
-              color: '#273d97'
-            }}
-          >
-            Saudi Arabia Coverage Area{' '}
-            <span style={{ color: '#b2b9e6' }}>Distribution</span>
-          </h2>
-
-          <p 
-            className="text-sm leading-relaxed mb-4"
-            style={{ 
-              color: '#6B7280',
-              fontFamily: 'var(--font-bricolage-grotesque)'
-            }}
-          >
-            Click on any region to explore our coverage
-          </p>
-
-          <button
-            onClick={resetView}
-            className="text-sm px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors"
-            style={{ fontFamily: 'var(--font-bricolage-grotesque)' }}
-          >
-            Reset View
-          </button>
-        </motion.div>
-
-        {/* Dynamic Content Card - Always Visible */}
-        <motion.div
-          className="fixed md:absolute top-[120px] right-1/2 md:right-8 transform translate-x-1/2 md:translate-x-0 bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-2xl pointer-events-auto max-w-sm w-[90vw] md:w-auto"
-          initial={{ opacity: 0, y: -30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          style={{
-            zIndex: 20,
-            border: '1.5px solid #e5e7eb',
-            boxShadow: '0 8px 32px 0 rgba(39,61,151,0.10)'
-          }}
-        >
           {!selectedRegion ? (
             // Regions List View
             <>
-              <h3 
-                className="text-xl font-bold mb-4"
+              <h2 
+                className="text-2xl font-bold mb-4"
                 style={{ 
-                  color: '#273d97',
+                  fontFamily: 'var(--font-bricolage-grotesque)',
+                  color: '#273d97'
+                }}
+              >
+                Saudi Arabia Coverage Area{' '}
+                <span style={{ color: '#b2b9e6' }}>Distribution</span>
+              </h2>
+              <p 
+                className="text-sm leading-relaxed mb-4"
+                style={{ 
+                  color: '#6B7280',
                   fontFamily: 'var(--font-bricolage-grotesque)'
                 }}
               >
-                Regions
-              </h3>
-              
+                Click on any region to explore our coverage
+              </p>
               <div className="space-y-3">
                 {regions.map((region, index) => (
                   <button
@@ -333,8 +256,6 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
                     onClick={() => handleRegionClick(region)}
                     className="w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 bg-gray-50 hover:bg-gray-100"
                     style={{
-                      border: selectedRegion?.name === region.name ? `2px solid ${region.color}` : '1.5px solid #e5e7eb',
-                      boxShadow: selectedRegion?.name === region.name ? `0 0 0 2px ${region.color}33` : undefined,
                       fontFamily: 'var(--font-bricolage-grotesque)'
                     }}
                   >
@@ -376,7 +297,6 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
                   </button>
                 ))}
               </div>
-
               {/* Headquarters Info */}
               <div className="mt-4 pt-4 border-t border-gray-200">
                 <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
@@ -406,6 +326,13 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
                   </span>
                 </div>
               </div>
+              <button
+                onClick={resetView}
+                className="mt-4 text-sm px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors"
+                style={{ fontFamily: 'var(--font-bricolage-grotesque)' }}
+              >
+                Reset View
+              </button>
             </>
           ) : (
             // Selected Region Detail View
@@ -493,6 +420,19 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
             </>
           )}
         </motion.div>
+      </div>
+
+      {/* AREA COVERAGE label at left bottom, orange text, outside card */}
+      <div className="absolute left-8 bottom-8 z-20 pointer-events-none">
+        <span
+          className="text-lg font-bold tracking-wider"
+          style={{
+            color: '#FFA500',
+            fontFamily: 'var(--font-bricolage-grotesque)'
+          }}
+        >
+          AREA COVERAGE
+        </span>
       </div>
     </section>
   );

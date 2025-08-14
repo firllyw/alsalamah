@@ -8,6 +8,17 @@ interface HeaderProps {
   siteData?: any;
 }
 
+
+// Import Bricolage Grotesque font from Google Fonts using next/font
+import { Montserrat } from 'next/font/google';
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  variable: '--font-montserrat',
+  display: 'swap',
+});
+
 const Header = ({ siteData }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -26,7 +37,7 @@ const Header = ({ siteData }: HeaderProps) => {
 
   return (
     <motion.header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${montserrat.variable} ${
         scrolled ? 'bg-white shadow-lg py-2' : 'bg-transparent py-4'
       }`}
       initial={{ y: -100, opacity: 0 }}
@@ -37,36 +48,30 @@ const Header = ({ siteData }: HeaderProps) => {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <div className="flex items-center">
-            <Image 
-              src="/logo.png" 
-              alt="Al Salamah Logo" 
-              width={50} 
-              height={50}
-              className="h-10 w-auto"
-            />
-            <div className="ml-2">
-              <div className={`font-bold text-lg ${scrolled ? 'text-gray-900' : 'text-white'}`}>
-                {siteData?.siteConfig?.company?.name || "AL SALAMAH"}
-              </div>
-              <div className={`text-xs ${scrolled ? 'text-gray-600' : 'text-blue-200'}`}>
-                {siteData?.siteConfig?.company?.parentCompany || "Holding Company"}
-              </div>
-            </div>
+            {scrolled ? (
+              <Image 
+                src="/logo_dark.png"
+                alt="Al Salamah Logo" 
+                width={150} 
+                height={150}
+                className="h-10 w-auto"
+              />
+            ) : null}
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex space-x-8">
+          <nav className="hidden lg:flex space-x-14 xl:space-x-40">
             <a 
               href="#home" 
-              className={`transition-colors duration-300 font-medium ${
-                scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
+              className={`transition-colors duration-300 font-medium ${montserrat.variable} ${
+                scrolled ? 'text-[#273d97] hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
             >
               Home
             </a>
             <a 
               href="#about" 
-              className={`transition-colors duration-300 font-medium ${
+              className={`transition-colors duration-300 font-medium ${montserrat.variable} ${
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
             >
@@ -74,15 +79,15 @@ const Header = ({ siteData }: HeaderProps) => {
             </a>
             <a 
               href="#services" 
-              className={`transition-colors duration-300 font-medium ${
+              className={`transition-colors duration-300 font-medium ${montserrat.variable} ${
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
             >
-              Services
+              Industries
             </a>
             <a 
               href="#contact" 
-              className={`transition-colors duration-300 font-medium ${
+              className={`transition-colors duration-300 font-medium ${montserrat.variable} ${
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
             >
@@ -92,7 +97,7 @@ const Header = ({ siteData }: HeaderProps) => {
 
           {/* Mobile Menu Button */}
           <button
-            className={`lg:hidden p-2 ${scrolled ? 'text-gray-700' : 'text-white'}`}
+            className={`lg:hidden p-2 ${scrolled ? 'text-gray-700' : 'text-white'} ${montserrat.variable}`}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             <svg 
@@ -133,7 +138,7 @@ const Header = ({ siteData }: HeaderProps) => {
           <nav className="flex flex-col space-y-4">
             <a 
               href="#home" 
-              className={`transition-colors duration-300 font-medium ${
+              className={`transition-colors duration-300 font-medium ${montserrat.variable} ${
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
               onClick={() => setIsMenuOpen(false)}
@@ -142,7 +147,7 @@ const Header = ({ siteData }: HeaderProps) => {
             </a>
             <a 
               href="#about" 
-              className={`transition-colors duration-300 font-medium ${
+              className={`transition-colors duration-300 font-medium ${montserrat.variable} ${
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
               onClick={() => setIsMenuOpen(false)}
@@ -151,16 +156,16 @@ const Header = ({ siteData }: HeaderProps) => {
             </a>
             <a 
               href="#services" 
-              className={`transition-colors duration-300 font-medium ${
+              className={`transition-colors duration-300 font-medium ${montserrat.variable} ${
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
               onClick={() => setIsMenuOpen(false)}
             >
-              Services
+              Industries
             </a>
             <a 
               href="#contact" 
-              className={`transition-colors duration-300 font-medium ${
+              className={`transition-colors duration-300 font-medium ${montserrat.variable} ${  
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
               onClick={() => setIsMenuOpen(false)}
