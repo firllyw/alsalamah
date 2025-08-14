@@ -4,6 +4,8 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { homeContent } from '@/data/content';
 import { Bricolage_Grotesque } from 'next/font/google';
+import ArrowGraphics from '../ArrowGraphics';
+import ArrowGraphicsHalf from '../ArrowGraphicsHalf';
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -34,6 +36,8 @@ const TruckRevealSection = ({ data }: TruckRevealSectionProps) => {
       className={`reveal-section relative h-screen flex items-center justify-center ${bricolage.className}`}
       // style={{ background: '#273d97' }}
     >
+      <ArrowGraphicsHalf scrollProgress={scrollYProgress.get()} />
+
       <div className="container mx-auto px-4 lg:px-8 relative z-10 flex flex-col items-center justify-center h-full">
         <motion.div
           className="w-full max-w-2xl text-center"

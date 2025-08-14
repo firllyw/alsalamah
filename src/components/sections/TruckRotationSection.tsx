@@ -1,6 +1,7 @@
 'use client';
 
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { ChevronRight, ChevronRightIcon } from 'lucide-react';
 import { useRef } from 'react';
 
 // Hardcoded 3-part content for easier editing
@@ -71,7 +72,7 @@ const TruckRotationSection = () => {
           }
         `}
       </style>
-      
+
       {SECTIONS.map((section, idx) => {
         const opacity = getOpacity(idx);
         return (
@@ -88,8 +89,11 @@ const TruckRotationSection = () => {
               opacity: opacity,
             }}
           >
+            {/* Chevron arrow facing right */}
+
             <div className="container mx-auto px-4 lg:px-16 flex flex-row items-center w-full h-full">
               {/* Left: Main Content */}
+
               <div className="flex-1 flex flex-col justify-center">
                 {/* Main Statement */}
                 <div className="mb-6">
@@ -101,6 +105,17 @@ const TruckRotationSection = () => {
                       fontSize: '2.5rem',
                     }}
                   >
+                    <ChevronRightIcon
+                      size={60}
+                      strokeWidth={2.5}
+                      className="mr-8 text-[#273d97]"
+                      style={{
+                        flexShrink: 0,
+                        display: 'block',
+                        userSelect: 'none',
+                        pointerEvents: 'none',
+                      }}
+                    />
                     {section.main.map((part, i) => (
                       <span
                         key={i}
@@ -148,7 +163,7 @@ const TruckRotationSection = () => {
               <div className="flex-1 flex items-center justify-end h-full relative" />
             </div>
             {/* Section Index */}
-            <div 
+            <div
               className="absolute bottom-16 right-16 text-white text-9xl font-bold opacity-10 pointer-events-none"
               style={{
                 fontFamily: 'Bricolage Grotesque, sans-serif',
@@ -159,7 +174,7 @@ const TruckRotationSection = () => {
           </motion.div>
         );
       })}
-      
+
       {/* Spacer below the section to allow the truck to move left as user scrolls to next section */}
       <div
         aria-hidden="true"
