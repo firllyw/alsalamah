@@ -52,11 +52,11 @@ interface ShowcaseSectionProps {
 const ShowcaseSection = ({ data }: ShowcaseSectionProps) => {
   const sectionRef = useRef(null);
   const [isMounted, setIsMounted] = useState(false);
-  
+
   // Use data from props or fallback to defaults
   const galleryImages = data?.data?.images || defaultGalleryImages;
   const features = data?.data?.features || defaultFeatures;
-  
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -97,7 +97,7 @@ const ShowcaseSection = ({ data }: ShowcaseSectionProps) => {
             alignItems: 'flex-start',
           }}
           animate={{
-            x: ['0%', '-50%'],
+            x: ['0%', '50%'],
           }}
           transition={{
             repeat: Infinity,
@@ -106,18 +106,22 @@ const ShowcaseSection = ({ data }: ShowcaseSectionProps) => {
             duration: IMAGE_MARQUEE_DURATION,
           }}
         >
+          {/* 
+            To create a seamless infinite loop, we repeat the images array 2x and set the marquee to move -50% (not 50%) so the second set of images follows the first.
+            We also reduce the image size and the gap below the gallery.
+          */}
           {images.map((img, idx) => (
             <div
               key={img.alt + idx}
-              className="relative group rounded-3xl overflow-hidden shadow-2xl bg-[#1e2a6b] border-4 border-[#3b4db7] flex items-end"
+              className="relative group rounded-2xl overflow-hidden shadow-xl bg-[#1e2a6b] border-2 border-[#3b4db7] flex items-end"
               style={{
-                width: '65vw',
-                maxWidth: 1100,
-                minWidth: 520,
-                height: '70vh',
-                minHeight: 320,
-                maxHeight: 700,
-                marginRight: 64,
+                width: '38vw',
+                maxWidth: 520,
+                minWidth: 260,
+                height: '38vh',
+                minHeight: 180,
+                maxHeight: 340,
+                marginRight: 32,
                 marginLeft: 0,
                 display: 'flex',
                 alignItems: 'flex-end',
@@ -139,8 +143,8 @@ const ShowcaseSection = ({ data }: ShowcaseSectionProps) => {
                 }}
               />
               <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-10 py-8">
-                <span className="text-5xl md:text-7xl font-extrabold text-white drop-shadow-lg" style={{ fontFamily: 'var(--font-bricolage-grotesque), sans-serif' }}>
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-6 py-4">
+                <span className="text-2xl md:text-4xl font-extrabold text-white drop-shadow-lg" style={{ fontFamily: 'var(--font-bricolage-grotesque), sans-serif' }}>
                   {img.alt}
                 </span>
               </div>
@@ -172,7 +176,7 @@ const ShowcaseSection = ({ data }: ShowcaseSectionProps) => {
         >
           {featuresMarquee.map((feature, idx) => (
             <div
-              key={feature.label + idx}
+              key={feature.title + idx}
               className="flex items-center gap-6 text-white text-3xl md:text-5xl font-extrabold px-8"
               style={{
                 fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
@@ -182,13 +186,12 @@ const ShowcaseSection = ({ data }: ShowcaseSectionProps) => {
               }}
             >
               <span className="inline-block align-middle text-4xl md:text-5xl">
-                {feature.icon || (
-                  <svg width="40" height="40" fill="currentColor" className="text-white/70">
-                    <circle cx="20" cy="20" r="16" />
-                  </svg>
-                )}
+
+                <svg width="40" height="40" fill="currentColor" className="text-white/70">
+                  <circle cx="20" cy="20" r="16" />
+                </svg>
               </span>
-              <span className="align-middle">{feature.label}</span>
+              <span className="align-middle">{feature.title}</span>
             </div>
           ))}
         </motion.div>

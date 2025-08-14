@@ -29,7 +29,9 @@ export default function Home() {
     siteConfig: {},
     truckReveal: {},
     truckRotation: {
-      sections: []
+      data: {
+        sections: []
+      }
     },
     services: {},
     stats: {},
@@ -97,7 +99,7 @@ export default function Home() {
               <TruckRevealSection data={siteData?.truckReveal} />
 
               {/* Part 3: Truck rotation with mission content */}
-              <TruckRotationSection data={siteData?.truckRotation} />
+              <TruckRotationSection />
 
               {/* Additional sections */}
               <ServicesSection data={siteData?.services} />
@@ -109,7 +111,7 @@ export default function Home() {
 
               <RecordSection data={siteData?.record} />
 
-              <InteractiveCoverageSection data={siteData?.areaCoverage} />
+              <InteractiveCoverageSection />
 
               <ContactSection data={siteData?.contact} siteConfig={siteData?.siteConfig} />
             </main>

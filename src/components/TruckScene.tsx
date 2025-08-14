@@ -2,7 +2,7 @@
 
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Suspense, useRef, useEffect, useState } from 'react';
-import { useGLTF, Environment, useTexture } from '@react-three/drei';
+import { useGLTF, Environment } from '@react-three/drei';
 import { useScroll, MotionValue } from 'framer-motion';
 import * as THREE from 'three';
 
@@ -11,84 +11,92 @@ interface TruckModelProps {
 }
 
 function TruckModel({ scrollProgress }: TruckModelProps) {
-  const { scene } = useGLTF('/low_poly_truck.glb');
+  const { scene } = useGLTF('/truck.glb');
   const truckRef = useRef<THREE.Group>(null);
-  const textures = useTexture('/truck_texture.png');
+
+  // No need to recenter the model, as it's already fixed in Blender
 
   // Clone the scene to avoid issues with multiple instances
   const clonedScene = scene.clone();
 
-  // Phase boundaries
-  const PHASE3_START = 0.08;
-  const PHASE3_END = 0.18;
-  const PHASE4_START = 0.4;
-  const PHASE4_END = 0.6; // You can adjust this as needed
+  // PHASES: Three-phase animation system
+  const PHASE1_END = 0.12;        // Truck stays centered and still (longer duration)
+  const PHASE2_START = 0.12;      // Start rotation
+  const PHASE2_END = 0.2;        // End rotation (truck facing left, only front visible)
+  const PHASE3_START = 0.3;      // Start moving left and out of view
+  const PHASE3_END = 0.6;        // Truck exits view
 
-  // Initial values
-  const INITIAL_POSITION = [0, -0.5, 0];
-  const INITIAL_ROTATION_Y = -Math.PI / 6;
-  const INITIAL_SCALE = 1;
+  // Phase 1: Initial centered position (facing 45 deg clockwise on Y)
+  const INITIAL_POSITION = [5, -4, -5];
+  const INITIAL_ROTATION_Y = -0.8; // 45 degrees clockwise
+  const INITIAL_ROTATION_Z = -0.01; // 45 degrees clockwise
+  const INITIAL_SCALE = 0.3; // Adjust as needed for design
 
-  // Target values for phase 3
-  const FINAL_ROTATION_Y = INITIAL_ROTATION_Y - (2 * Math.PI) / 2.4;
-  const FINAL_SCALE = 1.2;
-  const FINAL_POSITION_X = 4; // Move to right
+  // Phase 2: After rotation (facing left, only front part visible)
+  const ROTATED_ROTATION_Y = 3; 
+  const ROTATED_POSITION_X = 10; 
+  const ROTATED_SCALE = 0.5;
 
-  // Target values for phase 4 (move left)
-  const PHASE4_POSITION_X = -3; // Move to left (adjust as needed)
+  // Phase 3: Exit movement (move further left and out of view)
+  const EXIT_POSITION_X = -10; // Move far left to exit view
 
   useFrame(() => {
     if (truckRef.current) {
       const scrollValue = scrollProgress.get();
 
       truckRef.current.visible = true;
-      if (scrollValue < PHASE3_START) {
-        // Phase 1 & 2: Truck stays at initial position, rotation, and scale
+      console.log('scrollValue', scrollValue);
+      if (scrollValue < PHASE1_END) {
+        // Phase 1: Truck centered, facing 45 deg
         truckRef.current.position.set(INITIAL_POSITION[0], INITIAL_POSITION[1], INITIAL_POSITION[2]);
         truckRef.current.rotation.y = INITIAL_ROTATION_Y;
+        truckRef.current.rotation.z = INITIAL_ROTATION_Z;
         truckRef.current.scale.setScalar(INITIAL_SCALE);
-      } else if (scrollValue < PHASE4_START) {
-        // Phase 3: Animate from initial to final values, but stop at 360deg
-        // Clamp progress between 0 and 1
+
+      } else if (scrollValue < PHASE2_END) {
+        // Phase 2: Rotate to face left, move left so only front is visible
+        const phase2Progress = Math.min(
+          Math.max((scrollValue - PHASE2_START) / (PHASE2_END - PHASE2_START), 0),
+          1
+        );
+
+        // Only rotate during phase 2, then clamp to ROTATED_ROTATION_Y at the end
+        let rotY;
+        if (phase2Progress >= 1) {
+          rotY = ROTATED_ROTATION_Y;
+        } else {
+          rotY = THREE.MathUtils.lerp(INITIAL_ROTATION_Y, ROTATED_ROTATION_Y, phase2Progress);
+        }
+        const posX = THREE.MathUtils.lerp(INITIAL_POSITION[0], ROTATED_POSITION_X, phase2Progress);
+
+        truckRef.current.position.set(posX, INITIAL_POSITION[1], INITIAL_POSITION[2]);
+        truckRef.current.rotation.y = rotY;
+        truckRef.current.scale.setScalar(ROTATED_SCALE);
+
+      } else {
+        // Phase 3: Move truck further left and out of view
         const phase3Progress = Math.min(
           Math.max((scrollValue - PHASE3_START) / (PHASE3_END - PHASE3_START), 0),
           1
         );
 
-        // Interpolate rotation.y up to 360deg (2*PI), then stop
-        const rotY = THREE.MathUtils.lerp(INITIAL_ROTATION_Y, FINAL_ROTATION_Y, phase3Progress);
-        const scale = THREE.MathUtils.lerp(INITIAL_SCALE, FINAL_SCALE, phase3Progress);
-        // Interpolate x position from initial to final
-        const posX = THREE.MathUtils.lerp(INITIAL_POSITION[0], FINAL_POSITION_X, phase3Progress);
+        const posX = THREE.MathUtils.lerp(ROTATED_POSITION_X, EXIT_POSITION_X, phase3Progress);
 
         truckRef.current.position.set(posX, INITIAL_POSITION[1], INITIAL_POSITION[2]);
-        truckRef.current.rotation.y = rotY;
-        truckRef.current.scale.setScalar(scale);
-      } else {
-        // Phase 4: Move truck to the left on x axis
-        // Clamp progress between 0 and 1
-        const phase4Progress = Math.min(
-          Math.max((scrollValue - PHASE4_START) / (PHASE4_END - PHASE4_START), 0),
-          1
-        );
-        // Start from FINAL_POSITION_X, move to PHASE4_POSITION_X
-        const posX = THREE.MathUtils.lerp(FINAL_POSITION_X, PHASE4_POSITION_X, phase4Progress);
-
-        // Keep rotation and scale at their final values from phase 3
-        truckRef.current.position.set(posX, INITIAL_POSITION[1], INITIAL_POSITION[2]);
-        truckRef.current.rotation.y = FINAL_ROTATION_Y;
-        truckRef.current.scale.setScalar(FINAL_SCALE);
+        truckRef.current.rotation.y = ROTATED_ROTATION_Y;
+        truckRef.current.scale.setScalar(ROTATED_SCALE);
       }
     }
   });
 
+  // Add axes helper for debugging
   return (
     <group ref={truckRef}>
+      <axesHelper args={[5]} />
       <primitive
         object={clonedScene}
-        scale={[30, 30, 30]}
-        position={[-2, 0, 0]}
-        material={new THREE.MeshStandardMaterial({ map: textures })}
+        scale={[1, 1, 1]}
+        position={[0, 0, 0]}
       />
     </group>
   );
@@ -96,18 +104,19 @@ function TruckModel({ scrollProgress }: TruckModelProps) {
 
 function TruckScene() {
   const [isMounted, setIsMounted] = useState(false);
-  
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
   const { scrollYProgress } = useScroll();
 
+  // Add a border and fixed size for debugging
   return (
-    <div className="canvas-container">
+    <div className="canvas-container" style={{ border: '2px solid red', width: '100vw', height: '100vh' }}>
       <Canvas
         camera={{ position: [0, 1, 6], fov: 75 }}
-        style={{ background: 'transparent' }}
+        style={{ background: 'rgba(0,0,0,0.1)' }}
         shadows
       >
         <Suspense fallback={null}>
@@ -134,6 +143,6 @@ function TruckScene() {
 }
 
 // Preload the truck model
-useGLTF.preload('/low_poly_truck.glb');
+useGLTF.preload('/truck.glb');
 
 export default TruckScene;

@@ -7,12 +7,12 @@ import ArrowGraphics from '@/components/ArrowGraphics';
 import Image from 'next/image';
 
 // Import Bricolage Grotesque font from Google Fonts using next/font
-import { Bricolage_Grotesque } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 
-const bricolage = Bricolage_Grotesque({
+const montserrat = Montserrat({
   subsets: ['latin'],
   weight: ['400', '500', '700'],
-  variable: '--font-bricolage-grotesque',
+  variable: '--font-montserrat',
   display: 'swap',
 });
 
@@ -37,7 +37,7 @@ const HeroSection = ({ data, siteConfig }: HeroSectionProps) => {
     <section 
       ref={sectionRef}
       id="home" 
-      className={`hero-section relative h-screen flex items-center hero-blue-bg overflow-hidden ${bricolage.className}`}
+      className={`hero-section relative h-screen flex items-center hero-blue-bg overflow-hidden ${montserrat.className}`}
     >
       {/* Solid background layer - always covers truck */}
       <div className="absolute inset-0 hero-blue-bg" />
@@ -62,10 +62,10 @@ const HeroSection = ({ data, siteConfig }: HeroSectionProps) => {
           <Image
             src={siteConfig?.company?.logo || "/logo.png"}
             alt={`${siteConfig?.company?.name || "Al Salamah"} Logo`}
-            width={220}
-            height={220}
+            width={400}
+            height={400}
             priority
-            className="w-48 h-auto lg:w-60"
+            className="w-auto h-auto"
             style={{ objectFit: 'contain' }}
           />
         </motion.div>

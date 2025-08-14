@@ -14,12 +14,12 @@ const bricolage = Bricolage_Grotesque({
   display: 'swap',
 });
 
-const MAX_KM = 2000; // As per the new design
+const MAX_KM = 2000;
 
-// Bigger, thinner circular counter
+// Smaller, thinner circular counter, a bit more to the right
 const CircularKmCounter = ({ progress }: { progress: number }) => {
-  const radius = 260; // Much bigger
-  const stroke = 4; // Thinner line
+  const radius = 140; // Smaller
+  const stroke = 4;
   const normalizedRadius = radius - stroke / 2;
   const circumference = normalizedRadius * 2 * Math.PI;
   const offset = circumference - progress * circumference;
@@ -64,7 +64,7 @@ const CircularKmCounter = ({ progress }: { progress: number }) => {
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span
-          className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white"
+          className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white"
           style={{ fontFamily: 'var(--font-bricolage-grotesque), sans-serif' }}
         >
           {km} km
@@ -74,7 +74,6 @@ const CircularKmCounter = ({ progress }: { progress: number }) => {
   );
 };
 
-// Service Card with blurry background and white border
 function ServiceCard({ service, active }: { service: any; active: boolean }) {
   return (
     <div
@@ -92,6 +91,7 @@ function ServiceCard({ service, active }: { service: any; active: boolean }) {
           : '0 2px 8px 0 rgba(31, 38, 135, 0.10)',
         border: '1.5px solid rgba(255,255,255,0.7)',
         backdropFilter: 'blur(16px)',
+        fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
       }}
     >
       <div className="flex items-center gap-3 mb-3">
@@ -115,7 +115,7 @@ interface ServicesSectionProps {
 const ServicesSection = ({ data }: ServicesSectionProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = useState(false);
-  
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -125,10 +125,8 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
     offset: ['start end', 'end start'],
   });
 
-  // Animate the progress from 0 to 1 as the section scrolls into view
   const [progress, setProgress] = useState(0);
 
-  // Card slider state
   const [activeIdx, setActiveIdx] = useState(0);
   const services = data?.data || servicesContent.services || [];
 
@@ -138,11 +136,9 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
     });
   }, [scrollYProgress]);
 
-  // Card slider handlers
   const handlePrev = () => setActiveIdx((idx) => (idx === 0 ? services.length - 1 : idx - 1));
   const handleNext = () => setActiveIdx((idx) => (idx === services.length - 1 ? 0 : idx + 1));
 
-  // For the slider, show the active and the next card (partly visible)
   const getCardsToShow = () => {
     const nextIdx = (activeIdx + 1) % services.length;
     return [
@@ -155,7 +151,7 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
     <section
       id="services"
       ref={sectionRef}
-      className={`relative min-h-[100vh] flex items-center justify-center overflow-hidden`}
+      className={`relative min-h-[100vh] flex items-center justify-center overflow-hidden ${bricolage.variable}`}
       style={{
         fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
       }}
@@ -170,22 +166,26 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
           className="pointer-events-none select-none"
           priority
         />
-        <div className="absolute inset-0 bg-black/60" />
+        {/* Make the background overlay less dark */}
+        <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.32)' }} />
         {/* Blue transition overlay at bottom */}
         <div
           className="absolute bottom-0 left-0 right-0 h-32 lg:h-48"
           style={{
             background: `linear-gradient(to bottom, 
               transparent 0%, 
-              rgba(39, 61, 151, 0.3) 50%, 
-              rgba(39, 61, 151, 0.6) 100%)`
+              rgba(39, 61, 151, 0.18) 50%, 
+              rgba(39, 61, 151, 0.38) 100%)`
           }}
         />
       </div>
 
       {/* Content */}
       <div
-        className={`relative z-10 w-full max-w-7xl mx-auto px-4 lg:px-8 py-16 lg:py-24 flex flex-col lg:flex-row items-center justify-between gap-8 font-bricolage`}
+        className={`relative z-10 w-full max-w-7xl mx-auto px-4 lg:px-8 py-16 lg:py-24 flex flex-col lg:flex-row items-center justify-between gap-8`}
+        style={{
+          fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
+        }}
       >
         {/* Left: Title, Subtitle, Card Slider */}
         <div className="flex-1 flex flex-col items-start justify-center w-full max-w-xl">
@@ -198,6 +198,7 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
             viewport={{ once: true }}
             style={{
               textShadow: '0 2px 16px rgba(0,0,0,0.25)',
+              fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
             }}
           >
             BY ALIGNING OUR OPERATIONS WITH THE HIGHEST STANDARDS,
@@ -211,6 +212,7 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
             style={{
               textShadow: '0 2px 16px rgba(0,0,0,0.18)',
               lineHeight: 1.2,
+              fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
             }}
           >
             AST has built a 20-year track<br />
@@ -218,7 +220,10 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
             businesses can depend on.
           </motion.p>
           {/* "OUR SERVICE" label */}
-          <div className="uppercase text-[#ffbd59] text-xs font-bold tracking-widest mb-2">
+          <div
+            className="uppercase text-[#ffbd59] text-xs font-bold tracking-widest mb-2"
+            style={{ fontFamily: 'var(--font-bricolage-grotesque), sans-serif' }}
+          >
             OUR SERVICE
           </div>
           {/* Card slider */}
@@ -256,15 +261,11 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
               <ChevronRightIcon className="w-7 h-7 text-white" />
             </button>
           </div>
-          {/* Chevron down for mobile (optional) */}
-          {/* <div className="flex justify-center w-full mt-2">
-            <ChevronDownIcon className="w-7 h-7 text-white/60" />
-          </div> */}
         </div>
 
         {/* Right: Circular KM Counter */}
         <div
-          className="flex-1 flex items-center justify-center w-full"
+          className="flex-1 flex items-center justify-end w-full"
           style={{
             minHeight: 0,
             minWidth: 0,
@@ -274,13 +275,12 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
             flexShrink: 1,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'flex-end',
+            paddingRight: '2vw',
           }}
         >
           <div
             style={{
-              width: '100%',
-              height: '100%',
               minWidth: 0,
               minHeight: 0,
               display: 'flex',

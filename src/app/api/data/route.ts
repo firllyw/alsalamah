@@ -3,29 +3,30 @@ import { prisma } from '@/lib/prisma';
 
 export async function GET() {
   try {
-    // Fetch all sections and site config in parallel
-    const [sections, siteConfig, menuItems] = await Promise.all([
-      prisma.section.findMany({
-        orderBy: { createdAt: 'asc' }
-      }),
-      prisma.siteConfig.findFirst(),
-      prisma.menuItem.findMany({
-        where: { isActive: true },
-        orderBy: { order: 'asc' }
-      })
+    // Fetch all specialized sections and site config in parallel
+    const [
+      heroSection,
+      truckRevealSection,
+      truckRotationSection,
+      servicesSection,
+      statsSection,
+      showcaseSection,
+      recordSection,
+      interactiveCoverageSection,
+      siteConfig
+    ] = await Promise.all([
+      prisma.heroSection.findFirst(),
+      prisma.truckRevealSection.findFirst(),
+      prisma.truckRotationSection.findFirst(),
+      prisma.servicesSection.findFirst(),
+      prisma.statsSection.findFirst(),
+      prisma.showcaseSection.findFirst(),
+      prisma.recordSection.findFirst(),
+      prisma.interactiveCoverageSection.findFirst(),
+      prisma.siteConfig.findFirst()
     ]);
 
-    // Transform sections into a keyed object for easy access
-    const sectionsData: Record<string, any> = {};
-    sections.forEach(section => {
-      sectionsData[section.key] = {
-        title: section.title,
-        content: section.content,
-        data: section.data
-      };
-    });
-
-    // Structure the response
+    // Structure the response to match the existing frontend format
     const data = {
       // Site configuration
       siteConfig: siteConfig ? {
@@ -44,22 +45,72 @@ export async function GET() {
         }
       } : null,
 
-      // Menu items
-      menu: menuItems,
+      // Menu items (empty array since we removed menu management)
+      menu: [],
 
-      // Sections data
-      sections: sectionsData,
+      // Sections data (keeping the same structure for frontend compatibility)
+      sections: {
+        hero: heroSection,
+        truck_reveal: {
+          content: 'For over 32 years, Al Salamah Transportation (AST) has been a trusted partner in the movement of goods and materials across Saudi Arabia and beyond. From nationwide distribution to specialized transportation solutions, AST combines a modern fleet, advanced logistics planning, and a customer- first approach to ensure that every delivery meets the highest standards of speed, reliability, and safety. With strategically located operational hubs and a team of highly trained professionals, AST supports industries from FMCG to industrial goods — serving both local businesses and multinational corporations. Our success is built on deep market knowledge, operational efficiency, and long- standing client relationships that stand the test of time.'
+        },
+        truck_rotation: truckRotationSection,
+        services: servicesSection,
+        stats: statsSection,
+        showcase: showcaseSection,
+        record: recordSection,
+        area_coverage: interactiveCoverageSection
+      },
 
-      // Individual sections for easy access
-      hero: sectionsData.hero || null,
-      truckReveal: sectionsData.truck_reveal || null,
-      truckRotation: sectionsData.truck_rotation || null,
-      services: sectionsData.services || null,
-      stats: sectionsData.stats || null,
-      showcase: sectionsData.showcase || null,
-      record: sectionsData.record || null,
-      contact: sectionsData.contact || null,
-      areaCoverage: sectionsData.area_coverage || null
+      // Individual sections for easy access (same format as before)
+      hero: heroSection ? {
+        title: heroSection.title,
+        subtitle: heroSection.subtitle,
+        data: {
+          yearText: heroSection.yearText,
+          scrollText: heroSection.scrollText
+        }
+      } : null,
+
+      truckReveal: truckRevealSection ? {
+        content: 'For over 32 years, Al Salamah Transportation (AST) has been a trusted partner in the movement of goods and materials across Saudi Arabia and beyond. From nationwide distribution to specialized transportation solutions, AST combines a modern fleet, advanced logistics planning, and a customer- first approach to ensure that every delivery meets the highest standards of speed, reliability, and safety. With strategically located operational hubs and a team of highly trained professionals, AST supports industries from FMCG to industrial goods — serving both local businesses and multinational corporations. Our success is built on deep market knowledge, operational efficiency, and long- standing client relationships that stand the test of time.'
+      } : null,
+
+      truckRotation: truckRotationSection ? {
+        data: {
+          sections: truckRotationSection.sections
+        }
+      } : null,
+
+      services: servicesSection ? {
+        data: servicesSection.services
+      } : null,
+
+      stats: statsSection ? {
+        data: statsSection.stats
+      } : null,
+
+      showcase: showcaseSection ? {
+        data: {
+          images: showcaseSection.images,
+          features: showcaseSection.features
+        }
+      } : null,
+
+      record: recordSection ? {
+        data: {
+          features: recordSection.features
+        }
+      } : null,
+
+      areaCoverage: interactiveCoverageSection ? {
+        data: {
+          regions: interactiveCoverageSection.regions,
+          headquarters: interactiveCoverageSection.headquarters
+        }
+      } : null,
+
+      contact: null // Contact section doesn't have separate data, uses siteConfig
     };
 
     return NextResponse.json(data);

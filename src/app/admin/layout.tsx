@@ -26,13 +26,33 @@ const navigation = [
     icon: LayoutDashboard
   },
   {
-    name: 'Menu Management',
-    href: '/admin/menu',
-    icon: MenuIcon
+    name: 'Hero Section',
+    href: '/admin/hero',
+    icon: FileText
   },
   {
-    name: 'Sections Management',
-    href: '/admin/sections',
+    name: 'Services',
+    href: '/admin/services',
+    icon: Building2
+  },
+  {
+    name: 'Statistics',
+    href: '/admin/stats',
+    icon: FileText
+  },
+  {
+    name: 'Showcase',
+    href: '/admin/showcase',
+    icon: FileText
+  },
+  {
+    name: 'Record',
+    href: '/admin/record',
+    icon: FileText
+  },
+  {
+    name: 'Coverage',
+    href: '/admin/coverage',
     icon: FileText
   },
   {

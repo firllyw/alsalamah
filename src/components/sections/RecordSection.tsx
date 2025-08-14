@@ -73,11 +73,11 @@ const RecordSection = ({ data }: RecordSectionProps) => {
         <div className="w-1/2 flex flex-col justify-center gap-12 px-8 lg:px-16">
           {/* Feature Cards */}
           <div className="flex flex-row gap-6">
-            {features.map((feature, idx) => {
+            {features.map((feature: any, idx: number) => {
               const isActive = hoveredFeature === idx || (hoveredFeature === null && idx === 0);
               return (
                 <button
-                  key={feature.label}
+                  key={feature.title}
                   className={`
                     flex flex-col items-center justify-center gap-3
                     p-6 rounded-2xl border-2 transition-all duration-300
@@ -95,7 +95,7 @@ const RecordSection = ({ data }: RecordSectionProps) => {
                   onMouseLeave={() => setHoveredFeature(null)}
                 >
                   <svg width="48" height="48" fill="none" viewBox="0 0 48 48">
-                    {feature.iconContent(isActive)}
+                    {/* {feature.iconContent(isActive)} */}
                   </svg>
                   <span 
                     className={`text-sm font-medium ${

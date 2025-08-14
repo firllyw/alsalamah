@@ -208,7 +208,7 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
           />
           
           {/* Region Polygons */}
-          {regions.map((region, index) => {
+          {regions.map((region: any, index: number) => {
             const style = regionStyles[region.name as keyof typeof regionStyles];
             const isSelected = selectedRegion?.name === region.name;
             return (
@@ -216,9 +216,9 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
                 key={index}
                 positions={region.bounds}
                 pathOptions={{
-                  fillColor: style.fillColor,
-                  color: isSelected ? style.highlightBorderColor : style.borderColor,
-                  fillOpacity: isSelected ? style.highlightFillOpacity : style.fillOpacity,
+                  fillColor: '#FFB84D',
+                  color: isSelected ? '#FF9800' : '#E09E2F',
+                  fillOpacity: isSelected ? 0.7 : 0.45,
                   weight: isSelected ? 4 : 2,
                   opacity: 1,
                   dashArray: isSelected ? '6' : undefined,

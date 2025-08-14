@@ -42,7 +42,7 @@ const TruckRevealSection = ({ data }: TruckRevealSectionProps) => {
           <motion.p
             className="text-lg lg:text-xl leading-relaxed"
             style={{
-              color: '#263d96', // Blue text color
+              color: '#273d97', // Blue text color
               fontFamily: 'var(--font-bricolage-grotesque), sans-serif'
             }}
           >

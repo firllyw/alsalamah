@@ -7,60 +7,93 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "file:./dev.db"
 }
 
-model MenuItem {
-  id        String   @id @default(cuid())
-  title     String
-  href      String?
-  order     Int      @default(0)
-  isActive  Boolean  @default(true)
-  parentId  String?
-  parent    MenuItem? @relation("MenuItemToMenuItem", fields: [parentId], references: [id])
-  children  MenuItem[] @relation("MenuItemToMenuItem")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("menu_items")
-}
-
-model Section {
-  id          String   @id @default(cuid())
-  name        String   @unique
-  title       String
-  subtitle    String?
-  content     String?
-  isActive    Boolean  @default(true)
-  order       Int      @default(0)
-  sectionType String   // hero, services, about, contact, etc.
-  data        String?  // JSON string for flexible data storage
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("sections")
-}
-
+// Site configuration
 model SiteConfig {
-  id          String   @id @default(cuid())
-  key         String   @unique
-  value       String
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("site_config")
+  id                         String   @id @default(cuid())
+  company_name              String
+  company_parentCompany     String
+  company_logo              String
+  company_tagline           String?
+  contact_headOffice_email  String
+  contact_headOffice_phone  String
+  contact_headOffice_address String
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
 }
 
+// User management
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
+  password  String
   name      String
-  role      String   @default("admin") // admin, editor, viewer
+  role      String   @default("admin")
   isActive  Boolean  @default(true)
-  lastLogin DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
 
-  @@map("users")
+// Specialized section tables
+model HeroSection {
+  id        String   @id @default(cuid())
+  title     String
+  subtitle  String?
+  yearText  String?
+  scrollText String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TruckRevealSection {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TruckRotationSection {
+  id        String   @id @default(cuid())
+  sections  Json     // Array of {number, title, subtitle, content}
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ServicesSection {
+  id        String   @id @default(cuid())
+  services  Json     // Array of service objects
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model StatsSection {
+  id        String   @id @default(cuid())
+  stats     Json     // Array of {value, label}
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ShowcaseSection {
+  id        String   @id @default(cuid())
+  images    Json?    // Array of gallery images
+  features  Json?    // Array of features
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model RecordSection {
+  id        String   @id @default(cuid())
+  features  Json     // Array of features with icons
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model InteractiveCoverageSection {
+  id           String   @id @default(cuid())
+  regions      Json     // Array of region objects
+  headquarters Json     // Headquarters info object
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

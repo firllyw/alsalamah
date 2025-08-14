@@ -1,9 +1,7 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
-import { homeContent } from '@/data/content';
 import { Bricolage_Grotesque } from 'next/font/google';
+import { useRef } from 'react';
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -12,291 +10,142 @@ const bricolage = Bricolage_Grotesque({
   display: 'swap',
 });
 
-interface TruckRotationSectionProps {
-  data?: any;
-}
+// Hardcoded 3-part content for easier editing
+const SECTIONS = [
+  {
+    main: [
+      { text: "To be the most trusted and", color: "#b2b9e6" },
+      { text: "innovative transportation", color: "#273d97" },
+      { text: "partner in Saudi Arabia.", color: "#b2b9e6" }
+    ],
+    title: "VISION",
+    caption: "Recognized for operational excellence, technological advancement, and an unwavering commitment to quality."
+  },
+  {
+    main: [
+      { text: "To provide", color: "#b2b9e6" },
+      { text: "reliable transportation and", color: "#273d97" },
+      { text: "distribution services.", color: "#b2b9e6" }
+    ],
+    title: "MISSION",
+    caption: "Empowering businesses, strengthen supply chains, and connect communities across Saudi Arabia and the region — delivering on time, every time."
+  },
+  {
+    main: [
+      { text: "Reliability and safety are more than promises -", color: "#b2b9e6" },
+      { text: "are our operating principles.", color: "#273d97" }
+    ],
+    title: "COMMITMENT",
+    caption: "We invest in a well-maintained, modern fleet equipped with real-time tracking technology, ensuring predictable delivery schedules and transparent communication."
+  }
+];
 
-const TruckRotationSection = ({ data }: TruckRotationSectionProps) => {
-  const truckRotation = data || homeContent.truckRotation;
+const sectionHeightVh = 85;
+const totalSections = SECTIONS.length;
+const totalHeightVh = sectionHeightVh * totalSections + 20;
+
+const TruckRotationSection = () => {
   const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"]
-  });
-
-  // Make the scrollable area taller and reduce the space between sections
-  // This helps ensure the last part doesn't overlap the next sections
-  // and the transitions are a bit tighter.
-  const totalSections = 3;
-  const sectionHeightVh = 85; // Each section is 85vh tall (was 100vh)
-  const totalHeightVh = sectionHeightVh * totalSections + 20; // Add a little extra for smoothness
-
-  // Adjusted offsets for a more compact scroll
-  const section1Progress = useTransform(scrollYProgress, [0, 0.18], [0, 1]);
-  const section2Progress = useTransform(scrollYProgress, [0.18, 0.36], [0, 1]);
-  const section3Progress = useTransform(scrollYProgress, [0.36, 0.54], [0, 1]);
-
-  // Faster text animations for each section - slide from bottom quickly
-  const getTextAnimations = (progress: any) => ({
-    y: useTransform(progress, [0, 0.6], [100, 0]), // Animation completes at 60% instead of 100%
-    opacity: useTransform(progress, [0, 0.3, 0.6], [0, 1, 1]) // Opacity reaches full at 30%
-  });
-
-  const section1Animations = getTextAnimations(section1Progress);
-  const section2Animations = getTextAnimations(section2Progress);
-  const section3Animations = getTextAnimations(section3Progress);
 
   return (
-    <>
-      <section
-        ref={sectionRef}
-        className={`mission-section relative ${bricolage.className}`}
-        style={{
-          height: `${totalHeightVh}vh`, // Taller scroll area
-        }}
-      >
-        {/* Section 1 - Vision */}
-        <div className="sticky top-0" style={{ height: `${sectionHeightVh}vh` }}>
-          <div className="container mx-auto px-4 lg:px-16 relative z-10 flex items-center h-full">
-            <div className="w-1/2 flex flex-col justify-center">
-              <motion.div
-                className="space-y-8"
-                style={{
-                  y: section1Animations.y,
-                  opacity: section1Animations.opacity
-                }}
-              >
-                {/* Section Number */}
-                <div className="flex items-center space-x-4">
-                  <span
-                    className="text-6xl font-bold"
-                    style={{
-                      color: '#b2b9e6',
-                      fontFamily: 'var(--font-bricolage-grotesque)'
-                    }}
-                  >
-                    {truckRotation.data?.sections?.[0]?.number || truckRotation.sections?.[0]?.number}
-                  </span>
-                  <div className="w-16 h-px bg-blue-300"></div>
-                </div>
-
-                {/* Title */}
-                <div className="inline-block">
-                  <span
-                    className="text-lg font-bold tracking-wider px-4 py-2 rounded-full"
-                    style={{
-                      background: '#FFA500',
-                      color: 'white',
-                      fontFamily: 'var(--font-bricolage-grotesque)'
-                    }}
-                  >
-                    {truckRotation.sections[0].title}
-                  </span>
-                </div>
-
-                {/* Subtitle */}
-                <h2
-                  className="text-4xl lg:text-5xl font-bold leading-tight"
-                  style={{
-                    fontFamily: 'var(--font-bricolage-grotesque)',
-                    color: '#273d97'
-                  }}
-                >
-                  {truckRotation.sections[0].subtitle.split(' ').map((word: string, index: number) =>
-                    ['in', 'Saudi', 'Arabia.'].includes(word) ? (
-                      <span key={index} style={{ color: '#b2b9e6' }}>{word} </span>
-                    ) : (
-                      <span key={index}>{word} </span>
-                    )
-                  )}
-                </h2>
-
-                {/* Content */}
-                <p
-                  className="text-lg leading-relaxed max-w-2xl"
-                  style={{
-                    color: '#6B7280',
-                    fontFamily: 'var(--font-bricolage-grotesque)'
-                  }}
-                >
-                  {truckRotation.sections[0].content}
-                </p>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-
-        {/* Section 2 - Mission */}
+    <section
+      ref={sectionRef}
+      className={`relative w-full ${bricolage.variable}`}
+      style={{
+        height: `${totalHeightVh}vh`,
+        background: 'transparent',
+        fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
+      }}
+    >
+      {SECTIONS.map((section, idx) => (
         <div
-          className="absolute left-0 w-full"
+          key={idx}
+          className={`absolute left-0 w-full`}
           style={{
-            top: `${sectionHeightVh}vh`,
+            top: `${sectionHeightVh * idx}vh`,
             height: `${sectionHeightVh}vh`,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            pointerEvents: 'none', // allow 3D object behind to be interactive if needed
           }}
         >
-          <div className="container mx-auto px-4 lg:px-16 relative z-10 flex items-center h-full">
-            <div className="w-1/2 flex flex-col justify-center">
-              <motion.div
-                className="space-y-8"
-                style={{
-                  y: section2Animations.y,
-                  opacity: section2Animations.opacity
-                }}
-              >
-                {/* Section Number */}
-                <div className="flex items-center space-x-4">
-                  <span
-                    className="text-6xl font-bold"
-                    style={{
-                      color: '#b2b9e6',
-                      fontFamily: 'var(--font-bricolage-grotesque)'
-                    }}
-                  >
-                    {truckRotation.sections[1].number}
-                  </span>
-                  <div className="w-16 h-px bg-blue-300"></div>
-                </div>
-
-                {/* Title */}
-                <div className="inline-block">
-                  <span
-                    className="text-lg font-bold tracking-wider px-4 py-2 rounded-full"
-                    style={{
-                      background: '#FFA500',
-                      color: 'white',
-                      fontFamily: 'var(--font-bricolage-grotesque)'
-                    }}
-                  >
-                    {truckRotation.sections[1].title}
-                  </span>
-                </div>
-
-                {/* Subtitle */}
+          <div className="container mx-auto px-4 lg:px-16 flex flex-row items-center w-full h-full">
+            {/* Left: Main Content */}
+            <div className="flex-1 flex flex-col justify-center">
+              {/* Main Statement */}
+              <div className="mb-6">
                 <h2
-                  className="text-4xl lg:text-5xl font-bold leading-tight"
+                  className="font-bold leading-snug"
                   style={{
-                    fontFamily: 'var(--font-bricolage-grotesque)',
-                    color: '#273d97'
+                    lineHeight: 1.2,
+                    fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
+                    fontSize: '2.5rem', // base size
+                    // Responsive font size
+                    // 3.5rem on md, 4.5rem on lg
                   }}
                 >
-                  {truckRotation.sections[1].subtitle.split(' ').map((word: string, index: number) =>
-                    ['and', 'services.'].includes(word) ? (
-                      <span key={index} style={{ color: '#b2b9e6' }}>{word} </span>
-                    ) : (
-                      <span key={index}>{word} </span>
-                    )
-                  )}
+                  {section.main.map((part, i) => (
+                    <span
+                      key={i}
+                      style={{
+                        color: part.color,
+                        display: 'block',
+                        fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
+                        fontSize: 'inherit',
+                      }}
+                      className="text-[2.5rem] md:text-[3.5rem] lg:text-[4.5rem]"
+                    >
+                      {part.text}
+                    </span>
+                  ))}
                 </h2>
-
-                {/* Content */}
-                <p
-                  className="text-lg leading-relaxed max-w-2xl"
+              </div>
+              {/* Separator */}
+              <div className="w-full h-px bg-[#e5e7ef] my-8" />
+              {/* Title and Caption Row */}
+              <div className="flex flex-row items-start justify-between w-full">
+                {/* Title */}
+                <span
+                  className="font-bold uppercase tracking-wider"
                   style={{
-                    color: '#6B7280',
-                    fontFamily: 'var(--font-bricolage-grotesque)'
+                    color: '#FFA500',
+                    fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
+                    letterSpacing: '0.08em',
+                    fontSize: '1.25rem', // base size
                   }}
                 >
-                  {truckRotation.sections[1].content}
-                </p>
-              </motion.div>
+                  {section.title}
+                </span>
+                {/* Caption */}
+                <span
+                  className="text-[#6B7280] text-right max-w-md"
+                  style={{
+                    fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
+                    marginLeft: '2rem',
+                    flex: 1,
+                    fontSize: '1.1rem', // larger caption
+                  }}
+                >
+                  {section.caption}
+                </span>
+              </div>
             </div>
+            {/* Right: Placeholder for truck image/3D scene */}
+            <div className="flex-1 flex items-center justify-end h-full" />
           </div>
         </div>
-
-        {/* Section 3 - Commitment */}
-        <div
-          className="absolute left-0 w-full"
-          style={{
-            top: `${sectionHeightVh * 2}vh`,
-            height: `${sectionHeightVh}vh`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          <div className="container mx-auto px-4 lg:px-16 relative z-10 flex items-center h-full">
-            <div className="w-1/2 flex flex-col justify-center">
-              <motion.div
-                className="space-y-8"
-                style={{
-                  y: section3Animations.y,
-                  opacity: section3Animations.opacity
-                }}
-              >
-                {/* Section Number */}
-                <div className="flex items-center space-x-4">
-                  <span
-                    className="text-6xl font-bold"
-                    style={{
-                      color: '#b2b9e6',
-                      fontFamily: 'var(--font-bricolage-grotesque)'
-                    }}
-                  >
-                    {truckRotation.sections[2].number}
-                  </span>
-                  <div className="w-16 h-px bg-blue-300"></div>
-                </div>
-
-                {/* Title */}
-                <div className="inline-block">
-                  <span
-                    className="text-lg font-bold tracking-wider px-4 py-2 rounded-full"
-                    style={{
-                      background: '#FFA500',
-                      color: 'white',
-                      fontFamily: 'var(--font-bricolage-grotesque)'
-                    }}
-                  >
-                    {truckRotation.sections[2].title}
-                  </span>
-                </div>
-
-                {/* Subtitle */}
-                <h2
-                  className="text-4xl lg:text-5xl font-bold leading-tight"
-                  style={{
-                    fontFamily: 'var(--font-bricolage-grotesque)',
-                    color: '#273d97'
-                  }}
-                >
-                  {truckRotation.sections[2].subtitle.split(' ').map((word: string, index: number) =>
-                    ['are', 'more', 'than', 'promises', '—', 'they', 'are', 'our', 'operating', 'principles.'].includes(word) ? (
-                      <span key={index} style={{ color: '#b2b9e6' }}>{word} </span>
-                    ) : (
-                      <span key={index}>{word} </span>
-                    )
-                  )}
-                </h2>
-
-                {/* Content */}
-                <p
-                  className="text-lg leading-relaxed max-w-2xl"
-                  style={{
-                    color: '#6B7280',
-                    fontFamily: 'var(--font-bricolage-grotesque)'
-                  }}
-                >
-                  {truckRotation.sections[2].content}
-                </p>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      ))}
       {/* Spacer below the section to allow the truck to move left as user scrolls to next section */}
       <div
         aria-hidden="true"
         className="w-full"
         style={{
-          height: '10vh', // Much smaller spacer to avoid overlap
+          height: '10vh',
           minHeight: '40px',
         }}
       />
-    </>
+    </section>
   );
 };
 
