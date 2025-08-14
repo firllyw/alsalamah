@@ -20,86 +20,22 @@ async function main() {
 
   console.log('Created admin user:', adminUser)
 
-  // Seed some initial menu items
-  const homeMenu = await prisma.menuItem.upsert({
-    where: { id: 'home-menu' },
-    update: {},
-    create: {
-      id: 'home-menu',
-      title: 'Home',
-      href: '/',
-      order: 1,
-      isActive: true,
-    },
-  })
-
-  const servicesMenu = await prisma.menuItem.upsert({
-    where: { id: 'services-menu' },
-    update: {},
-    create: {
-      id: 'services-menu',
-      title: 'Services',
-      href: '/services',
-      order: 2,
-      isActive: true,
-    },
-  })
-
-  const aboutMenu = await prisma.menuItem.upsert({
-    where: { id: 'about-menu' },
-    update: {},
-    create: {
-      id: 'about-menu',
-      title: 'About',
-      href: '/about',
-      order: 3,
-      isActive: true,
-    },
-  })
-
-  const contactMenu = await prisma.menuItem.upsert({
-    where: { id: 'contact-menu' },
-    update: {},
-    create: {
-      id: 'contact-menu',
-      title: 'Contact',
-      href: '/contact',
-      order: 4,
-      isActive: true,
-    },
-  })
-
-  console.log('Created menu items:', { homeMenu, servicesMenu, aboutMenu, contactMenu })
-
   // Seed some initial site configuration
   const configs = [
     {
-      key: 'site_title',
-      value: 'Al Salamah Transportation',
-      description: 'Main website title'
+      company_name: 'Al Salamah Transportation',
+      company_parentCompany: 'SBTG',
+      company_logo: 'https://www.alsalamah.com/logo.png',
+      company_tagline: 'Driving Reliable Distribution Across Saudi Arabia & Beyond',
+      contact_headOffice_email: 'alsalamahtrans@sbtcgroup.com',
+      contact_headOffice_phone: '+966 50 946 3389',
+      contact_headOffice_address: 'Riyadh, Saudi Arabia',
     },
-    {
-      key: 'site_tagline',
-      value: 'Driving Reliable Distribution Across Saudi Arabia & Beyond',
-      description: 'Website tagline/subtitle'
-    },
-    {
-      key: 'contact_email',
-      value: 'alsalamahtrans@sbtcgroup.com',
-      description: 'Primary contact email'
-    },
-    {
-      key: 'contact_phone',
-      value: '+966 50 946 3389',
-      description: 'Primary contact phone number'
-    }
   ]
 
   for (const config of configs) {
-    await prisma.siteConfig.upsert({
-      where: { key: config.key },
-      update: { value: config.value },
-      create: config,
+    await prisma.siteConfig.create({
+      data: { company_name: config.company_name, company_parentCompany: config.company_parentCompany, company_logo: config.company_logo, company_tagline: config.company_tagline, contact_headOffice_email: config.contact_headOffice_email, contact_headOffice_phone: config.contact_headOffice_phone, contact_headOffice_address: config.contact_headOffice_address },
     })
   }
 

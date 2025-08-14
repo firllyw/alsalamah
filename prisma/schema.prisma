@@ -13,15 +13,15 @@ datasource db {
 // Site configuration
 model SiteConfig {
   id                         String   @id @default(cuid())
-  company_name              String
-  company_parentCompany     String
-  company_logo              String
-  company_tagline           String?
-  contact_headOffice_email  String
-  contact_headOffice_phone  String
+  company_name               String
+  company_parentCompany      String
+  company_logo               String
+  company_tagline            String?
+  contact_headOffice_email   String
+  contact_headOffice_phone   String
   contact_headOffice_address String
-  createdAt                 DateTime @default(now())
-  updatedAt                 DateTime @updatedAt
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
 }
 
 // User management
@@ -38,13 +38,13 @@ model User {
 
 // Specialized section tables
 model HeroSection {
-  id        String   @id @default(cuid())
-  title     String
-  subtitle  String?
-  yearText  String?
+  id         String   @id @default(cuid())
+  title      String
+  subtitle   String?
+  yearText   String?
   scrollText String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model TruckRevealSection {
@@ -56,44 +56,44 @@ model TruckRevealSection {
 
 model TruckRotationSection {
   id        String   @id @default(cuid())
-  sections  Json     // Array of {number, title, subtitle, content}
+  sections  Json // Array of {number, title, subtitle, content}
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model ServicesSection {
   id        String   @id @default(cuid())
-  services  Json     // Array of service objects
+  services  Json // Array of service objects
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model StatsSection {
   id        String   @id @default(cuid())
-  stats     Json     // Array of {value, label}
+  stats     Json // Array of {value, label}
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model ShowcaseSection {
   id        String   @id @default(cuid())
-  images    Json?    // Array of gallery images
-  features  Json?    // Array of features
+  images    Json? // Array of gallery images
+  features  Json? // Array of features
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model RecordSection {
   id        String   @id @default(cuid())
-  features  Json     // Array of features with icons
+  features  Json // Array of features with icons
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model InteractiveCoverageSection {
   id           String   @id @default(cuid())
-  regions      Json     // Array of region objects
-  headquarters Json     // Headquarters info object
+  regions      Json // Array of region objects
+  headquarters Json // Headquarters info object
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
