@@ -12,6 +12,7 @@ async function main() {
     create: {
       email: 'admin@alsalamah.com',
       name: 'Administrator',
+      password: '123456',
       role: 'admin',
       isActive: true,
     },
