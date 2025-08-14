@@ -13,7 +13,7 @@ interface ArrowGraphicsProps {
  * The image covers the entire background, sits behind the text, and in front of the background color.
  */
 const ArrowGraphics = ({ scrollProgress }: ArrowGraphicsProps) => {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = useState(false);
   
   useEffect(() => {
@@ -21,7 +21,7 @@ const ArrowGraphics = ({ scrollProgress }: ArrowGraphicsProps) => {
   }, []);
 
   const { scrollYProgress } = useScroll({
-    target: isMounted ? containerRef : null,
+    target: isMounted ? containerRef : undefined,
     offset: ["start start", "end start"]
   });
 
