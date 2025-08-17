@@ -34,7 +34,8 @@ function TruckModel({ scrollProgress }: TruckModelProps) {
 
   // Phase 2: After rotation (facing left, only front part visible)
   const ROTATED_ROTATION_Y = 3; 
-  const ROTATED_POSITION_X = 5; 
+  const ROTATED_POSITION_X = 3;
+  const ROTATED_POSITION_Z = 1;
   const ROTATED_SCALE = 0.4;
 
   // Phase 3: Exit movement (move further left and out of view)
@@ -69,7 +70,7 @@ function TruckModel({ scrollProgress }: TruckModelProps) {
         }
         const posX = THREE.MathUtils.lerp(INITIAL_POSITION[0], ROTATED_POSITION_X, phase2Progress);
 
-        truckRef.current.position.set(posX, INITIAL_POSITION[1], INITIAL_POSITION[2]);
+        truckRef.current.position.set(posX, INITIAL_POSITION[1], ROTATED_POSITION_Z);
         truckRef.current.rotation.y = rotY;
         truckRef.current.scale.setScalar(ROTATED_SCALE);
 
@@ -82,7 +83,7 @@ function TruckModel({ scrollProgress }: TruckModelProps) {
 
         const posX = THREE.MathUtils.lerp(ROTATED_POSITION_X, EXIT_POSITION_X, phase3Progress);
 
-        truckRef.current.position.set(posX, INITIAL_POSITION[1], INITIAL_POSITION[2]);
+        truckRef.current.position.set(posX, INITIAL_POSITION[1], ROTATED_POSITION_Z);
         truckRef.current.rotation.y = ROTATED_ROTATION_Y;
         truckRef.current.scale.setScalar(ROTATED_SCALE);
       }

@@ -6,22 +6,22 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 // Gallery images and features (replace with real data as needed)
 const defaultGalleryImages = [
   {
-    src: 'https://placehold.co/1280x800/1e40af/fff?text=Fleet', // Placeholder for fleet.jpg
+    src: '/showcase_1.png', // Placeholder for fleet.jpg
     alt: 'Fleet',
     fallback: 'https://placehold.co/1280x800/1e40af/fff?text=Fleet',
   },
   {
-    src: 'https://placehold.co/1280x800/1e40af/fff?text=Loading', // Placeholder for loading.jpg
+    src: '/showcase_2.png', // Placeholder for loading.jpg
     alt: 'Loading',
     fallback: 'https://placehold.co/1280x800/1e40af/fff?text=Loading',
   },
   {
-    src: 'https://placehold.co/1280x800/1e40af/fff?text=Warehouse', // Placeholder for warehouse.jpg
+    src: '/showcase_3.png', // Placeholder for warehouse.jpg
     alt: 'Warehouse',
     fallback: 'https://placehold.co/1280x800/1e40af/fff?text=Warehouse',
   },
   {
-    src: 'https://placehold.co/1280x800/1e40af/fff?text=Pallets', // Placeholder for pallets.jpg
+    src: '/showcase_4.png', // Placeholder for pallets.jpg
     alt: 'Pallets',
     fallback: 'https://placehold.co/1280x800/1e40af/fff?text=Pallets',
   },
@@ -46,8 +46,8 @@ const ShowcaseSection = ({ data }: ShowcaseSectionProps) => {
   const [isMounted, setIsMounted] = useState(false);
 
   // Use data from props or fallback to defaults
-  const galleryImages = data?.data?.images || defaultGalleryImages;
-  const features = data?.data?.features || defaultFeatures;
+  const galleryImages = defaultGalleryImages;
+  const features = defaultFeatures;
 
   useEffect(() => {
     setIsMounted(true);
