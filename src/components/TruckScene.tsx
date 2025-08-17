@@ -27,15 +27,15 @@ function TruckModel({ scrollProgress }: TruckModelProps) {
   const PHASE3_END = 0.6;        // Truck exits view
 
   // Phase 1: Initial centered position (facing 45 deg clockwise on Y)
-  const INITIAL_POSITION = [5, -4, -5];
-  const INITIAL_ROTATION_Y = -0.8; // 45 degrees clockwise
-  const INITIAL_ROTATION_Z = -0.01; // 45 degrees clockwise
-  const INITIAL_SCALE = 0.3; // Adjust as needed for design
+  const INITIAL_POSITION = [6, -2, -5];
+  const INITIAL_ROTATION_Y = -1; // 45 degrees clockwise
+  const INITIAL_ROTATION_Z = 0; // 45 degrees clockwise
+  const INITIAL_SCALE = 0.4; // Adjust as needed for design
 
   // Phase 2: After rotation (facing left, only front part visible)
   const ROTATED_ROTATION_Y = 3; 
-  const ROTATED_POSITION_X = 10; 
-  const ROTATED_SCALE = 0.5;
+  const ROTATED_POSITION_X = 5; 
+  const ROTATED_SCALE = 0.4;
 
   // Phase 3: Exit movement (move further left and out of view)
   const EXIT_POSITION_X = -10; // Move far left to exit view

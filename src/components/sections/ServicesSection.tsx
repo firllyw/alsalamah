@@ -82,7 +82,7 @@ function ServiceCard({ service, active }: { service: any; active: boolean }) {
         rounded-2xl border border-white/70
         transition-all duration-300
         ${active ? 'backdrop-blur-lg bg-white/10 shadow-2xl scale-100 z-20' : 'backdrop-blur-md bg-white/5 scale-90 z-10 opacity-60'}
-        min-w-[320px] max-w-[340px] h-[260px] px-8 py-7
+        min-w-[320px] max-w-[340px] h-[340px] px-8 py-7
         overflow-hidden
       `}
       style={{
@@ -92,6 +92,7 @@ function ServiceCard({ service, active }: { service: any; active: boolean }) {
         border: '1.5px solid rgba(255,255,255,0.7)',
         backdropFilter: 'blur(16px)',
         fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
+        height: '340px', // Explicitly set height for inline style as well
       }}
     >
       <div className="flex items-center gap-3 mb-3">
@@ -187,79 +188,84 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
           fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
         }}
       >
-        {/* Left: Title, Subtitle, Card Slider */}
-        <div className="flex-1 flex flex-col items-start justify-center w-full max-w-xl">
-          {/* Title & Subtitle */}
+        {/* Left: Texts and Cards in a row */}
+        <div className="flex-1 flex flex-col w-full max-w-3xl">
+          {/* Subtitle */}
+          <motion.h3
+            className="text-white text-xs md:text-sm lg:text-base font-semibold mb-2 tracking-wide uppercase"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true }}
+            style={{
+              textShadow: '0 2px 16px rgba(0,0,0,0.18)',
+              fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
+              letterSpacing: '0.08em',
+            }}
+          >
+            BY ALIGNING OUR OPERATIONS WITH THE HIGHEST STANDARDS,
+          </motion.h3>
+          {/* Title */}
           <motion.h2
-            className="text-white text-xl md:text-2xl lg:text-3xl font-bold mb-2 tracking-wide"
+            className="text-white text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 leading-tight"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
             viewport={{ once: true }}
             style={{
               textShadow: '0 2px 16px rgba(0,0,0,0.25)',
               fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
-            }}
-          >
-            BY ALIGNING OUR OPERATIONS WITH THE HIGHEST STANDARDS,
-          </motion.h2>
-          <motion.p
-            className="text-white text-base md:text-lg lg:text-xl font-medium mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            style={{
-              textShadow: '0 2px 16px rgba(0,0,0,0.18)',
-              lineHeight: 1.2,
-              fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
+              lineHeight: 1.1,
             }}
           >
             AST has built a 20-year track<br />
             record as a partner<br />
             businesses can depend on.
-          </motion.p>
-          {/* "OUR SERVICE" label */}
-          <div
-            className="uppercase text-[#ffbd59] text-xs font-bold tracking-widest mb-2"
-            style={{ fontFamily: 'var(--font-bricolage-grotesque), sans-serif' }}
-          >
-            OUR SERVICE
-          </div>
-          {/* Card slider */}
-          <div className="relative w-full flex flex-row items-center mb-4">
-            {/* Chevron left */}
-            <button
-              aria-label="Previous service"
-              onClick={handlePrev}
-              className="absolute left-[-40px] top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-white/40 rounded-full p-2 transition"
-              style={{ boxShadow: '0 2px 8px 0 rgba(31,38,135,0.10)' }}
+          </motion.h2>
+          {/* Row: "OUR SERVICE" and Cards */}
+          <div className="flex flex-row items-start gap-8 w-full mt-2">
+            {/* "OUR SERVICE" label */}
+            <div
+              className="uppercase text-[#ffbd59] text-lg md:text-xl lg:text-2xl font-extrabold tracking-widest pt-2 min-w-[160px] whitespace-nowrap"
+              style={{ fontFamily: 'var(--font-bricolage-grotesque), sans-serif', letterSpacing: '0.12em' }}
             >
-              <ChevronLeftIcon className="w-7 h-7 text-white" />
-            </button>
-            {/* Cards */}
-            <div className="flex flex-row gap-[-40px] w-full overflow-visible">
-              {getCardsToShow().map((card, idx) => (
-                <div
-                  key={card.key}
-                  className={`transition-transform duration-300 ${idx === 1 ? '-ml-16' : ''}`}
-                  style={{
-                    zIndex: card.active ? 20 : 10,
-                  }}
-                >
-                  <ServiceCard service={card} active={card.active} />
-                </div>
-              ))}
+              OUR SERVICE
             </div>
-            {/* Chevron right */}
-            <button
-              aria-label="Next service"
-              onClick={handleNext}
-              className="absolute right-[-40px] top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-white/40 rounded-full p-2 transition"
-              style={{ boxShadow: '0 2px 8px 0 rgba(31,38,135,0.10)' }}
-            >
-              <ChevronRightIcon className="w-7 h-7 text-white" />
-            </button>
+            {/* Card slider */}
+            <div className="relative flex flex-row items-center w-full max-w-[700px]">
+              {/* Chevron left */}
+              <button
+                aria-label="Previous service"
+                onClick={handlePrev}
+                className="absolute left-[-44px] top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-white/40 rounded-full p-2 transition"
+                style={{ boxShadow: '0 2px 8px 0 rgba(31,38,135,0.10)' }}
+              >
+                <ChevronLeftIcon className="w-7 h-7 text-white" />
+              </button>
+              {/* Cards */}
+              <div className="flex flex-row gap-[-40px] w-full overflow-visible">
+                {getCardsToShow().map((card, idx) => (
+                  <div
+                    key={card.key}
+                    className={`transition-transform duration-300 ${idx === 1 ? '-ml-16' : ''}`}
+                    style={{
+                      zIndex: card.active ? 20 : 10,
+                    }}
+                  >
+                    <ServiceCard service={card} active={card.active} />
+                  </div>
+                ))}
+              </div>
+              {/* Chevron right */}
+              <button
+                aria-label="Next service"
+                onClick={handleNext}
+                className="absolute right-[-44px] top-1/2 -translate-y-1/2 z-30 bg-white/20 hover:bg-white/40 rounded-full p-2 transition"
+                style={{ boxShadow: '0 2px 8px 0 rgba(31,38,135,0.10)' }}
+              >
+                <ChevronRightIcon className="w-7 h-7 text-white" />
+              </button>
+            </div>
           </div>
         </div>
 

@@ -38,7 +38,7 @@ const Header = ({ siteData }: HeaderProps) => {
   return (
     <motion.header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${montserrat.variable} ${
-        scrolled ? 'bg-white shadow-lg py-2' : 'bg-transparent py-4'
+        scrolled ? 'bg-gray-100 shadow-lg py-2' : 'bg-transparent py-4'
       }`}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -67,7 +67,7 @@ const Header = ({ siteData }: HeaderProps) => {
                 scrolled ? 'text-[#273d97] hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
             >
-              Home
+              HOME
             </a>
             <a 
               href="#about" 
@@ -75,7 +75,7 @@ const Header = ({ siteData }: HeaderProps) => {
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
             >
-              About
+              ABOUT
             </a>
             <a 
               href="#services" 
@@ -83,7 +83,7 @@ const Header = ({ siteData }: HeaderProps) => {
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
             >
-              Industries
+              INDUSTRIES
             </a>
             <a 
               href="#contact" 
@@ -91,7 +91,7 @@ const Header = ({ siteData }: HeaderProps) => {
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
             >
-              Contact
+              CONTACT
             </a>
           </nav>
 

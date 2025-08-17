@@ -1,11 +1,8 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 import { homeContent } from '@/data/content';
 import { Bricolage_Grotesque } from 'next/font/google';
-import ArrowGraphics from '../ArrowGraphics';
-import ArrowGraphicsHalf from '../ArrowGraphicsHalf';
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -18,41 +15,65 @@ interface TruckRevealSectionProps {
   data?: any;
 }
 
+const MAX_PREVIEW_CHARS = 420;
+
 const TruckRevealSection = ({ data }: TruckRevealSectionProps) => {
   const truckReveal = data || homeContent.truckReveal;
-  const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"]
-  });
+  const [expanded, setExpanded] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Text slides in from bottom when section comes into view
-  const textY = useTransform(scrollYProgress, [0.2, 0.6], [100, 0]);
-  const textOpacity = useTransform(scrollYProgress, [0.2, 0.6], [0, 1]);
+  // Split content for "Read more"
+  const content = truckReveal.content || '';
+  const isLong = content.length > MAX_PREVIEW_CHARS;
+  const preview = isLong ? content.slice(0, MAX_PREVIEW_CHARS) : content;
+  const rest = isLong ? content.slice(MAX_PREVIEW_CHARS) : '';
 
   return (
     <section
       ref={sectionRef}
-      className={`reveal-section relative h-screen flex items-center justify-center ${bricolage.className}`}
-      // style={{ background: '#273d97' }}
+      className={`reveal-section relative min-h-[100vh] flex flex-col justify-end items-center bg-transparent ${bricolage.className}`}
+      style={{
+        paddingTop: '6rem',
+        paddingBottom: '6rem',
+      }}
     >
-      <ArrowGraphicsHalf scrollProgress={scrollYProgress.get()} />
-
-      <div className="container mx-auto px-4 lg:px-8 relative z-10 flex flex-col items-center justify-center h-full">
-        <motion.div
-          className="w-full max-w-2xl text-center"
-          style={{ y: textY, opacity: textOpacity }}
+      <div className="container mx-auto px-4 lg:px-8 relative z-10 flex flex-col items-center justify-end h-full">
+        {/* Spacer to push content lower, now with h-full and flex-1 */}
+        <div className="flex-1 h-full" />
+        <div
+          className="
+            w-full
+            max-w-4xl
+            md:max-w-5xl
+            text-center
+            bg-gray-100
+            rounded-2xl
+            shadow-lg
+            p-8
+            md:p-12
+            border border-[#273d97]/10
+            backdrop-blur
+          "
+          style={{
+            fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
+            color: '#273d97',
+          }}
         >
-          <motion.p
-            className="text-lg lg:text-xl leading-relaxed"
-            style={{
-              color: '#273d97', // Blue text color
-              fontFamily: 'var(--font-bricolage-grotesque), sans-serif'
-            }}
-          >
-            {truckReveal.content}
-          </motion.p>
-        </motion.div>
+          <p className="text-lg lg:text-xl leading-relaxed" style={{ color: '#273d97' }}>
+            {preview}
+            {!expanded && isLong && <span className="text-[#273d97]/70">... </span>}
+            {expanded && rest}
+          </p>
+          {isLong && (
+            <button
+              className="mt-4 text-base font-semibold text-[#273d97] underline underline-offset-4 hover:text-[#1a285c] transition"
+              onClick={() => setExpanded((v) => !v)}
+              aria-expanded={expanded}
+            >
+              {expanded ? 'Read less' : 'Read more'}
+            </button>
+          )}
+        </div>
       </div>
     </section>
   );

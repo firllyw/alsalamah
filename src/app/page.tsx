@@ -74,14 +74,14 @@ export default function Home() {
   return (
     <>
       {isLoading ? (
-        <div className="flex items-center justify-center min-h-screen bg-white">
+        <div className="flex items-center justify-center min-h-screen bg-gray-100">
           <div className="text-center">
             <div className="w-12 h-12 mx-auto mb-4 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
             <p className="text-lg text-blue-700 font-medium">Loading...</p>
           </div>
         </div>
       ) : (
-        <div className="parallax-container" style={{ backgroundColor: '#f6f5f5' }}>
+        <div className="parallax-container" style={{ backgroundColor: '#ffffff' }}>
           {/* Fixed 3D Truck Scene */}
           <TruckScene />
 
