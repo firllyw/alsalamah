@@ -60,12 +60,12 @@ const HeroSection = ({ data, siteConfig }: HeroSectionProps) => {
           transition={{ duration: 0.8, delay: 0.1 }}
         >
           <Image
-            src={siteConfig?.company?.logo || "/logo.png"}
+            src={"/logo.png"}
             alt={`${siteConfig?.company?.name || "Al Salamah"} Logo`}
-            width={400}
-            height={400}
+            width={600}
+            height={600}
             priority
-            className="w-auto h-auto"
+            className="w-auto h-auto max-w-[90vw] max-h-[40vh] lg:max-h-[55vh] object-contain"
             style={{ objectFit: 'contain' }}
           />
         </motion.div>
