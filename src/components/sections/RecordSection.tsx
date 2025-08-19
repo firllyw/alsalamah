@@ -13,6 +13,10 @@ const defaultFeatures = [
       </>
     ),
     label: 'On-time',
+    title: 'Proven track record',
+    subtitle: 'in critical delivery.',
+    description:
+      "Decades of experience in time-sensitive and mission-critical shipments, ensuring your goods arrive exactly when and where they’re needed.",
   },
   {
     iconContent: (isActive: boolean) => (
@@ -22,6 +26,10 @@ const defaultFeatures = [
       </>
     ),
     label: 'Fleet',
+    title: 'IN-HOUSE ',
+    subtitle: 'LOGISTICS TEAM',
+    description:
+      "Our dedicated team manages every delivery from start to finish, enabling swift response and efficient dispatch.",
   },
   {
     iconContent: (isActive: boolean) => (
@@ -31,6 +39,10 @@ const defaultFeatures = [
       </>
     ),
     label: 'Network',
+    title: 'SEAMLESS',
+    subtitle: 'COORDINATION',
+    description:
+      "We maintain strong operational links with trusted warehousing facilities, ensuring smooth cargo handovers and optimized supply chain flow.",
   },
   {
     iconContent: (isActive: boolean) => (
@@ -41,6 +53,10 @@ const defaultFeatures = [
       </>
     ),
     label: 'Secure',
+    title: 'SFDA-COMPLIANT',
+    subtitle: 'PROTOCOLS',
+    description:
+      "All processes follow strict Saudi Food & Drug Authority guidelines, meeting the highest standards for safety and compliance.",
   },
 ];
 
@@ -53,10 +69,14 @@ const RecordSection = ({ data }: RecordSectionProps) => {
   const features = defaultFeatures;
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null);
 
+  // Determine which feature is active (hovered or default to first)
+  const activeIdx = hoveredFeature === null ? 0 : hoveredFeature;
+  const activeFeature = features[activeIdx];
+
   return (
     <section
       className={`w-full min-h-screen flex items-center font-bricolage`}
-      style={{ backgroundColor: '#f4f6fb' }}
+      style={{ backgroundColor: '#f6f5f5' }}
     >
       <style>
         {`
@@ -68,82 +88,111 @@ const RecordSection = ({ data }: RecordSectionProps) => {
       </style>
       <div className="w-full h-full flex flex-col md:flex-row">
         {/* Left Side - Content (50% width) */}
-        <div className="w-full md:w-1/2 flex flex-col justify-between gap-12 px-8 lg:px-16 py-16">
-          <div>
-            {/* Feature Cards */}
-            <div className="flex flex-row gap-6 mb-12">
-              {features.map((feature: any, idx: number) => {
-                const isActive = hoveredFeature === idx || (hoveredFeature === null && idx === 0);
-                return (
-                  <button
-                    key={feature.label}
-                    className={`
-                      flex flex-col items-center justify-center gap-3
-                      p-6 rounded-2xl border-2 transition-all duration-300
-                      min-w-[120px] min-h-[120px]
-                      ${isActive
-                        ? 'bg-white border-blue-200 shadow-xl scale-105 z-10'
-                        : 'bg-gray-50 border-gray-100 hover:border-gray-200 hover:scale-102'}
-                    `}
-                    style={{
-                      boxShadow: isActive
-                        ? '0 8px 32px rgba(39, 61, 151, 0.15)'
-                        : undefined,
-                    }}
-                    onMouseEnter={() => setHoveredFeature(idx)}
-                    onMouseLeave={() => setHoveredFeature(null)}
+        <div className="w-full md:w-1/2 flex flex-col justify-center gap-8 px-8 lg:px-16 py-16">
+          {/* Feature Cards */}
+          <div className="flex flex-row gap-6 mb-8">
+            {features.map((feature: any, idx: number) => {
+              const isActive = hoveredFeature === idx || (hoveredFeature === null && idx === 0);
+              return (
+                <button
+                  key={feature.label}
+                  className={`
+                    flex flex-col items-center justify-center gap-3
+                    p-6 rounded-2xl border-2 transition-all duration-300
+                    min-w-[120px] min-h-[120px]
+                    ${isActive
+                      ? 'bg-white border-blue-200 shadow-xl scale-105 z-10'
+                      : 'bg-gray-50 border-gray-100 hover:border-gray-200 hover:scale-102'}
+                  `}
+                  style={{
+                    boxShadow: isActive
+                      ? '0 8px 32px rgba(39, 61, 151, 0.15)'
+                      : undefined,
+                  }}
+                  onMouseEnter={() => setHoveredFeature(idx)}
+                  onMouseLeave={() => setHoveredFeature(null)}
+                >
+                  <svg width="48" height="48" fill="none" viewBox="0 0 48 48">
+                    {feature.iconContent(isActive)}
+                  </svg>
+                  <span 
+                    className={`text-sm font-medium font-bricolage ${
+                      isActive ? 'text-gray-900' : 'text-gray-600'
+                    }`}
                   >
-                    <svg width="48" height="48" fill="none" viewBox="0 0 48 48">
-                      {feature.iconContent(isActive)}
-                    </svg>
-                    <span 
-                      className={`text-sm font-medium font-bricolage ${
-                        isActive ? 'text-gray-900' : 'text-gray-600'
-                      }`}
-                    >
-                      {feature.label}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Main Content */}
-            <div className="space-y-8">
-              <h2 
-                className="text-4xl lg:text-5xl font-bold leading-tight font-bricolage"
-                style={{ 
-                  color: '#273d97'
-                }}
-              >
-                Proven track record in{' '}
-                <span style={{ color: '#b2b9e6' }}>
-                  critical delivery.
-                </span>
-              </h2>
-
-              <p 
-                className="text-lg leading-relaxed"
-                style={{ 
-                  color: '#6B7280',
-                  fontFamily: 'Bricolage Grotesque, sans-serif'
-                }}
-              >
-                Decades of experience in time-sensitive and mission-critical shipments, ensuring your goods arrive exactly when and where they're needed.
-              </p>
-            </div>
+                    {feature.label}
+                  </span>
+                </button>
+              );
+            })}
           </div>
-          
-          {/* Technology text at the very bottom */}
+
+          {/* Technology text */}
           <span 
-            className="text-lg font-bold tracking-wider"
+            className="text-xl font-extrabold tracking-wider mb-2"
             style={{ 
               color: '#FFA500',
-              fontFamily: 'Bricolage Grotesque, sans-serif'
+              fontFamily: 'Bricolage Grotesque, sans-serif',
+              letterSpacing: '0.01em'
             }}
           >
             TECHNOLOGY
           </span>
+
+          {/* Main Content - changes on card hover */}
+          <div className="space-y-6 mt-2">
+            {/* Two-tone Title */}
+            {activeIdx === 0 ? (
+              <div>
+                <h2
+                  className="font-bricolage font-bold"
+                  style={{
+                    fontSize: '2.75rem',
+                    lineHeight: 1.1,
+                    color: '#273d97',
+                    letterSpacing: '0.01em',
+                  }}
+                >
+                  {activeFeature.title}
+                </h2>
+                <h3
+                  className="font-bricolage font-bold"
+                  style={{
+                    fontSize: '2.75rem',
+                    lineHeight: 1.1,
+                    color: '#b2b9e6',
+                    letterSpacing: '0.01em',
+                  }}
+                >
+                  {activeFeature.subtitle}
+                </h3>
+              </div>
+            ) : (
+              <h2 
+                className="text-4xl lg:text-5xl font-bold leading-tight font-bricolage uppercase"
+                style={{ 
+                  color: '#273d97',
+                  letterSpacing: '0.01em'
+                }}
+              >
+                {activeFeature.title}
+              </h2>
+            )}
+
+            {/* Description */}
+            <p 
+              className={`text-base md:text-lg leading-relaxed font-bricolage`}
+              style={{ 
+                color: activeIdx === 0 ? '#6B7280' : '#6B7280',
+                fontFamily: 'Bricolage Grotesque, sans-serif',
+                letterSpacing: activeIdx === 0 ? '0.01em' : undefined,
+                fontSize: activeIdx === 0 ? '1.05rem' : undefined,
+                marginTop: activeIdx === 0 ? '1.5rem' : undefined,
+              }}
+            >
+              {activeFeature.description}
+            </p>
+          </div>
         </div>
 
         {/* Right Side - Record Image (50% width) */}

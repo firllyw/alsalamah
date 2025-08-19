@@ -14,79 +14,120 @@ function TruckModel({ scrollProgress }: TruckModelProps) {
   const { scene } = useGLTF('/truck.glb');
   const truckRef = useRef<THREE.Group>(null);
 
-  // No need to recenter the model, as it's already fixed in Blender
-
   // Clone the scene to avoid issues with multiple instances
   const clonedScene = scene.clone();
 
   // PHASES: Three-phase animation system
-  const PHASE1_END = 0.12;        // Truck stays centered and still (longer duration)
-  const PHASE2_START = 0.12;      // Start rotation
-  const PHASE2_END = 0.2;        // End rotation (truck facing left, only front visible)
-  const PHASE3_START = 0.3;      // Start moving left and out of view
-  const PHASE3_END = 0.6;        // Truck exits view
+  const PHASE1_END = 0.12;        // Truck fades out
+  const PHASE2_START = 0.12;      // Truck appears from right, sliding in
+  const PHASE2_END = 0.2;         // End of slide-in
+  const PHASE3_START = 0.3;       // Start moving left and out of view
+  const PHASE3_END = 0.6;         // Truck exits view
 
-  // Phase 1: Initial centered position (facing 45 deg clockwise on Y)
-  const INITIAL_POSITION = [6, -2, -5];
-  const INITIAL_ROTATION_Y = -1; // 45 degrees clockwise
-  const INITIAL_ROTATION_Z = 0; // 45 degrees clockwise
-  const INITIAL_SCALE = 0.4; // Adjust as needed for design
+  // Phase 1: Initial centered position (no rotation, just fade out)
+  const INITIAL_POSITION = [6, -2, -4];
+  const INITIAL_ROTATION_Y = -0.8;
+  const INITIAL_ROTATION_Z = 0;
+  const INITIAL_SCALE = 0.4;
 
-  // Phase 2: After rotation (facing left, only front part visible)
-  const ROTATED_ROTATION_Y = 3; 
-  const ROTATED_POSITION_X = 3;
-  const ROTATED_POSITION_Z = 1;
-  const ROTATED_SCALE = 0.4;
+  // Phase 2: Slide in from right to this position
+  const SLIDEIN_START_X = 12; // Offscreen right
+  const SLIDEIN_END_X = 3;    // Final position after slide-in
+  const SLIDEIN_Y = -2;
+  const SLIDEIN_Z = 1;
+  // Rotate the truck so it faces left (not reversing) when sliding in
+  const SLIDEIN_ROTATION_Y = -Math.PI / 1; // -90 degrees, facing left
+  const SLIDEIN_SCALE = 0.4;
 
   // Phase 3: Exit movement (move further left and out of view)
   const EXIT_POSITION_X = -10; // Move far left to exit view
+
+  // We'll use a custom material override for opacity
+  const [opacity, setOpacity] = useState(1);
+
+  // Helper to set opacity recursively
+  function setGroupOpacity(obj: THREE.Object3D, value: number) {
+    obj.traverse((child: any) => {
+      if (child.material) {
+        if (Array.isArray(child.material)) {
+          child.material.forEach((mat: any) => {
+            mat.transparent = value < 0.99; // Only set transparent if not fully opaque
+            mat.opacity = value;
+            mat.needsUpdate = true;
+          });
+        } else {
+          child.material.transparent = value < 0.99;
+          child.material.opacity = value;
+          child.material.needsUpdate = true;
+        }
+      }
+    });
+  }
 
   useFrame(() => {
     if (truckRef.current) {
       const scrollValue = scrollProgress.get();
 
-      truckRef.current.visible = true;
-      console.log('scrollValue', scrollValue);
-      if (scrollValue < PHASE1_END) {
-        // Phase 1: Truck centered, facing 45 deg
-        truckRef.current.position.set(INITIAL_POSITION[0], INITIAL_POSITION[1], INITIAL_POSITION[2]);
-        truckRef.current.rotation.y = INITIAL_ROTATION_Y;
-        truckRef.current.rotation.z = INITIAL_ROTATION_Z;
-        truckRef.current.scale.setScalar(INITIAL_SCALE);
+      let posX = INITIAL_POSITION[0];
+      let posY = INITIAL_POSITION[1];
+      let posZ = INITIAL_POSITION[2];
+      let rotY = INITIAL_ROTATION_Y;
+      let scale = INITIAL_SCALE;
+      let newOpacity = 1;
 
+      if (scrollValue < PHASE1_END) {
+        // Phase 1: Truck centered, fade out as scroll increases
+        const fadeProgress = Math.min(Math.max(scrollValue / PHASE1_END, 0), 1);
+        // Fade out, but never go below 0.7 opacity for visibility
+        newOpacity = 1 - 0.3 * fadeProgress;
+        posX = INITIAL_POSITION[0];
+        posY = INITIAL_POSITION[1];
+        posZ = INITIAL_POSITION[2];
+        rotY = INITIAL_ROTATION_Y;
+        scale = INITIAL_SCALE;
       } else if (scrollValue < PHASE2_END) {
-        // Phase 2: Rotate to face left, move left so only front is visible
+        // Phase 2: Truck slides in from right and fades in
         const phase2Progress = Math.min(
           Math.max((scrollValue - PHASE2_START) / (PHASE2_END - PHASE2_START), 0),
           1
         );
-
-        // Only rotate during phase 2, then clamp to ROTATED_ROTATION_Y at the end
-        let rotY;
-        if (phase2Progress >= 1) {
-          rotY = ROTATED_ROTATION_Y;
-        } else {
-          rotY = THREE.MathUtils.lerp(INITIAL_ROTATION_Y, ROTATED_ROTATION_Y, phase2Progress);
-        }
-        const posX = THREE.MathUtils.lerp(INITIAL_POSITION[0], ROTATED_POSITION_X, phase2Progress);
-
-        truckRef.current.position.set(posX, INITIAL_POSITION[1], ROTATED_POSITION_Z);
-        truckRef.current.rotation.y = rotY;
-        truckRef.current.scale.setScalar(ROTATED_SCALE);
-
+        // Slide from offscreen right to target position
+        posX = THREE.MathUtils.lerp(SLIDEIN_START_X, SLIDEIN_END_X, phase2Progress);
+        posY = SLIDEIN_Y;
+        posZ = SLIDEIN_Z;
+        rotY = SLIDEIN_ROTATION_Y; // Now facing left, not reversing
+        scale = SLIDEIN_SCALE;
+        // Fade in, but never go above 1 or below 0.7
+        newOpacity = 0.7 + 0.3 * phase2Progress;
+      } else if (scrollValue < PHASE3_START) {
+        // Hold at final position, fully visible
+        posX = SLIDEIN_END_X;
+        posY = SLIDEIN_Y;
+        posZ = SLIDEIN_Z;
+        rotY = SLIDEIN_ROTATION_Y;
+        scale = SLIDEIN_SCALE;
+        newOpacity = 1;
       } else {
         // Phase 3: Move truck further left and out of view
         const phase3Progress = Math.min(
           Math.max((scrollValue - PHASE3_START) / (PHASE3_END - PHASE3_START), 0),
           1
         );
-
-        const posX = THREE.MathUtils.lerp(ROTATED_POSITION_X, EXIT_POSITION_X, phase3Progress);
-
-        truckRef.current.position.set(posX, INITIAL_POSITION[1], ROTATED_POSITION_Z);
-        truckRef.current.rotation.y = ROTATED_ROTATION_Y;
-        truckRef.current.scale.setScalar(ROTATED_SCALE);
+        posX = THREE.MathUtils.lerp(SLIDEIN_END_X, EXIT_POSITION_X, phase3Progress);
+        posY = SLIDEIN_Y;
+        posZ = SLIDEIN_Z;
+        rotY = SLIDEIN_ROTATION_Y;
+        scale = SLIDEIN_SCALE;
+        // Fade out, but never go below 0.7
+        newOpacity = 1 - 0.3 * phase3Progress;
       }
+
+      truckRef.current.position.set(posX, posY, posZ);
+      truckRef.current.rotation.y = rotY;
+      truckRef.current.rotation.z = INITIAL_ROTATION_Z;
+      truckRef.current.scale.setScalar(scale);
+
+      setGroupOpacity(truckRef.current, newOpacity);
     }
   });
 

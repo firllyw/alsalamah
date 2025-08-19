@@ -54,7 +54,7 @@ const HeroSection = ({ data, siteConfig }: HeroSectionProps) => {
       <div className="container mx-auto px-4 lg:px-8 relative z-10 flex flex-col items-start">
         {/* Larger Logo on top of the title */}
         <motion.div
-          className="mb-8"
+          className="mb-10"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
@@ -65,14 +65,14 @@ const HeroSection = ({ data, siteConfig }: HeroSectionProps) => {
             width={600}
             height={600}
             priority
-            className="w-auto h-auto max-w-[90vw] max-h-[40vh] lg:max-h-[55vh] object-contain"
+            className="w-auto h-auto max-w-[90vw] max-h-[45vh] lg:max-h-[60vh] object-contain"
             style={{ objectFit: 'contain' }}
           />
         </motion.div>
 
         {/* Main Title - left aligned, full width, NOT bold, thinner font */}
         <motion.h1
-          className="w-full text-left text-[clamp(3.2rem,10vw,7.5rem)] lg:text-[clamp(5rem,10vw,9rem)] font-light leading-[1.05] mb-6 text-white"
+          className="w-full text-left text-[clamp(4rem,12vw,9rem)] lg:text-[clamp(6rem,12vw,11rem)] font-light leading-[1.05] mb-8 text-white"
           style={{ 
             fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
             lineHeight: 1.05,
@@ -88,7 +88,7 @@ const HeroSection = ({ data, siteConfig }: HeroSectionProps) => {
         
         {/* Subtitle - now includes the "in 30 years" text, left aligned, lighter */}
         <motion.p
-          className="w-full text-left text-xl lg:text-2xl mb-12 text-white/80 font-light leading-relaxed"
+          className="w-full text-left text-2xl lg:text-3xl mb-16 text-white/80 font-light leading-relaxed pl-2 sm:pl-4 md:pl-6"
           style={{ fontFamily: 'var(--font-bricolage-grotesque), sans-serif', fontWeight: 400 }}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -112,22 +112,22 @@ const HeroSection = ({ data, siteConfig }: HeroSectionProps) => {
       >
         {/* Animated double chevron arrow */}
         <motion.div
-          className="mr-3"
-          animate={{ y: [0, 8, 0] }}
+          className="mr-4"
+          animate={{ y: [0, 12, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
         >
-          <svg width="36" height="36" viewBox="0 0 36 36" className="text-[#FFC76A]" fill="none">
+          <svg width="44" height="44" viewBox="0 0 44 44" className="text-[#FFC76A]" fill="none">
             <polyline
-              points="9,14 18,23 27,14"
+              points="11,18 22,29 33,18"
               stroke="currentColor"
-              strokeWidth="3"
+              strokeWidth="4"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
             <polyline
-              points="9,8 18,17 27,8"
+              points="11,10 22,21 33,10"
               stroke="currentColor"
-              strokeWidth="3"
+              strokeWidth="4"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
@@ -135,15 +135,15 @@ const HeroSection = ({ data, siteConfig }: HeroSectionProps) => {
         </motion.div>
         {/* Button-like scroll down indicator */}
         <div
-          className="border-2 border-[#FFC76A] rounded-full px-8 py-2 flex items-center"
+          className="border-2 border-[#FFC76A] rounded-full px-10 py-3 flex items-center"
           style={{
             background: "rgba(34, 54, 146, 0.95)", // matches the blue bg with slight transparency
-            minWidth: "180px",
-            minHeight: "48px",
+            minWidth: "210px",
+            minHeight: "56px",
             fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
           }}
         >
-          <span className="text-[#FFC76A] font-bold tracking-widest text-base lg:text-lg mx-auto" style={{ letterSpacing: "0.15em" }}>
+          <span className="text-[#FFC76A] font-bold tracking-widest text-lg lg:text-2xl mx-auto" style={{ letterSpacing: "0.15em" }}>
             {hero.content || hero.data?.scrollText || hero.scrollText}
           </span>
         </div>

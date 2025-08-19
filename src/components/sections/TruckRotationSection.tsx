@@ -1,7 +1,6 @@
 'use client';
 
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import { ChevronRight, ChevronRightIcon } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 
 // Hardcoded 3-part content for easier editing
@@ -89,73 +88,78 @@ const TruckRotationSection = () => {
               opacity: opacity,
             }}
           >
-            {/* Chevron arrow facing right */}
-
-            <div className="container mx-auto px-4 lg:px-16 flex flex-row items-center w-full h-full">
+            <div className="max-w-[1800px] w-full mx-auto px-4 lg:px-24 flex flex-row items-center h-full">
               {/* Left: Main Content */}
-
-              <div className="flex-1 flex flex-col justify-center">
+              <div className="flex-1 flex flex-col justify-center max-w-[900px]">
+                {/* Title */}
+                <span
+                  className="font-bold uppercase tracking-wider mb-4"
+                  style={{
+                    color: '#FFA500',
+                    fontFamily: 'Bricolage Grotesque, sans-serif',
+                    letterSpacing: '0.08em',
+                    fontSize: '1.75rem', // Increased from 1.25rem
+                  }}
+                >
+                  {section.title}
+                </span>
                 {/* Main Statement */}
-                <div className="mb-6">
-                  <h2
-                    className="font-bold leading-snug"
-                    style={{
-                      lineHeight: 1.2,
-                      fontFamily: 'Bricolage Grotesque, sans-serif',
-                      fontSize: '2.5rem',
-                    }}
-                  >
-                    {section.main.map((part, i) => (
-                      <span
-                        key={i}
-                        style={{
-                          color: part.color,
-                          display: 'block',
-                          fontFamily: 'Bricolage Grotesque, sans-serif',
-                          fontSize: 'inherit',
-                        }}
-                        className="text-[2.5rem] md:text-[3.5rem] lg:text-[4.5rem]"
-                      >
-                        {part.text}
-                      </span>
-                    ))}
-                  </h2>
-                </div>
-                {/* Separator */}
-                <div className="w-full h-1 bg-[#b2b9e6] my-8" />
-                {/* Title and Caption Row */}
-                <div className="flex flex-row items-start justify-between w-full">
-                  {/* Title */}
-                  <span
-                    className="font-bold uppercase tracking-wider text-xl"
-                    style={{
-                      color: '#FFA500',
-                      fontFamily: 'Bricolage Grotesque, sans-serif',
-                      letterSpacing: '0.08em',
-                    }}
-                  >
-                    {section.title}
-                  </span>
-                  {/* Caption */}
-                  <span
-                    className="text-[#6B7280] text-right max-w-md ml-8 text-lg"
-                    style={{
-                      fontFamily: 'Bricolage Grotesque, sans-serif',
-                      flex: 1,
-                    }}
-                  >
-                    {section.caption}
-                  </span>
-                </div>
+                <h2
+                  className="font-bold leading-snug mb-6"
+                  style={{
+                    lineHeight: 1.15,
+                    fontFamily: 'Bricolage Grotesque, sans-serif',
+                    fontSize: '3.5rem', // Increased from 2.1rem
+                    marginBottom: '1.4rem',
+                    marginTop: '1.4rem',
+                    letterSpacing: '0.1rem',
+                  }}
+                >
+                  {section.main.map((part, i) => (
+                    <span
+                      key={i}
+                      style={{
+                        color: part.color,
+                        display: 'block',
+                        fontFamily: 'Bricolage Grotesque, sans-serif',
+                        fontSize: 'inherit',
+                      }}
+                      className="text-[2.8rem] md:text-[3.6rem] lg:text-[4.2rem]" // Increased all breakpoints
+                    >
+                      {part.text}
+                    </span>
+                  ))}
+                </h2>
+                {/* Caption */}
+                <span
+                  className="text-[#6B7280] text-left max-w-2xl text-xl md:text-2xl"
+                  style={{
+                    fontFamily: 'Bricolage Grotesque, sans-serif',
+                    fontWeight: 400,
+                  }}
+                >
+                  {section.caption}
+                </span>
               </div>
               {/* Right: Placeholder for truck image/3D scene */}
               <div className="flex-1 flex items-center justify-end h-full relative" />
             </div>
             {/* Section Index */}
             <div
-              className="absolute bottom-16 right-16 text-white text-9xl font-bold opacity-10 pointer-events-none"
+              className="absolute bottom-16"
               style={{
+                right: '40%', // Moved slightly to the left (from 8% to 11%)
+                color: '#ffffff', // Tailwind gray-100
                 fontFamily: 'Bricolage Grotesque, sans-serif',
+                fontWeight: 700,
+                fontSize: '18rem', // Not too big
+                lineHeight: 1,
+                opacity: 0.18,
+                pointerEvents: 'none',
+                zIndex: 10,
+                letterSpacing: '-0.04em',
+                textAlign: 'right',
+                minWidth: '8ch',
               }}
             >
               0{idx + 1}

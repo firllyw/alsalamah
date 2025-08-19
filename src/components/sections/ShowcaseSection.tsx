@@ -139,11 +139,7 @@ const ShowcaseSection = ({ data }: ShowcaseSectionProps) => {
                 }}
               />
               <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-6 py-4">
-                <span className="text-2xl md:text-4xl font-extrabold text-white drop-shadow-lg font-bricolage">
-                  {img.alt}
-                </span>
-              </div>
+             
             </div>
           ))}
         </motion.div>

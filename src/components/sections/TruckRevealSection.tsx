@@ -15,7 +15,7 @@ interface TruckRevealSectionProps {
   data?: any;
 }
 
-const MAX_PREVIEW_CHARS = 420;
+const MAX_PREVIEW_CHARS = 200;
 
 const TruckRevealSection = ({ data }: TruckRevealSectionProps) => {
   const truckReveal = data || homeContent.truckReveal;
@@ -46,13 +46,8 @@ const TruckRevealSection = ({ data }: TruckRevealSectionProps) => {
             max-w-4xl
             md:max-w-5xl
             text-center
-            bg-gray-100
-            rounded-2xl
-            shadow-lg
             p-8
             md:p-12
-            border border-[#273d97]/10
-            backdrop-blur
           "
           style={{
             fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
@@ -65,13 +60,15 @@ const TruckRevealSection = ({ data }: TruckRevealSectionProps) => {
             {expanded && rest}
           </p>
           {isLong && (
-            <button
-              className="mt-4 text-base font-semibold text-[#273d97] underline underline-offset-4 hover:text-[#1a285c] transition"
-              onClick={() => setExpanded((v) => !v)}
-              aria-expanded={expanded}
-            >
-              {expanded ? 'Read less' : 'Read more'}
-            </button>
+            <div className="w-full flex justify-end mt-2">
+              <button
+                className="text-base font-semibold text-[#273d97] underline underline-offset-4 hover:text-[#1a285c] transition border border-[#273d97] rounded-lg px-4 py-2"
+                onClick={() => setExpanded((v) => !v)}
+                aria-expanded={expanded}
+              >
+                {expanded ? 'Read less' : 'Read more'}
+              </button>
+            </div>
           )}
         </div>
       </div>

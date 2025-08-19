@@ -8,7 +8,6 @@ interface HeaderProps {
   siteData?: any;
 }
 
-
 // Import Bricolage Grotesque font from Google Fonts using next/font
 import { Montserrat } from 'next/font/google';
 
@@ -38,7 +37,7 @@ const Header = ({ siteData }: HeaderProps) => {
   return (
     <motion.header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${montserrat.variable} ${
-        scrolled ? 'bg-gray-100 shadow-lg py-2' : 'bg-transparent py-4'
+        scrolled ? 'bg-[#f6f5f5] py-2' : 'bg-transparent py-4'
       }`}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -60,10 +59,10 @@ const Header = ({ siteData }: HeaderProps) => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex space-x-14 xl:space-x-40">
+          <nav className="hidden lg:flex gap-x-24 xl:gap-x-40">
             <a 
               href="#home" 
-              className={`transition-colors duration-300 font-medium ${montserrat.variable} ${
+              className={`transition-colors duration-300 font-medium px-8 ${montserrat.variable} ${
                 scrolled ? 'text-[#273d97] hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
             >
@@ -71,7 +70,7 @@ const Header = ({ siteData }: HeaderProps) => {
             </a>
             <a 
               href="#about" 
-              className={`transition-colors duration-300 font-medium ${montserrat.variable} ${
+              className={`transition-colors duration-300 font-medium px-8 ${montserrat.variable} ${
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
             >
@@ -79,7 +78,7 @@ const Header = ({ siteData }: HeaderProps) => {
             </a>
             <a 
               href="#services" 
-              className={`transition-colors duration-300 font-medium ${montserrat.variable} ${
+              className={`transition-colors duration-300 font-medium px-8 ${montserrat.variable} ${
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
             >
@@ -87,7 +86,7 @@ const Header = ({ siteData }: HeaderProps) => {
             </a>
             <a 
               href="#contact" 
-              className={`transition-colors duration-300 font-medium ${montserrat.variable} ${
+              className={`transition-colors duration-300 font-medium px-8 ${montserrat.variable} ${
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
             >
@@ -135,10 +134,10 @@ const Header = ({ siteData }: HeaderProps) => {
           }}
           transition={{ duration: 0.3 }}
         >
-          <nav className="flex flex-col space-y-4">
+          <nav className="flex flex-col space-y-8">
             <a 
               href="#home" 
-              className={`transition-colors duration-300 font-medium ${montserrat.variable} ${
+              className={`transition-colors duration-300 font-medium py-3 px-6 text-lg ${montserrat.variable} ${
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
               onClick={() => setIsMenuOpen(false)}
@@ -147,7 +146,7 @@ const Header = ({ siteData }: HeaderProps) => {
             </a>
             <a 
               href="#about" 
-              className={`transition-colors duration-300 font-medium ${montserrat.variable} ${
+              className={`transition-colors duration-300 font-medium py-3 px-6 text-lg ${montserrat.variable} ${
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
               onClick={() => setIsMenuOpen(false)}
@@ -156,7 +155,7 @@ const Header = ({ siteData }: HeaderProps) => {
             </a>
             <a 
               href="#services" 
-              className={`transition-colors duration-300 font-medium ${montserrat.variable} ${
+              className={`transition-colors duration-300 font-medium py-3 px-6 text-lg ${montserrat.variable} ${
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
               onClick={() => setIsMenuOpen(false)}
@@ -165,7 +164,7 @@ const Header = ({ siteData }: HeaderProps) => {
             </a>
             <a 
               href="#contact" 
-              className={`transition-colors duration-300 font-medium ${montserrat.variable} ${  
+              className={`transition-colors duration-300 font-medium py-3 px-6 text-lg ${montserrat.variable} ${  
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
               onClick={() => setIsMenuOpen(false)}
