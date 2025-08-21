@@ -93,26 +93,26 @@ const TruckRotationSection = () => {
               <div className="flex-1 flex flex-col justify-center max-w-[900px]">
                 {/* Title */}
                 <span
-                  className="font-bold uppercase tracking-wider mb-4"
+                  className="tracking-wider mb-4"
                   style={{
                     color: '#FFA500',
                     fontFamily: 'Bricolage Grotesque, sans-serif',
                     letterSpacing: '0.08em',
-                    fontSize: '1.75rem', // Increased from 1.25rem
+                    fontSize: '1.3rem', // decreased from 1.25rem
                   }}
                 >
                   {section.title}
                 </span>
                 {/* Main Statement */}
-                <h2
-                  className="font-bold leading-snug mb-6"
+                <h3
+                  className="leading-snug mb-6"
                   style={{
                     lineHeight: 1.15,
                     fontFamily: 'Bricolage Grotesque, sans-serif',
-                    fontSize: '3.5rem', // Increased from 2.1rem
-                    marginBottom: '1.4rem',
-                    marginTop: '1.4rem',
-                    letterSpacing: '0.1rem',
+                    fontSize: '2.5rem', // decreased from 2.1rem
+                    marginBottom: '1.2rem',
+                    marginTop: '1.2rem',
+                    letterSpacing: '0.08rem',
                   }}
                 >
                   {section.main.map((part, i) => (
@@ -124,15 +124,14 @@ const TruckRotationSection = () => {
                         fontFamily: 'Bricolage Grotesque, sans-serif',
                         fontSize: 'inherit',
                       }}
-                      className="text-[2.8rem] md:text-[3.6rem] lg:text-[4.2rem]" // Increased all breakpoints
                     >
                       {part.text}
                     </span>
                   ))}
-                </h2>
+                </h3>
                 {/* Caption */}
                 <span
-                  className="text-[#6B7280] text-left max-w-2xl text-xl md:text-2xl"
+                  className="text-[#6B7280] text-left max-w-2xl text-sm md:text-base"
                   style={{
                     fontFamily: 'Bricolage Grotesque, sans-serif',
                     fontWeight: 400,
@@ -143,26 +142,6 @@ const TruckRotationSection = () => {
               </div>
               {/* Right: Placeholder for truck image/3D scene */}
               <div className="flex-1 flex items-center justify-end h-full relative" />
-            </div>
-            {/* Section Index */}
-            <div
-              className="absolute bottom-16"
-              style={{
-                right: '40%', // Moved slightly to the left (from 8% to 11%)
-                color: '#ffffff', // Tailwind gray-100
-                fontFamily: 'Bricolage Grotesque, sans-serif',
-                fontWeight: 700,
-                fontSize: '18rem', // Not too big
-                lineHeight: 1,
-                opacity: 0.18,
-                pointerEvents: 'none',
-                zIndex: 10,
-                letterSpacing: '-0.04em',
-                textAlign: 'right',
-                minWidth: '8ch',
-              }}
-            >
-              0{idx + 1}
             </div>
           </motion.div>
         );

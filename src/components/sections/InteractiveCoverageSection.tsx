@@ -146,7 +146,7 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
     return (
       <section 
         ref={sectionRef}
-        className={`min-h-screen bg-white flex items-center justify-center ${bricolage.className}`}
+        className={`min-h-screen bg-gray-100 flex items-center justify-center ${bricolage.className}`}
       >
         <div className="text-lg">Loading interactive map...</div>
       </section>
@@ -156,8 +156,8 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
   return (
     <section 
       ref={sectionRef}
-      className={`relative min-h-screen bg-[#f6f7fa] ${bricolage.className}`}
-      style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f6f7fa 0%, #e9eaf3 100%)' }}
+      className={`relative min-h-screen bg-[#f6f5f5] ${bricolage.className}`}
+      style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #f6f5f5 0%, #e9eaf3 100%)' }}
     >
       {/* Full-screen Leaflet Map */}
       <div className="absolute inset-0 z-0">
@@ -217,7 +217,7 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
       {/* Floating Card Overlay - Only One Card, on the Left */}
       <div className="absolute inset-0 z-10 flex items-start justify-start pointer-events-none">
         <motion.div
-          className="fixed md:absolute top-8 left-1/2 md:left-8 transform -translate-x-1/2 md:translate-x-0 bg-white rounded-2xl p-6 shadow-2xl pointer-events-auto max-w-sm w-[90vw] md:w-auto"
+          className="fixed md:absolute top-8 left-1/2 md:left-8 transform -translate-x-1/2 md:translate-x-0 bg-gray-50 rounded-2xl p-6 shadow-2xl pointer-events-auto max-w-sm w-[90vw] md:w-auto"
           initial={{ opacity: 0, y: -30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
           transition={{ duration: 0.8 }}
@@ -420,19 +420,6 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
             </>
           )}
         </motion.div>
-      </div>
-
-      {/* AREA COVERAGE label at left bottom, orange text, outside card */}
-      <div className="absolute left-8 bottom-8 z-20 pointer-events-none">
-        <span
-          className="text-lg font-bold tracking-wider"
-          style={{
-            color: '#FFA500',
-            fontFamily: 'var(--font-bricolage-grotesque)'
-          }}
-        >
-          AREA COVERAGE
-        </span>
       </div>
     </section>
   );

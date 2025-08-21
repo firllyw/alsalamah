@@ -6,32 +6,35 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 // Gallery images and features (replace with real data as needed)
 const defaultGalleryImages = [
   {
-    src: '/showcase_1.png', // Placeholder for fleet.jpg
+    src: '/24.png', // Placeholder for fleet.jpg
     alt: 'Fleet',
     fallback: 'https://placehold.co/1280x800/1e40af/fff?text=Fleet',
   },
   {
-    src: '/showcase_2.png', // Placeholder for loading.jpg
+    src: '/25.png', // Placeholder for loading.jpg
     alt: 'Loading',
     fallback: 'https://placehold.co/1280x800/1e40af/fff?text=Loading',
   },
   {
-    src: '/showcase_3.png', // Placeholder for warehouse.jpg
+    src: '/26.png', // Placeholder for warehouse.jpg
     alt: 'Warehouse',
     fallback: 'https://placehold.co/1280x800/1e40af/fff?text=Warehouse',
   },
   {
-    src: '/showcase_4.png', // Placeholder for pallets.jpg
+    src: '/27.png', // Placeholder for pallets.jpg
     alt: 'Pallets',
     fallback: 'https://placehold.co/1280x800/1e40af/fff?text=Pallets',
   },
 ];
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faScrewdriverWrench, faLocationDot, faRoute, faUserShield } from '@fortawesome/free-solid-svg-icons';
+
 const defaultFeatures = [
-  { label: 'Maintenance System', icon: <i className="fa-solid fa-screwdriver-wrench text-2xl text-white" /> },
-  { label: 'GPS Tracking', icon: <i className="fa-solid fa-location-dot text-2xl text-white" /> },
-  { label: 'Route Optimization', icon: <i className="fa-solid fa-route text-2xl text-white" /> },
-  { label: 'Compliance', icon: <i className="fa-solid fa-user-shield text-2xl text-white" /> },
+  { label: 'Maintenance System', icon: faScrewdriverWrench },
+  { label: 'GPS Tracking', icon: faLocationDot },
+  { label: 'Route Optimization', icon: faRoute },
+  { label: 'Compliance', icon: faUserShield },
 ];
 
 const IMAGE_MARQUEE_DURATION = 30;
@@ -111,14 +114,14 @@ const ShowcaseSection = ({ data }: ShowcaseSectionProps) => {
           {images.map((img, idx) => (
             <div
               key={img.alt + idx}
-              className="relative group rounded-2xl overflow-hidden shadow-xl bg-[#1e2a6b] border-2 border-[#3b4db7] flex items-end"
+              className="relative group rounded-2xl overflow-hidden shadow-xl bg-[#1e2a6b] border-2 border-[#3b4db7] flex items-center justify-center"
               style={{
-                width: '50vw',
-                maxWidth: 700,
-                minWidth: 350,
-                height: '50vh',
-                minHeight: 250,
-                maxHeight: 450,
+                width: '35vw',
+                maxWidth: 500,
+                minWidth: 380,
+                height: '35vw',
+                minHeight: 280,
+                maxHeight: 350,
                 display: 'flex',
                 alignItems: 'flex-end',
                 justifyContent: 'center',
@@ -127,7 +130,7 @@ const ShowcaseSection = ({ data }: ShowcaseSectionProps) => {
               <img
                 src={img.src}
                 alt={img.alt}
-                className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
                 onError={e => (e.currentTarget.src = img.fallback)}
                 draggable={false}
                 style={{
@@ -177,8 +180,8 @@ const ShowcaseSection = ({ data }: ShowcaseSectionProps) => {
                 whiteSpace: 'nowrap',
               }}
             >
-              <span className="inline-block align-middle text-3xl md:text-4xl">
-                {feature.icon}
+              <span className="inline-block align-middle text-2xl md:text-3xl text-white">
+                <FontAwesomeIcon icon={feature.icon} />
               </span>
               <span className="align-middle">{feature.label}</span>
             </div>

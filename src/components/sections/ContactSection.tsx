@@ -38,21 +38,43 @@ const ContactSection = ({ data, siteConfig }: ContactSectionProps) => {
         </div>
       </div>
 
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen pt-20 pb-10">
-        <motion.h1 
-          className="text-5xl sm:text-6xl lg:text-8xl font-bold text-white text-center mb-16 px-4 lg:px-0"
-          initial={{ opacity: 0, y: -50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          Drive Your Success Forward
-        </motion.h1>
+      <div className="relative z-10 flex flex-col min-h-screen pt-20 pb-10">
+        <div className="w-full max-w-7xl mx-auto px-8 lg:px-12">
+          <motion.div
+            className="text-center mt-16 mb-20"
+            initial={{ opacity: 0, y: -50 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <motion.h2
+              className="text-7xl font-bold text-white"
+            >
+              Drive Your Success Forward
+            </motion.h2>
+          </motion.div>
+
+          {/* Logo */}
+          <motion.div 
+          className='mb-20'
+            initial={{ opacity: 0, y: -20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            <div className="mb-12">
+              <img 
+                src="/logo.png" 
+                alt="Al Salamah Transport Logo" 
+                className="h-16 w-auto"
+              />
+            </div>
+          </motion.div>
+        </div>
 
         <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between w-full max-w-7xl mx-auto px-8 lg:px-12">
           
           {/* Left Navigation */}
-          <div className="hidden lg:flex w-64 flex-shrink-0 flex-col justify-start">
-            <nav className="space-y-12 mt-12">
+          <div className="hidden lg:flex w-56 flex-shrink-0 flex-col justify-start">
+            <nav className="space-y-6 mt-8">
               <motion.a
                 href="#home"
                 className="block text-white text-xl font-medium hover:text-blue-200 transition-colors"
@@ -93,11 +115,11 @@ const ContactSection = ({ data, siteConfig }: ContactSectionProps) => {
           </div>
 
           {/* Center Content and Image */}
-          <div className="flex-1 flex flex-col lg:flex-row items-center lg:items-end justify-between w-full mt-10 lg:mt-0 space-y-12 lg:space-y-0 lg:space-x-12">
+          <div className="flex-1 flex flex-col lg:flex-row items-start justify-between w-full space-y-12 lg:space-y-0 lg:space-x-12">
             
             {/* Contact Details */}
             <motion.div
-              className="flex-1 w-full max-w-md lg:max-w-none text-center lg:text-left"
+              className="flex-1 w-full max-w-md lg:max-w-none"
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.5 }}
@@ -119,20 +141,6 @@ const ContactSection = ({ data, siteConfig }: ContactSectionProps) => {
                   </div>
                 </div>
               </div>
-
-              {/* SBTC Partnership */}
-              <div className="mt-8">
-                <div className="flex items-center space-x-6">
-                  <span className="text-white text-xl font-medium">Part of</span>
-                  <div className="flex items-center space-x-4">
-                    <img
-                      src="/sbtc_logo.png"
-                      alt="SBTC Logo"
-                      className="h-12 w-auto"
-                    />
-                  </div>
-                </div>
-              </div>
             </motion.div>
             
             {/* Right side with image */}
@@ -149,6 +157,23 @@ const ContactSection = ({ data, siteConfig }: ContactSectionProps) => {
               />
             </motion.div>
           </div>
+        </div>
+
+        {/* Partnership Section */}
+        <div className="w-full max-w-7xl mx-auto px-8 lg:px-12 mt-16">
+          <motion.div 
+            className="flex items-center space-x-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            <span className="text-white text-xl font-medium">Part of</span>
+            <img
+              src="/sbtc_logo.png"
+              alt="SBTC Logo"
+              className="h-10 w-auto"
+            />
+          </motion.div>
         </div>
       </div>
     </section>

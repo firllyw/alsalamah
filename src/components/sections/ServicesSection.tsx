@@ -13,6 +13,7 @@ const bricolage = Bricolage_Grotesque({
 });
 
 const MAX_KM = 2000;
+const CIRCLE_RADIUS = 200; // Increased from 140
 
 // Service cards content as JSON for easy editing
 const SERVICES = [
@@ -30,7 +31,7 @@ const SERVICES = [
 
 // Circular KM Counter (unchanged)
 const CircularKmCounter = ({ progress }: { progress: number }) => {
-  const radius = 140;
+  const radius = CIRCLE_RADIUS;
   const stroke = 4;
   const normalizedRadius = radius - stroke / 2;
   const circumference = normalizedRadius * 2 * Math.PI;
@@ -76,7 +77,7 @@ const CircularKmCounter = ({ progress }: { progress: number }) => {
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span
-          className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white"
+          className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-white"
           style={{ fontFamily: 'var(--font-bricolage-grotesque), sans-serif' }}
         >
           {km} km
@@ -100,18 +101,18 @@ function ServiceCard({
     <div
       className={`
         relative flex flex-col justify-between
-        rounded-2xl border border-white/70
+        rounded-2xl border border-white
         transition-all duration-300
-        min-w-[380px] max-w-[420px] h-[340px] px-10 py-8
+        min-w-[340px] max-w-[380px] h-[300px] px-8 py-6
         overflow-hidden
         cursor-pointer
-        ${hovered ? 'backdrop-blur-lg bg-white/10 shadow-2xl' : 'backdrop-blur-md bg-white/5'}
+        ${hovered ? 'backdrop-blur-lg bg-white/10 shadow-2xl' : 'bg-white/5'}
       `}
       style={{
         boxShadow: hovered
           ? '0 12px 40px 0 rgba(31, 38, 135, 0.28)'
           : '0 4px 16px 0 rgba(31, 38, 135, 0.13)',
-        border: '1.5px solid rgba(255,255,255,0.7)',
+        border: '1.5px solid rgba(255,255,255,1)',
         backdropFilter: 'blur(18px)',
         fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
         height: '340px',
@@ -119,9 +120,9 @@ function ServiceCard({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="flex flex-col gap-3">
-        <span className="text-2xl md:text-3xl font-bold text-white">{title}</span>
-        <div className="text-white/90 text-lg md:text-xl font-medium">{description}</div>
+      <div className="flex flex-col gap-2">
+        <span className="text-xl md:text-2xl text-white">{title}</span>
+        <div className="text-white/80 text-base md:text-lg">{description}</div>
       </div>
     </div>
   );
@@ -198,7 +199,6 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
         {/* Left: Texts and Cards in a column */}
         <div className="flex-1 flex flex-col w-full max-w-3xl">
           {/* Subtitle */}
-          
           {/* "OUR SERVICE" label below the cards */}
           <div
             className="uppercase text-[#ffbd59] text-lg md:text-xl lg:text-2xl font-extrabold tracking-widest pt-6 min-w-[160px] whitespace-nowrap"
@@ -210,7 +210,7 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
             OUR SERVICE
           </div>
           <motion.h3
-            className="text-white text-xs md:text-sm lg:text-base font-semibold mb-2 tracking-wide uppercase"
+            className="text-white/90 text-xs md:text-sm lg:text-base font-medium mb-2 tracking-wide uppercase"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
@@ -225,7 +225,7 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
           </motion.h3>
           {/* Title */}
           <motion.h2
-            className="text-white text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 leading-tight"
+            className="text-white text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-medium mb-6 leading-normal"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
@@ -233,7 +233,7 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
             style={{
               textShadow: '0 2px 16px rgba(0,0,0,0.25)',
               fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
-              lineHeight: 1.1,
+              lineHeight: 1.2,
             }}
           >
             AST has built a 20-year track<br />
@@ -241,7 +241,7 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
             can depend on.
           </motion.h2>
           {/* Cards row */}
-          <div className="flex flex-row items-start gap-10 w-full mt-2">
+          <div className="flex flex-row items-start gap-6 w-full mt-4">
             {services.map((service, idx) => (
               <ServiceCard
                 key={service.title}

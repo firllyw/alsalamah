@@ -88,7 +88,7 @@ const HeroSection = ({ data, siteConfig }: HeroSectionProps) => {
         
         {/* Subtitle - now includes the "in 30 years" text, left aligned, lighter */}
         <motion.p
-          className="w-full text-left text-2xl lg:text-3xl mb-16 text-white/80 font-light leading-relaxed pl-2 sm:pl-4 md:pl-6"
+          className="w-full text-left text-3xl lg:text-4xl mb-24 text-white/80 font-light leading-relaxed pl-2 sm:pl-4 md:pl-6"
           style={{ fontFamily: 'var(--font-bricolage-grotesque), sans-serif', fontWeight: 400 }}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -135,15 +135,15 @@ const HeroSection = ({ data, siteConfig }: HeroSectionProps) => {
         </motion.div>
         {/* Button-like scroll down indicator */}
         <div
-          className="border-2 border-[#FFC76A] rounded-full px-10 py-3 flex items-center"
+          className="border-2 border-[#FFC76A] rounded-full px-4 py-1 flex items-center"
           style={{
             background: "rgba(34, 54, 146, 0.95)", // matches the blue bg with slight transparency
-            minWidth: "210px",
-            minHeight: "56px",
+            minWidth: "100px",
+            minHeight: "32px",
             fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
           }}
         >
-          <span className="text-[#FFC76A] font-bold tracking-widest text-lg lg:text-2xl mx-auto" style={{ letterSpacing: "0.15em" }}>
+          <span className="text-[#FFC76A] font-bold tracking-widest text-xs lg:text-sm mx-auto" style={{ letterSpacing: "0.15em" }}>
             {hero.content || hero.data?.scrollText || hero.scrollText}
           </span>
         </div>

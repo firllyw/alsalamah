@@ -37,7 +37,7 @@ const Header = ({ siteData }: HeaderProps) => {
   return (
     <motion.header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${montserrat.variable} ${
-        scrolled ? 'bg-[#f6f5f5] py-2' : 'bg-transparent py-4'
+        scrolled ? 'bg-[#ffffff] py-2' : 'bg-transparent py-4'
       }`}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -59,10 +59,10 @@ const Header = ({ siteData }: HeaderProps) => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex gap-x-24 xl:gap-x-40">
+          <nav className="hidden lg:flex gap-x-12 xl:gap-x-20">
             <a 
               href="#home" 
-              className={`transition-colors duration-300 font-medium px-8 ${montserrat.variable} ${
+              className={`transition-colors duration-300 font-semibold px-6 ${montserrat.variable} ${
                 scrolled ? 'text-[#273d97] hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
             >
@@ -70,7 +70,7 @@ const Header = ({ siteData }: HeaderProps) => {
             </a>
             <a 
               href="#about" 
-              className={`transition-colors duration-300 font-medium px-8 ${montserrat.variable} ${
+              className={`transition-colors duration-300 font-medium px-6 ${montserrat.variable} ${
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
             >
@@ -78,7 +78,7 @@ const Header = ({ siteData }: HeaderProps) => {
             </a>
             <a 
               href="#services" 
-              className={`transition-colors duration-300 font-medium px-8 ${montserrat.variable} ${
+              className={`transition-colors duration-300 font-semibold px-6 ${montserrat.variable} ${
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
             >
@@ -86,7 +86,7 @@ const Header = ({ siteData }: HeaderProps) => {
             </a>
             <a 
               href="#contact" 
-              className={`transition-colors duration-300 font-medium px-8 ${montserrat.variable} ${
+              className={`transition-colors duration-300 font-medium px-6 ${montserrat.variable} ${
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
             >

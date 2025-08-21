@@ -25,8 +25,8 @@ function TruckModel({ scrollProgress }: TruckModelProps) {
   const PHASE3_END = 0.6;         // Truck exits view
 
   // Phase 1: Initial centered position (no rotation, just fade out)
-  const INITIAL_POSITION = [6, -2, -4];
-  const INITIAL_ROTATION_Y = -0.8;
+  const INITIAL_POSITION = [6, -2, -3];
+  const INITIAL_ROTATION_Y = -1;
   const INITIAL_ROTATION_Z = 0;
   const INITIAL_SCALE = 0.4;
 
