@@ -6,36 +6,40 @@ import { faClock, faTruck, faNetworkWired, faShieldAlt } from '@fortawesome/free
 
 const defaultFeatures = [
   {
-    icon: faClock,
     label: 'On-time',
     title: 'Proven track record',
     subtitle: 'in critical delivery.',
     description:
       "Decades of experience in time-sensitive and mission-critical shipments, ensuring your goods arrive exactly when and where they're needed.",
+    image: '/1.png',
+    icon: 'technology/time',
   },
   {
-    icon: faTruck,
     label: 'Fleet',
     title: 'IN-HOUSE',
     subtitle: 'LOGISTICS TEAM',
     description:
       "Our dedicated team manages every delivery from start to finish, enabling swift response and efficient dispatch.",
+    image: '/2.png',
+    icon: 'technology/truck'
   },
   {
-    icon: faNetworkWired,
     label: 'Network',
     title: 'SEAMLESS',
     subtitle: 'COORDINATION',
     description:
       "We maintain strong operational links with trusted warehousing facilities, ensuring smooth cargo handovers and optimized supply chain flow.",
+    image: '/3.png',
+    icon: 'technology/puzzle'
   },
   {
-    icon: faShieldAlt,
     label: 'Secure',
     title: 'SFDA-COMPLIANT',
     subtitle: 'PROTOCOLS',
     description:
       "All processes follow strict Saudi Food & Drug Authority guidelines, meeting the highest standards for safety and compliance.",
+    image: '/4.png',
+    icon: 'technology/guard'
   },
 ];
 
@@ -102,15 +106,15 @@ const RecordSection = ({ data }: RecordSectionProps) => {
                   onMouseLeave={() => setHoveredFeature(null)}
                 >
                   <div className={`w-12 h-12 flex items-center justify-center rounded-full ${isActive ? 'bg-blue-50 text-blue-600' : 'bg-gray-50 text-gray-600'}`}>
-                    <FontAwesomeIcon 
-                      icon={feature.icon} 
-                      className="text-2xl"
+                    <img
+                      src={`/${feature.icon}${isActive ? '_active' : ''}.png`}
+                      alt={feature.label}
+                      className="w-12 h-12"
                     />
                   </div>
-                  <span 
-                    className={`text-sm font-medium font-bricolage ${
-                      isActive ? 'text-gray-900' : 'text-gray-600'
-                    }`}
+                  <span
+                    className={`text-sm font-medium font-bricolage ${isActive ? 'text-gray-900' : 'text-gray-600'
+                      }`}
                   >
                   </span>
                 </button>
@@ -119,9 +123,9 @@ const RecordSection = ({ data }: RecordSectionProps) => {
           </div>
 
           {/* Technology text */}
-          <span 
+          <span
             className="text-xl font-extrabold tracking-wider mb-2"
-            style={{ 
+            style={{
               color: '#FFA500',
               fontFamily: 'Bricolage Grotesque, sans-serif',
               letterSpacing: '0.01em'
@@ -159,9 +163,9 @@ const RecordSection = ({ data }: RecordSectionProps) => {
                 </h3>
               </div>
             ) : (
-              <h2 
+              <h2
                 className="text-4xl lg:text-5xl font-bold leading-tight font-bricolage uppercase"
-                style={{ 
+                style={{
                   color: '#273d97',
                   letterSpacing: '0.01em'
                 }}
@@ -171,9 +175,9 @@ const RecordSection = ({ data }: RecordSectionProps) => {
             )}
 
             {/* Description */}
-            <p 
+            <p
               className={`text-base md:text-lg leading-relaxed font-bricolage`}
-              style={{ 
+              style={{
                 color: activeIdx === 0 ? '#6B7280' : '#6B7280',
                 fontFamily: 'Bricolage Grotesque, sans-serif',
                 letterSpacing: activeIdx === 0 ? '0.01em' : undefined,
@@ -189,7 +193,7 @@ const RecordSection = ({ data }: RecordSectionProps) => {
         {/* Right Side - Record Image (50% width) */}
         <div className="w-full md:w-1/2 h-full">
           <img
-            src="/record.png"
+            src={features[activeIdx]?.image || '/record.png'}
             alt="Technology and delivery tracking"
             className="w-full h-full object-cover"
           />

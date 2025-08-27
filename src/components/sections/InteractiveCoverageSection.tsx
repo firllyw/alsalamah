@@ -39,19 +39,7 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
   const mapRef = useRef<any>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
   const [isMapReady, setIsMapReady] = useState(false);
-  const [selectedRegion, setSelectedRegion] = useState<Region | null>({
-    name: "WESTERN",
-    branches: 6,
-    subBranches: 2,
-    color: "#FFB84D",
-    coordinates: [21.4225, 39.8262],
-    zoom: 7,
-    bounds: [
-      [21.0, 36.0], [22.5, 36.0], [24.0, 37.5], [25.5, 38.0],
-      [26.0, 39.5], [25.0, 41.0], [22.0, 42.0], [19.0, 41.0],
-      [17.0, 40.0], [17.5, 38.0], [19.0, 36.5], [21.0, 36.0]
-    ]
-  });
+  const [selectedRegion, setSelectedRegion] = useState<Region | null>();
 
   // Enhanced regions with polygon boundaries and zoom levels
   const regions: Region[] = [

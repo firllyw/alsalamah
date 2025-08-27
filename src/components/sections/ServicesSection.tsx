@@ -121,7 +121,7 @@ function ServiceCard({
       onMouseLeave={() => setHovered(false)}
     >
       <div className="flex flex-col gap-2">
-        <span className="text-xl md:text-2xl text-white">{title}</span>
+        <span className="font-bold md:text-2xl text-white mb-6">{title}</span>
         <div className="text-white/80 text-base md:text-lg">{description}</div>
       </div>
     </div>
@@ -149,7 +149,7 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
 
   useEffect(() => {
     return scrollYProgress.on('change', (v) => {
-      setProgress(Math.max(0, Math.min(1, v)));
+      setProgress((v - 0.25) * 4);
     });
   }, [scrollYProgress]);
 

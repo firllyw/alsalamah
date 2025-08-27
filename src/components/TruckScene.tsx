@@ -11,7 +11,7 @@ interface TruckModelProps {
 }
 
 function TruckModel({ scrollProgress }: TruckModelProps) {
-  const { scene } = useGLTF('/truck.glb');
+  const { scene } = useGLTF('/TRUCK3.glb');
   const truckRef = useRef<THREE.Group>(null);
 
   // Clone the scene to avoid issues with multiple instances
@@ -41,29 +41,6 @@ function TruckModel({ scrollProgress }: TruckModelProps) {
 
   // Phase 3: Exit movement (move further left and out of view)
   const EXIT_POSITION_X = -10; // Move far left to exit view
-
-  // We'll use a custom material override for opacity
-  const [opacity, setOpacity] = useState(1);
-
-  // Helper to set opacity recursively
-  function setGroupOpacity(obj: THREE.Object3D, value: number) {
-    obj.traverse((child: any) => {
-      if (child.material) {
-        if (Array.isArray(child.material)) {
-          child.material.forEach((mat: any) => {
-            mat.transparent = value < 0.99; // Only set transparent if not fully opaque
-            mat.opacity = value;
-            mat.needsUpdate = true;
-          });
-        } else {
-          child.material.transparent = value < 0.99;
-          child.material.opacity = value;
-          child.material.needsUpdate = true;
-        }
-      }
-    });
-  }
-
   useFrame(() => {
     if (truckRef.current) {
       const scrollValue = scrollProgress.get();
@@ -77,18 +54,25 @@ function TruckModel({ scrollProgress }: TruckModelProps) {
 
       if (scrollValue < PHASE1_END) {
         // Phase 1: Truck centered, fade out as scroll increases
-        const fadeProgress = Math.min(Math.max(scrollValue / PHASE1_END, 0), 1);
         // Fade out, but never go below 0.7 opacity for visibility
-        newOpacity = 1 - 0.3 * fadeProgress;
+        newOpacity = 0.7 + 0.3 * (scrollValue / PHASE1_END);
         posX = INITIAL_POSITION[0];
         posY = INITIAL_POSITION[1];
         posZ = INITIAL_POSITION[2];
         rotY = INITIAL_ROTATION_Y;
         scale = INITIAL_SCALE;
-      } else if (scrollValue < PHASE2_END) {
+      } else if (scrollValue < PHASE2_START) {
+        // Hold at final position, fully visible
+        posX = SLIDEIN_END_X;
+        posY = SLIDEIN_Y;
+        posZ = SLIDEIN_Z;
+        rotY = SLIDEIN_ROTATION_Y;
+        scale = SLIDEIN_SCALE;
+        newOpacity = 1;
+      } else if (scrollValue < PHASE3_START) {
         // Phase 2: Truck slides in from right and fades in
         const phase2Progress = Math.min(
-          Math.max((scrollValue - PHASE2_START) / (PHASE2_END - PHASE2_START), 0),
+          Math.max((scrollValue - PHASE2_START) / (PHASE3_START - PHASE2_START), 0),
           1
         );
         // Slide from offscreen right to target position
@@ -99,14 +83,6 @@ function TruckModel({ scrollProgress }: TruckModelProps) {
         scale = SLIDEIN_SCALE;
         // Fade in, but never go above 1 or below 0.7
         newOpacity = 0.7 + 0.3 * phase2Progress;
-      } else if (scrollValue < PHASE3_START) {
-        // Hold at final position, fully visible
-        posX = SLIDEIN_END_X;
-        posY = SLIDEIN_Y;
-        posZ = SLIDEIN_Z;
-        rotY = SLIDEIN_ROTATION_Y;
-        scale = SLIDEIN_SCALE;
-        newOpacity = 1;
       } else {
         // Phase 3: Move truck further left and out of view
         const phase3Progress = Math.min(
@@ -127,14 +103,12 @@ function TruckModel({ scrollProgress }: TruckModelProps) {
       truckRef.current.rotation.z = INITIAL_ROTATION_Z;
       truckRef.current.scale.setScalar(scale);
 
-      setGroupOpacity(truckRef.current, newOpacity);
     }
   });
 
   // Add axes helper for debugging
   return (
     <group ref={truckRef}>
-      <axesHelper args={[5]} />
       <primitive
         object={clonedScene}
         scale={[1, 1, 1]}
@@ -185,6 +159,6 @@ function TruckScene() {
 }
 
 // Preload the truck model
-useGLTF.preload('/truck.glb');
+useGLTF.preload('/TRUCK3.glb');
 
 export default TruckScene;
