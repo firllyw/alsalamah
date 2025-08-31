@@ -17,7 +17,29 @@ function TruckModel({ scrollProgress }: TruckModelProps) {
   // Clone the scene to avoid issues with multiple instances
   const clonedScene = scene.clone();
 
+  // Helper: apply opacity to all mesh materials in the group
+  const setGroupOpacity = (object: THREE.Object3D, opacity: number) => {
+    object.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        const apply = (mat: THREE.Material) => {
+          // Only apply to materials that support opacity
+          if ('opacity' in mat) {
+            mat.transparent = opacity < 1;
+            (mat as THREE.MeshStandardMaterial).opacity = opacity;
+          }
+        };
+        if (Array.isArray(mesh.material)) {
+          mesh.material.forEach(apply);
+        } else if (mesh.material) {
+          apply(mesh.material);
+        }
+      }
+    });
+  };
+
   // PHASES: Three-phase animation system
+  const PHASE1_START = 0.05;
   const PHASE1_END = 0.12;        // Truck fades out
   const PHASE2_START = 0.12;      // Truck appears from right, sliding in
   const PHASE2_END = 0.2;         // End of slide-in
@@ -52,23 +74,24 @@ function TruckModel({ scrollProgress }: TruckModelProps) {
       let scale = INITIAL_SCALE;
       let newOpacity = 1;
 
-      if (scrollValue < PHASE1_END) {
-        // Phase 1: Truck centered, fade out as scroll increases
-        // Fade out, but never go below 0.7 opacity for visibility
-        newOpacity = 0.7 + 0.3 * (scrollValue / PHASE1_END);
+      if (scrollValue < PHASE2_START) {
+        // Phase 1: Truck centered, fade out between PHASE1_START and PHASE1_END
+        if (scrollValue <= PHASE1_START) {
+          newOpacity = 1; // fully visible before fade starts
+        } else if (scrollValue < PHASE1_END) {
+          const phase1Progress = Math.min(
+            Math.max((scrollValue - PHASE1_START) / (PHASE1_END - PHASE1_START), 0),
+            1
+          );
+          newOpacity = 1 - phase1Progress; // gradually disappear to 0
+        } else {
+          newOpacity = 0; // hidden after phase 1 ends until phase 2 starts
+        }
         posX = INITIAL_POSITION[0];
         posY = INITIAL_POSITION[1];
         posZ = INITIAL_POSITION[2];
         rotY = INITIAL_ROTATION_Y;
         scale = INITIAL_SCALE;
-      } else if (scrollValue < PHASE2_START) {
-        // Hold at final position, fully visible
-        posX = SLIDEIN_END_X;
-        posY = SLIDEIN_Y;
-        posZ = SLIDEIN_Z;
-        rotY = SLIDEIN_ROTATION_Y;
-        scale = SLIDEIN_SCALE;
-        newOpacity = 1;
       } else if (scrollValue < PHASE3_START) {
         // Phase 2: Truck slides in from right and fades in
         const phase2Progress = Math.min(
@@ -81,8 +104,8 @@ function TruckModel({ scrollProgress }: TruckModelProps) {
         posZ = SLIDEIN_Z;
         rotY = SLIDEIN_ROTATION_Y; // Now facing left, not reversing
         scale = SLIDEIN_SCALE;
-        // Fade in, but never go above 1 or below 0.7
-        newOpacity = 0.7 + 0.3 * phase2Progress;
+        // Fade in from 0 to 1 during slide-in
+        newOpacity = 1;
       } else {
         // Phase 3: Move truck further left and out of view
         const phase3Progress = Math.min(
@@ -94,14 +117,16 @@ function TruckModel({ scrollProgress }: TruckModelProps) {
         posZ = SLIDEIN_Z;
         rotY = SLIDEIN_ROTATION_Y;
         scale = SLIDEIN_SCALE;
-        // Fade out, but never go below 0.7
-        newOpacity = 1 - 0.3 * phase3Progress;
+        // Fade out from 1 to 0 as it exits
+        newOpacity = 1;
       }
 
       truckRef.current.position.set(posX, posY, posZ);
       truckRef.current.rotation.y = rotY;
       truckRef.current.rotation.z = INITIAL_ROTATION_Z;
       truckRef.current.scale.setScalar(scale);
+      // Apply opacity to all materials of the truck
+      setGroupOpacity(truckRef.current, THREE.MathUtils.clamp(newOpacity, 0, 1));
 
     }
   });

@@ -82,7 +82,7 @@ const Header = ({ siteData }: HeaderProps) => {
                 scrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-200'
               }`}
             >
-              INDUSTRIES
+              SERVICES
             </a>
             <a 
               href="#contact" 
@@ -160,7 +160,7 @@ const Header = ({ siteData }: HeaderProps) => {
               }`}
               onClick={() => setIsMenuOpen(false)}
             >
-              Industries
+              SERVICES
             </a>
             <a 
               href="#contact" 

@@ -116,13 +116,14 @@ function ServiceCard({
         backdropFilter: 'blur(18px)',
         fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
         height: '340px',
+        fontSize: hovered ? 'current' : '1rem',
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="flex flex-col gap-2">
-        <span className="font-bold md:text-2xl text-white mb-6">{title}</span>
-        <div className="text-white/80 text-base md:text-lg">{description}</div>
+      <div className="flex flex-col gap-1">
+        <span className={`font-bold text-white mb-3 ${!hovered ? 'text-xl' : 'md:text-lg'}`}>{title}</span>
+        <div className={`text-white/80 text-sm ${!hovered ? 'text-base' : 'md:text-base'}`}>{description}</div>
       </div>
     </div>
   );

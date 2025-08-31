@@ -25,7 +25,7 @@ const SECTIONS = [
   },
   {
     main: [
-      { text: "Reliability and safety are more than promises -", color: "#b2b9e6" },
+      { text: "Reliability and safety are more than promises - they", color: "#b2b9e6" },
       { text: "are our operating principles.", color: "#273d97" }
     ],
     title: "COMMITMENT",
@@ -112,7 +112,7 @@ const TruckRotationSection = () => {
                     fontSize: '2.5rem', // decreased from 2.1rem
                     marginBottom: '1.2rem',
                     marginTop: '1.2rem',
-                    letterSpacing: '0.08rem',
+                    letterSpacing: '0rem',
                   }}
                 >
                   {section.main.map((part, i) => (

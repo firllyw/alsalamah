@@ -30,6 +30,7 @@ const TruckRevealSection = ({ data }: TruckRevealSectionProps) => {
 
   return (
     <section
+      id="about"
       ref={sectionRef}
       className={`reveal-section relative min-h-[100vh] flex flex-col justify-end items-center bg-transparent ${bricolage.className}`}
       style={{
@@ -54,13 +55,13 @@ const TruckRevealSection = ({ data }: TruckRevealSectionProps) => {
             color: '#273d97',
           }}
         >
-          <p className="text-lg lg:text-xl leading-relaxed" style={{ color: '#273d97' }}>
+          <p className="text-lg lg:text-xl leading-relaxed" style={{ color: '#273d97', textAlign: 'justify' }}>
             {preview}
             {!expanded && isLong && <span className="text-[#273d97]/70">... </span>}
             {expanded && rest}
           </p>
           {isLong && (
-            <div className="w-full flex justify-end mt-2">
+            <div className="w-full flex justify-center mt-15">
               <button
                 className="text-base font-semibold text-[#273d97] underline underline-offset-4 hover:text-[#1a285c] transition border border-[#273d97] rounded-full px-4 py-2"
                 onClick={() => setExpanded((v) => !v)}
