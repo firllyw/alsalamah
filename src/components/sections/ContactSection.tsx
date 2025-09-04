@@ -28,14 +28,14 @@ const ContactSection = ({ data, siteConfig }: ContactSectionProps) => {
         `}
       </style>
       
-      {/* Background geometric elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-0 w-full h-full">
-          <svg className="w-full h-full" viewBox="0 0 1920 1080" fill="none">
-            <polygon points="0,0 800,0 600,300 0,200" fill="rgba(255,255,255,0.05)" />
-            <polygon points="1920,0 1920,400 1200,600 1400,200" fill="rgba(255,255,255,0.03)" />
-          </svg>
-        </div>
+
+      {/* Hero image layer (between background and content) */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 5 }}>
+        <img
+          src="/arro_hero.png"
+          alt="Hero background graphics"
+          className="w-full h-full object-cover opacity-100"
+        />
       </div>
 
       <div className="relative z-10 flex flex-col min-h-screen pt-20 pb-10">

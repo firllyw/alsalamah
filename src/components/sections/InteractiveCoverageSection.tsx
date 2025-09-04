@@ -17,7 +17,7 @@ const bricolage = Bricolage_Grotesque({
 const MapContainer = dynamic(() => import('react-leaflet').then(mod => mod.MapContainer), { ssr: false });
 const TileLayer = dynamic(() => import('react-leaflet').then(mod => mod.TileLayer), { ssr: false });
 const CircleMarker = dynamic(() => import('react-leaflet').then(mod => mod.CircleMarker), { ssr: false });
-const Polygon = dynamic(() => import('react-leaflet').then(mod => mod.Polygon), { ssr: false });
+const Tooltip = dynamic(() => import('react-leaflet').then(mod => mod.Tooltip), { ssr: false });
 
 interface Region {
   name: string;
@@ -33,18 +33,24 @@ interface InteractiveCoverageSectionProps {
   data?: any;
 }
 
+interface City {
+  name: string;
+  coordinates: [number, number];
+  url: string;
+}
+
 const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) => {
   const { areaCoverage } = homeContent;
   const sectionRef = useRef(null);
   const mapRef = useRef<any>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
   const [isMapReady, setIsMapReady] = useState(false);
-  const [selectedRegion, setSelectedRegion] = useState<Region | null>();
+  const [selectedRegion, setSelectedRegion] = useState<Region | null>(null);
 
   // Enhanced regions with polygon boundaries and zoom levels
   const regions: Region[] = [
     {
-      name: "NORTHERN",
+      name: "Northern Region",
       branches: 2,
       subBranches: 3,
       color: "#5FB3A3",
@@ -66,7 +72,7 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
   
     },
     {
-      name: "WESTERN",
+      name: "Western Region",
       branches: 6,
       subBranches: 2,
       color: "#FFB84D",
@@ -98,7 +104,7 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
   
     },
     {
-      name: "CENTRAL",
+      name: "Central Region",
       branches: 5,
       subBranches: 2,
       color: "#E6A8E6",
@@ -126,7 +132,7 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
   
     },
     {
-      name: "EASTERN",
+      name: "Eastern Region",
       branches: 4,
       subBranches: 1,
       color: "#9F7FD1",
@@ -154,7 +160,7 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
   
     },
     {
-      name: "SOUTHERN",
+      name: "Southern Region",
       branches: 4,
       subBranches: 2,
       color: "#B8860B",
@@ -177,7 +183,123 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
         [20.2, 45.0],
       ],
     },
+    {
+      name: "Tabuk Region",
+      branches: 1,
+      subBranches: 1,
+      color: "#B8860B",
+      coordinates: [27.468985, 41.741673],
+      zoom: 7,
+      bounds: [
+        [20.2, 45.0],
+        [19.8, 46.0],
+        [19.2, 46.5],
+        [18.0, 47.0],
+        [17.5, 46.0],
+        [17.0, 44.0],
+        [16.6, 42.2],
+        [16.8, 41.6],
+        [17.3, 41.2],
+        [18.2, 41.5],
+        [19.0, 41.8],
+        [20.0, 41.6],
+        [20.2, 42.6],
+        [20.2, 45.0],
+      ],
+    },
+    {
+      name: "Hail Region",
+      branches: 1,
+      subBranches: 1,
+      color: "#B8860B",
+      coordinates: [27.468985, 41.741673],
+      zoom: 7,
+      bounds: [
+        [20.2, 45.0],
+        [19.8, 46.0],
+        [19.2, 46.5],
+        [18.0, 47.0],
+        [17.5, 46.0],
+        [17.0, 44.0],
+        [16.6, 42.2],
+        [16.8, 41.6],
+        [17.3, 41.2],
+        [18.2, 41.5],
+        [19.0, 41.8],
+        [20.0, 41.6],
+        [20.2, 42.6],
+        [20.2, 45.0],
+      ],
+    },
   ];
+
+  // Google Maps dataset provided (region -> cities -> url)
+  const cityUrlData: Record<string, Record<string, string>> = {
+    'Northern Region': {
+      'Arar': 'https://www.google.com/maps/place/Fannat+Al+Quran+Mosque/@30.976343,41.00265,726m/data=!3m1!1e3!4m13!1m5!8m4!1e3!2s1s0x0:0xba1e62c9535f20c8!3m2!1e3!2s1s0x0:0xba1e62c9535f20c8!4m6!3m5!1s0x0:0xba1e62c9535f20c8!8m2!3d30.976343!4d41.00265!16s%2Fg%2F11vmlkcrns!5m1!1e4!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
+      'Sakaka': 'https://www.google.com/maps/place/29%C2%B050\'02.2%22N+39%C2%B058\'19.1%22E/@29.833953,39.972145,951m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s29%C2%B050\'02.2%22N+39%C2%B058\'19.1%22E!3b1!8m2!3d29.833953!4d39.972145!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d29.833953!4d39.972145!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
+      'Qurayyat': 'https://www.google.com/maps/place/31%C2%B020\'20.2%22N+37%C2%B020\'53.9%22E/@31.338952,37.331509,839m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s31%C2%B020\'20.2%22N+37%C2%B020\'53.9%22E!3b1!8m2!3d31.338952!4d37.331509!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d31.338952!4d37.331509!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB'
+    },
+    'Western Region': {
+      'Makkah': 'https://www.google.com/maps/place/%E2%80%8E%D9%85%D9%83%D8%A9+%D8%A7%D9%84%D9%85%D9%83%D8%B1%D9%85%D8%A9/@21.389201,39.882413,2962m/data=!3m1!1e3!4m14!1m7!3m6!1s0x15c21b2b8e3c6339:0x93dd1c070c7e2b61!2z2YPZhNiq2Ykg2KfZhNmG2YjYp9ix2Ykg2KfZhNmD2LHYp9ix2YUg2KfZhNmE2YTYqiDYqNmK2YjYudmIINi02K_ZiCDYqNmK2YjYudmIINmE2YTZhdmG2K_ZiCDYqNiy2KfZhSDYudmIINis2YHYsdi52YTZh9ix!8m2!3d21.389201!4d39.882413!16s%2Fg%2F122_9l13_!4m5!3m4!1s0x15c21b2b8e3c6339:0x93dd1c070c7e2b61!8m2!3d21.389201!4d39.882413!16s%2Fg%2F122_9l13_?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
+      'Medina': 'https://www.google.com/maps/place/24%C2%B028\'33.9%22N+39%C2%B036\'36.5%22E/@24.476081,39.610126,206m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s24%C2%B028\'33.9%22N+39%C2%B036\'36.5%22E!3b1!8m2!3d24.476081!4d39.610126!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d24.476081!4d39.610126!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
+      'Jeddah': 'https://www.google.com/maps/place/21%C2%B029\'02.0%22N+39%C2%B010\'59.7%22E/@21.483888,39.183267,859m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s21%C2%B029\'02.0%22N+39%C2%B010\'59.7%22E!3b1!8m2!3d21.483888!4d39.183267!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d21.483888!4d39.183267!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
+      'Taif': 'https://www.google.com/maps/place/21%C2%B015\'29.0%22N+40%C2%B022\'59.4%22E/@21.258055,40.383166,456m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s21%C2%B015\'29.0%22N+40%C2%B022\'59.4%22E!3b1!8m2!3d21.258055!4d40.383166!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d21.258055!4d40.383166!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
+      'Yanbu': 'https://www.google.com/maps/place/24%C2%B006\'52.6%22N+38%C2%B009\'27.9%22E/@24.114608,38.15774,120m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s24%C2%B006\'52.6%22N+38%C2%B009\'27.9%22E!3b1!8m2!3d24.114608!4d38.15774!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d24.114608!4d38.15774!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
+      'Qunfuzah': 'https://www.google.com/maps/place/19%C2%B006\'03.4%22N+40%C2%B059\'35.2%22E/@19.100938,41.009762,802m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s19%C2%B006\'03.4%22N+40%C2%B059\'35.2%22E!3b1!8m2!3d19.100938!4d41.009762!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d19.100938!4d41.009762!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB'
+    },
+    'Central Region': {
+      'Riyadh': 'https://www.google.com/maps/place/24%C2%B046\'58.2%22N+46%C2%B044\'06.5%22E/@24.782828,46.735139,833m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s24%C2%B046\'58.2%22N+46%C2%B044\'06.5%22E!3b1!8m2!3d24.782828!4d46.735139!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d24.782828!4d46.735139!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
+      'Al-Qassim': 'https://www.google.com/maps/place/26%C2%B029\'07.7%22N+43%C2%B058\'19.8%22E/@26.485482,43.972141,820m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s26%C2%B029\'07.7%22N+43%C2%B058\'19.8%22E!3b1!8m2!3d26.485482!4d43.972141!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d26.485482!4d43.972141!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
+      'dawadmi': 'https://www.google.com/maps/place/24%C2%B029\'22.9%22N+45%C2%B032\'19.9%22E/@24.489696,45.54579,830m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s24%C2%B029\'22.9%22N+45%C2%B032\'19.9%22E!3b1!8m2!3d24.489696!4d45.54579!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d24.489696!4d45.54579!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB'
+    },
+    'Eastern Region': {
+      'Dammam': 'https://www.google.com/maps/place/26%C2%B026\'13.4%22N+49%C2%B058\'31.1%22E/@26.437055,49.975301,821m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s26%C2%B026\'13.4%22N+49%C2%B058\'31.1%22E!3b1!8m2!3d26.437055!4d49.975301!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d26.437055!4d49.975301!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
+      'HUFJF': 'https://www.google.com/maps/place/25%C2%B023\'55.9%22N+49%C2%B034\'53.6%22E/@25.398858,49.581558,859m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s25%C2%B023\'55.9%22N+49%C2%B034\'53.6%22E!3b1!8m2!3d25.398858!4d49.581558!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d25.398858!4d49.581558!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
+      'Khobar': 'https://www.google.com/maps/place/26%C2%B029\'09.9%22N+50%C2%B000\'09.3%22E/@26.486083,50.002574,820m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s26%C2%B029\'09.9%22N+50%C2%B000\'09.3%22E!3b1!8m2!3d26.486083!4d50.002574!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d26.486083!4d50.002574!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
+      'Jubail': 'https://www.google.com/maps/place/27%C2%B000\'55.5%22N+49%C2%B039\'05.4%22E/@27.01542,49.6515,822m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s27%C2%B000\'55.5%22N+49%C2%B039\'05.4%22E!3b1!8m2!3d27.01542!4d49.6515!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d27.01542!4d49.6515!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB'
+    },
+    'Southern Region': {
+      'Abha': 'https://www.google.com/maps/place/18%C2%B016\'06.3%22N+42%C2%B030\'01.2%22E/@18.268407,42.50032,861m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s18%C2%B016\'06.3%22N+42%C2%B030\'01.2%22E!3b1!8m2!3d18.268407!4d42.50032!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d18.268407!4d42.50032!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
+      'Jizan': 'https://www.google.com/maps/place/17%C2%B002\'59.5%22N+42%C2%B034\'59.9%22E/@17.049872,42.583307,875m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s17%C2%B002\'59.5%22N+42%C2%B034\'59.9%22E!3b1!8m2!3d17.049872!4d42.583307!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d17.049872!4d42.583307!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
+      'Najran': 'https://www.google.com/maps/place/17%C2%B029\'55.3%22N+44%C2%B026\'16.9%22E/@17.498687,44.438029,870m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s17%C2%B029\'55.3%22N+44%C2%B026\'16.9%22E!3b1!8m2!3d17.498687!4d44.438029!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d17.498687!4d44.438029!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
+      'Khamis Mushayt': 'https://www.google.com/maps/@18.246515,42.715014,81-178501-44z',
+      'Baha': 'https://www.google.com/maps/place/19%C2%B048\'52.4%22N+41%C2%B028\'39.7%22E/@19.814541,41.477697,861m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s19%C2%B048\'52.4%22N+41%C2%B028\'39.7%22E!3b1!8m2!3d19.814541!4d41.477697!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d19.814541!4d41.477697!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
+      'Wadi dawasir': 'https://www.google.com/maps/place/20%C2%B029\'27.9%22N+45%C2%B044\'23.5%22E/@20.49108,45.739857,834m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s20%C2%B029\'27.9%22N+45%C2%B044\'23.5%22E!3b1!8m2!3d20.49108!4d45.739857!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d20.49108!4d45.739857!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB'
+    },
+    'Hail Region': {
+      'Hail': 'https://www.google.com/maps/place/27%C2%B028\'08.4%22N+41%C2%B044\'29.3%22E/@27.468985,41.741673,831m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s27%C2%B028\'08.4%22N+41%C2%B044\'29.3%22E!3b1!8m2!3d27.468985!4d41.741673!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d27.468985!4d41.741673!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB'
+    },
+    'Tabuk Region': {
+      'Tabuk': 'https://www.google.com/maps/place/28%C2%B023\'28.3%22N+36%C2%B038\'51.4%22E/@28.3912,36.64761,804m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s28%C2%B023\'28.3%22N+36%C2%B038\'51.4%22E!3b1!8m2!3d28.3912!4d36.64761!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d28.3912!4d36.64761!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB'
+    }
+  };
+
+  // Parse coordinates from Google Maps URLs of the form .../@lat,lng,...
+  const parseLatLngFromGoogleMapsUrl = (url: string): [number, number] | null => {
+    const atIndex = url.indexOf('@');
+    if (atIndex === -1) return null;
+    const afterAt = url.substring(atIndex + 1);
+    const parts = afterAt.split(',');
+    if (parts.length < 2) return null;
+    const lat = parseFloat(parts[0]);
+    const lng = parseFloat(parts[1]);
+    if (isNaN(lat) || isNaN(lng)) return null;
+    return [lat, lng];
+  };
+
+  // Build city coordinates for each dataset region
+  const citiesByDatasetRegion: Record<string, City[]> = Object.fromEntries(
+    Object.entries(cityUrlData).map(([regionName, cities]) => {
+      const cityList: City[] = Object.entries(cities)
+        .map(([cityName, url]) => {
+          const coords = parseLatLngFromGoogleMapsUrl(url);
+          return coords ? { name: cityName, coordinates: coords, url } : null;
+        })
+        .filter((c): c is City => c !== null);
+      return [regionName, cityList];
+    })
+  );
 
   useEffect(() => {
     setIsMapReady(true);
@@ -239,28 +361,26 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
             url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
           />
-          
-          {/* Region Polygons */}
-          {regions.map((region: any, index: number) => {
-            const isSelected = selectedRegion?.name === region.name;
-            return (
-              <Polygon
-                key={index}
-                positions={region.bounds}
-                pathOptions={{
-                  fillColor: region.color,
-                  color: isSelected ? region.color : '#e5e7eb',
-                  fillOpacity: isSelected ? 0.7 : 0.45,
-                  weight: isSelected ? 4 : 2,
-                  opacity: 1,
-                }}
-                eventHandlers={{
-                  click: () => handleRegionClick(region),
-                }}
-                className="cursor-pointer"
-              />
-            );
-          })}
+
+          {/* City markers for selected region */}
+          {selectedRegion && (() => {
+            const cities = citiesByDatasetRegion[selectedRegion.name] || [];
+            return cities.map((city, idx) => (
+              <CircleMarker
+                key={`${city.name}-${idx}`}
+                center={city.coordinates}
+                radius={8}
+                pathOptions={{ color: '#ffffff', weight: 2 }}
+                fillColor={selectedRegion.color}
+                fillOpacity={1}
+                eventHandlers={{ click: () => window.open(city.url, '_blank') }}
+              >
+                <Tooltip direction="bottom" offset={[0, 10]} opacity={1} permanent>
+                  {city.name}
+                </Tooltip>
+              </CircleMarker>
+            ));
+          })()}
 
           {/* Headquarters Marker */}
           <CircleMarker
@@ -332,7 +452,7 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
                           fontFamily: 'var(--font-bricolage-grotesque)'
                         }}
                       >
-                        {region.name} Region
+                        {region.name}
                       </span>
                     </div>
                     <div className="text-right">
@@ -411,7 +531,7 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
                       fontFamily: 'var(--font-bricolage-grotesque)'
                     }}
                   >
-                    {selectedRegion.name} Region
+                    {selectedRegion.name}
                   </h3>
                 </div>
                 <button

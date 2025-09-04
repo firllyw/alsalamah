@@ -7,7 +7,7 @@ import { faClock, faTruck, faNetworkWired, faShieldAlt } from '@fortawesome/free
 const defaultFeatures = [
   {
     label: 'On-time',
-    title: 'Proven track record',
+    title: 'PROVEN TRACK RECORD',
     subtitle: '',
     description:
       "Decades of experience in time-sensitive and mission-critical shipments, ensuring your goods arrive exactly when and where they're needed.",
@@ -196,7 +196,6 @@ const RecordSection = ({ data }: RecordSectionProps) => {
             src={features[activeIdx]?.image || '/record.png'}
             alt="Technology and delivery tracking"
             className="w-full h-full object-cover"
-            onLoad={() => window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }))}
           />
         </div>
       </div>
