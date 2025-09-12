@@ -11,7 +11,7 @@ interface TruckModelProps {
 }
 
 function TruckModel({ scrollProgress }: TruckModelProps) {
-  const { scene } = useGLTF('/TRUCK3.glb');
+  const { scene } = useGLTF('/truck mercy new.glb');
   const truckRef = useRef<THREE.Group>(null);
 
   // Clone the scene to avoid issues with multiple instances
@@ -184,6 +184,6 @@ function TruckScene() {
 }
 
 // Preload the truck model
-useGLTF.preload('/TRUCK3.glb');
+useGLTF.preload('/truck mercy new.glb');
 
 export default TruckScene;

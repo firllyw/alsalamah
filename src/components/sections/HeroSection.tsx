@@ -72,7 +72,7 @@ const HeroSection = ({ data, siteConfig }: HeroSectionProps) => {
 
         {/* Main Title - left aligned, full width, NOT bold, thinner font */}
         <motion.h1
-          className="w-full text-left text-[clamp(4rem,12vw,9rem)] lg:text-[clamp(6rem,12vw,11rem)] font-light leading-[1.05] mb-8 text-white"
+          className="w-full text-left text-[clamp(2.5rem,8vw,6rem)] lg:text-[clamp(3rem,8vw,7rem)] font-light leading-[1.05] mb-8 text-white"
           style={{ 
             fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
             lineHeight: 1.05,
@@ -83,7 +83,6 @@ const HeroSection = ({ data, siteConfig }: HeroSectionProps) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          {/* @TODO reduce size */}
           {hero.title || hero.mainTitle}
         </motion.h1>
         
