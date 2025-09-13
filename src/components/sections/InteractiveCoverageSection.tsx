@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, useInView } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { Bricolage_Grotesque } from 'next/font/google';
@@ -46,6 +46,9 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
   const [isMapReady, setIsMapReady] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState<Region | null>(null);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Enhanced regions with polygon boundaries and zoom levels
   const regions: Region[] = [
@@ -301,6 +304,74 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
     })
   );
 
+  // Check if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Handle scroll detection within the section
+  const handleScroll = useCallback(() => {
+    if (!isMobile || !sectionRef.current) return;
+    
+    const section = sectionRef.current as HTMLElement;
+    const rect = section.getBoundingClientRect();
+    // Check if section is visible in viewport (any part of it)
+    const isInSection = rect.top < window.innerHeight && rect.bottom > 0;
+    
+    if (isInSection) {
+      setIsScrolling(true);
+      
+      // Clear existing timeout
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+      
+      // Set new timeout to hide card after scrolling stops
+      scrollTimeoutRef.current = setTimeout(() => {
+        setIsScrolling(false);
+      }, 2000); // Hide after 2 seconds of no scrolling
+    } else {
+      // If not in section, hide immediately
+      setIsScrolling(false);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    }
+  }, [isMobile]);
+
+  // Set up scroll listener
+  useEffect(() => {
+    if (isMobile) {
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      // Trigger initial check when mobile state changes
+      handleScroll();
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+        if (scrollTimeoutRef.current) {
+          clearTimeout(scrollTimeoutRef.current);
+        }
+      };
+    }
+  }, [isMobile, handleScroll]);
+
+  // Show card initially when section comes into view on mobile
+  useEffect(() => {
+    if (isMobile && isInView && sectionRef.current) {
+      setIsScrolling(true);
+      // Set timeout to hide after initial display
+      scrollTimeoutRef.current = setTimeout(() => {
+        setIsScrolling(false);
+      }, 3000); // Show for 3 seconds initially
+    }
+  }, [isMobile, isInView]);
+
   useEffect(() => {
     setIsMapReady(true);
   }, []);
@@ -396,96 +467,107 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
       </div>
 
       {/* Floating Card Overlay - Only One Card, on the Left */}
-      <div className="absolute inset-0 z-10 flex items-start justify-start pointer-events-none">
-        <motion.div
-          className="fixed md:absolute top-8 left-1/2 md:left-8 transform -translate-x-1/2 md:translate-x-0 bg-gray-50 rounded-2xl p-6 shadow-2xl pointer-events-auto max-w-sm w-[90vw] md:w-auto"
-          initial={{ opacity: 0, y: -30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
-          transition={{ duration: 0.8 }}
-          style={{
-            zIndex: 20,
-            border: '1.5px solid #e5e7eb',
-            boxShadow: '0 8px 32px 0 rgba(39,61,151,0.10)'
-          }}
-        >
-          {!selectedRegion ? (
-            // Regions List View
-            <>
-              <h2 
-                className="text-2xl font-bold mb-4"
-                style={{ 
-                  fontFamily: 'var(--font-bricolage-grotesque)',
-                  color: '#273d97'
-                }}
-              >
-                Saudi Arabia Coverage Area{' '}
-                <span style={{ color: '#b2b9e6' }}>Distribution</span>
-              </h2>
-              <p 
-                className="text-sm leading-relaxed mb-4"
-                style={{ 
-                  color: '#6B7280',
-                  fontFamily: 'var(--font-bricolage-grotesque)'
-                }}
-              >
-                Click on any region to explore our coverage
-              </p>
-              <div className="space-y-3">
-                {regions.map((region, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleRegionClick(region)}
-                    className="w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 bg-gray-50 hover:bg-gray-100"
-                    style={{
-                      fontFamily: 'var(--font-bricolage-grotesque)'
-                    }}
-                  >
+      {isInView && (!isMobile || isScrolling) && (
+        <div className="absolute inset-0 z-10 flex items-start justify-start pointer-events-none">
+          <motion.div
+            className="fixed md:absolute top-8 left-1/2 md:left-8 transform -translate-x-1/2 md:translate-x-0 bg-gray-50 rounded-2xl p-6 shadow-2xl pointer-events-auto max-w-sm w-[90vw] md:w-auto"
+            initial={{ opacity: 0, y: -30 }}
+            animate={isInView && (!isMobile || isScrolling) ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
+            transition={{ duration: 0.8 }}
+            style={{
+              zIndex: 20,
+              border: '1.5px solid #e5e7eb',
+              boxShadow: '0 8px 32px 0 rgba(39,61,151,0.10)'
+            }}
+          >
+            {!selectedRegion ? (
+              // Regions List View
+              <>
+                <h2 
+                  className="text-2xl font-bold mb-4"
+                  style={{ 
+                    fontFamily: 'var(--font-bricolage-grotesque)',
+                    color: '#273d97'
+                  }}
+                >
+                  Saudi Arabia Coverage Area{' '}
+                  <span style={{ color: '#b2b9e6' }}>Distribution</span>
+                </h2>
+                <p 
+                  className="text-sm leading-relaxed mb-4"
+                  style={{ 
+                    color: '#6B7280',
+                    fontFamily: 'var(--font-bricolage-grotesque)'
+                  }}
+                >
+                  Click on any region to explore our coverage
+                </p>
+                <div className="space-y-3">
+                  {regions.map((region, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleRegionClick(region)}
+                      className="w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 bg-gray-50 hover:bg-gray-100"
+                      style={{
+                        fontFamily: 'var(--font-bricolage-grotesque)'
+                      }}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <div 
+                          className="w-4 h-4 rounded-full"
+                          style={{ backgroundColor: region.color, border: '1.5px solid #fff' }}
+                        ></div>
+                        <span 
+                          className="font-medium text-left"
+                          style={{ 
+                            color: '#273d97',
+                            fontFamily: 'var(--font-bricolage-grotesque)'
+                          }}
+                        >
+                          {region.name}
+                        </span>
+                      </div>
+                      <div className="text-right">
+                        <div 
+                          className="text-sm font-bold"
+                          style={{ 
+                            color: '#273d97',
+                            fontFamily: 'var(--font-bricolage-grotesque)'
+                          }}
+                        >
+                          {region.branches}
+                        </div>
+                        <div 
+                          className="text-xs"
+                          style={{ 
+                            color: '#6B7280',
+                            fontFamily: 'var(--font-bricolage-grotesque)'
+                          }}
+                        >
+                          Branches
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+                {/* Headquarters Info */}
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
                     <div className="flex items-center space-x-3">
                       <div 
                         className="w-4 h-4 rounded-full"
-                        style={{ backgroundColor: region.color, border: '1.5px solid #fff' }}
+                        style={{ backgroundColor: data?.data?.headquarters?.color || areaCoverage.section1.headquarters.color, border: '1.5px solid #fff' }}
                       ></div>
                       <span 
-                        className="font-medium text-left"
+                        className="font-bold"
                         style={{ 
                           color: '#273d97',
                           fontFamily: 'var(--font-bricolage-grotesque)'
                         }}
                       >
-                        {region.name}
+                        Headquarter
                       </span>
                     </div>
-                    <div className="text-right">
-                      <div 
-                        className="text-sm font-bold"
-                        style={{ 
-                          color: '#273d97',
-                          fontFamily: 'var(--font-bricolage-grotesque)'
-                        }}
-                      >
-                        {region.branches}
-                      </div>
-                      <div 
-                        className="text-xs"
-                        style={{ 
-                          color: '#6B7280',
-                          fontFamily: 'var(--font-bricolage-grotesque)'
-                        }}
-                      >
-                        Branches
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-              {/* Headquarters Info */}
-              <div className="mt-4 pt-4 border-t border-gray-200">
-                <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <div 
-                      className="w-4 h-4 rounded-full"
-                      style={{ backgroundColor: data?.data?.headquarters?.color || areaCoverage.section1.headquarters.color, border: '1.5px solid #fff' }}
-                    ></div>
                     <span 
                       className="font-bold"
                       style={{ 
@@ -493,115 +575,106 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
                         fontFamily: 'var(--font-bricolage-grotesque)'
                       }}
                     >
-                      Headquarter
+                      {data?.data?.headquarters?.name || areaCoverage.section1.headquarters.name}
                     </span>
                   </div>
-                  <span 
-                    className="font-bold"
-                    style={{ 
-                      color: '#273d97',
-                      fontFamily: 'var(--font-bricolage-grotesque)'
-                    }}
-                  >
-                    {data?.data?.headquarters?.name || areaCoverage.section1.headquarters.name}
-                  </span>
-                </div>
-              </div>
-              <button
-                onClick={resetView}
-                className="mt-4 text-sm px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors"
-                style={{ fontFamily: 'var(--font-bricolage-grotesque)' }}
-              >
-                Reset View
-              </button>
-            </>
-          ) : (
-            // Selected Region Detail View
-            <>
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-3">
-                  <div 
-                    className="w-6 h-6 rounded-full"
-                    style={{ backgroundColor: selectedRegion.color, border: '2px solid #fff' }}
-                  ></div>
-                  <h3 
-                    className="text-xl font-bold"
-                    style={{ 
-                      color: '#273d97',
-                      fontFamily: 'var(--font-bricolage-grotesque)'
-                    }}
-                  >
-                    {selectedRegion.name}
-                  </h3>
                 </div>
                 <button
                   onClick={resetView}
-                  className="text-sm px-3 py-1 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
+                  className="mt-4 text-sm px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors"
                   style={{ fontFamily: 'var(--font-bricolage-grotesque)' }}
                 >
-                  ← Back
+                  Reset View
                 </button>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <div 
-                    className="text-3xl font-bold"
-                    style={{ 
-                      color: '#273d97',
-                      fontFamily: 'var(--font-bricolage-grotesque)'
-                    }}
-                  >
-                    {selectedRegion.branches}
+              </>
+            ) : (
+              // Selected Region Detail View
+              <>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-3">
+                    <div 
+                      className="w-6 h-6 rounded-full"
+                      style={{ backgroundColor: selectedRegion.color, border: '2px solid #fff' }}
+                    ></div>
+                    <h3 
+                      className="text-xl font-bold"
+                      style={{ 
+                        color: '#273d97',
+                        fontFamily: 'var(--font-bricolage-grotesque)'
+                      }}
+                    >
+                      {selectedRegion.name}
+                    </h3>
                   </div>
-                  <div 
-                    className="text-sm font-medium"
-                    style={{ 
-                      color: '#6B7280',
-                      fontFamily: 'var(--font-bricolage-grotesque)'
-                    }}
+                  <button
+                    onClick={resetView}
+                    className="text-sm px-3 py-1 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
+                    style={{ fontFamily: 'var(--font-bricolage-grotesque)' }}
                   >
-                    Branches
-                  </div>
+                    ← Back
+                  </button>
                 </div>
                 
-                <div className="text-center p-4 bg-green-50 rounded-lg">
-                  <div 
-                    className="text-3xl font-bold"
-                    style={{ 
-                      color: '#273d97',
-                      fontFamily: 'var(--font-bricolage-grotesque)'
-                    }}
-                  >
-                    {selectedRegion.subBranches}
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="text-center p-4 bg-blue-50 rounded-lg">
+                    <div 
+                      className="text-3xl font-bold"
+                      style={{ 
+                        color: '#273d97',
+                        fontFamily: 'var(--font-bricolage-grotesque)'
+                      }}
+                    >
+                      {selectedRegion.branches}
+                    </div>
+                    <div 
+                      className="text-sm font-medium"
+                      style={{ 
+                        color: '#6B7280',
+                        fontFamily: 'var(--font-bricolage-grotesque)'
+                      }}
+                    >
+                      Branches
+                    </div>
                   </div>
-                  <div 
-                    className="text-sm font-medium"
+                  
+                  <div className="text-center p-4 bg-green-50 rounded-lg">
+                    <div 
+                      className="text-3xl font-bold"
+                      style={{ 
+                        color: '#273d97',
+                        fontFamily: 'var(--font-bricolage-grotesque)'
+                      }}
+                    >
+                      {selectedRegion.subBranches}
+                    </div>
+                    <div 
+                      className="text-sm font-medium"
+                      style={{ 
+                        color: '#6B7280',
+                        fontFamily: 'var(--font-bricolage-grotesque)'
+                      }}
+                    >
+                      Sub Branches
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-gray-50 rounded-lg">
+                  <p 
+                    className="text-sm"
                     style={{ 
                       color: '#6B7280',
                       fontFamily: 'var(--font-bricolage-grotesque)'
                     }}
                   >
-                    Sub Branches
-                  </div>
+                    Comprehensive coverage across the {selectedRegion.name.toLowerCase()} region with strategic distribution points ensuring reliable delivery services.
+                  </p>
                 </div>
-              </div>
-
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <p 
-                  className="text-sm"
-                  style={{ 
-                    color: '#6B7280',
-                    fontFamily: 'var(--font-bricolage-grotesque)'
-                  }}
-                >
-                  Comprehensive coverage across the {selectedRegion.name.toLowerCase()} region with strategic distribution points ensuring reliable delivery services.
-                </p>
-              </div>
-            </>
-          )}
-        </motion.div>
-      </div>
+              </>
+            )}
+          </motion.div>
+        </div>
+      )}
     </section>
   );
 };

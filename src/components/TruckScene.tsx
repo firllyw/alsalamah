@@ -47,7 +47,7 @@ function TruckModel({ scrollProgress }: TruckModelProps) {
   const PHASE3_END = 0.6;         // Truck exits view
 
   // Phase 1: Initial centered position (no rotation, just fade out)
-  const INITIAL_POSITION = [6, -2, -3];
+  const INITIAL_POSITION = [3, -2, -3];
   const INITIAL_ROTATION_Y = -1;
   const INITIAL_ROTATION_Z = 0;
   const INITIAL_SCALE = 0.4;
@@ -59,7 +59,7 @@ function TruckModel({ scrollProgress }: TruckModelProps) {
   const SLIDEIN_Z = 1;
   // Rotate the truck so it faces left (not reversing) when sliding in
   const SLIDEIN_ROTATION_Y = -Math.PI / 1; // -90 degrees, facing left
-  const SLIDEIN_SCALE = 0.4;
+  const SLIDEIN_SCALE = 0.3;
 
   // Phase 3: Exit movement (move further left and out of view)
   const EXIT_POSITION_X = -10; // Move far left to exit view
@@ -83,7 +83,7 @@ function TruckModel({ scrollProgress }: TruckModelProps) {
             Math.max((scrollValue - PHASE1_START) / (PHASE1_END - PHASE1_START), 0),
             1
           );
-          newOpacity = 1 - phase1Progress; // gradually disappear to 0
+          newOpacity = 1; // gradually disappear to 0
         } else {
           newOpacity = 0; // hidden after phase 1 ends until phase 2 starts
         }
