@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faTruck, faNetworkWired, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
-
+// cards top and bottom will be aligned with image top and bottom, and hovered card once unhovered, will be defaulted to the first card. should stick to the last hovered card.
 const defaultFeatures = [
   {
     label: 'On-time',

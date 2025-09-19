@@ -14,7 +14,8 @@ import ContactSection from '@/components/sections/ContactSection';
 import StatSection from '@/components/sections/StatSection';
 import RecordSection from '@/components/sections/RecordSection';
 import InteractiveCoverageSection from '@/components/sections/InteractiveCoverageSection';
-import Lenis from 'lenis';
+import Lenis from 'lenis';// Static data import
+import { staticSiteData } from './data.js';
 
 // Dynamic imports for better performance
 const TruckScene = dynamic(() => import('@/components/TruckScene'), {
@@ -24,32 +25,16 @@ const TruckScene = dynamic(() => import('@/components/TruckScene'), {
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
-  const [siteData, setSiteData] = useState({
-    hero: {},
-    siteConfig: {},
-    truckReveal: {},
-    truckRotation: {
-      data: {
-        sections: []
-      }
-    },
-    services: {},
-    stats: {},
-    showcase: {},
-    record: {},
-    areaCoverage: {},
-    contact: {},
-  });
+  const [siteData] = useState(staticSiteData);
 
-  // Fetch site data
+  // Initialize with static data
   useEffect(() => {
-    fetch('/api/data')
-      .then(res => res.json())
-      .then(data => {
-        setSiteData(data);
-        setIsLoading(false);
-      })
-      .catch(err => console.error('Failed to fetch site data:', err));
+    // Simulate loading for smooth transition
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 100);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   // Initialize Lenis smooth scrolling
@@ -83,7 +68,7 @@ export default function Home() {
       ) : (
         <div className="parallax-container" style={{ backgroundColor: '#ffffff' }}>
           {/* Fixed 3D Truck Scene */}
-          <TruckScene />
+          {/* <TruckScene /> */}
 
           {/* Content Layer */}
           <div className="content-layer">

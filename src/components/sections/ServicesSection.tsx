@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { motion, useScroll } from 'framer-motion';
+import { motion, useScroll, useInView, useMotionValue, useSpring, useTransform, MotionValue } from 'framer-motion';
 import Image from 'next/image';
 import { Bricolage_Grotesque } from 'next/font/google';
 
@@ -29,14 +29,16 @@ const SERVICES = [
   },
 ];
 
-// Circular KM Counter (unchanged)
-const CircularKmCounter = ({ progress }: { progress: number }) => {
+// Circular KM Counter with MotionValue support
+const CircularKmCounter = ({ progress }: { progress: MotionValue<number> }) => {
   const radius = CIRCLE_RADIUS;
   const stroke = 4;
   const normalizedRadius = radius - stroke / 2;
   const circumference = normalizedRadius * 2 * Math.PI;
-  const offset = circumference - progress * circumference;
-  const km = Math.round(progress * MAX_KM);
+  
+  // Transform the motion value to get offset and km values
+  const offset = useTransform(progress, [0, 1], [circumference, 0]);
+  const km = useTransform(progress, [0, 1], [0, MAX_KM]);
 
   return (
     <div
@@ -72,16 +74,15 @@ const CircularKmCounter = ({ progress }: { progress: number }) => {
           r={normalizedRadius}
           strokeDasharray={circumference}
           strokeDashoffset={offset}
-          style={{ transition: 'stroke-dashoffset 0.2s' }}
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span
+        <motion.span
           className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-white"
           style={{ fontFamily: 'var(--font-bricolage-grotesque), sans-serif' }}
         >
-          {km} km
-        </span>
+          <motion.span>{useTransform(km, (value) => `${Math.round(value)} km`)}</motion.span>
+        </motion.span>
       </div>
     </div>
   );
@@ -122,7 +123,7 @@ function ServiceCard({
       onMouseLeave={() => setHovered(false)}
     >
       <div className="flex flex-col gap-1">
-        <span className={`font-bold text-white mb-3 ${!hovered ? 'text-xl' : 'md:text-lg'}`}>{title}</span>
+        <span className={`font-bold text-white mb-3 ${'md:text-lg'}`}>{title}</span>
         <div className={`text-white/80 text-sm ${!hovered ? 'text-base' : 'md:text-base'}`}>{description}</div>
       </div>
     </div>
@@ -141,18 +142,24 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
     setIsMounted(true);
   }, []);
 
-  const { scrollYProgress } = useScroll({
-    target: isMounted ? sectionRef : undefined,
-    offset: ['start end', 'end start'],
+  // Use intersection observer to trigger animation when in view
+  const counterRef = useRef(null);
+  const isInView = useInView(counterRef, { once: true, margin: "-100px" });
+  
+  // Create animated progress value that goes from 0 to 1
+  const progress = useMotionValue(0);
+  const animatedProgress = useSpring(progress, {
+    stiffness: 50,
+    damping: 30,
+    restDelta: 0.001
   });
 
-  const [progress, setProgress] = useState(0);
-
   useEffect(() => {
-    return scrollYProgress.on('change', (v) => {
-      setProgress((v - 0.25) * 4);
-    });
-  }, [scrollYProgress]);
+    if (isInView) {
+      // Animate to 1 over 2.5 seconds when in view
+      progress.set(1);
+    }
+  }, [isInView, progress]);
 
   // Use SERVICES constant for cards
   const services = SERVICES;
@@ -239,7 +246,6 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
           >
             AST has built a 20-year track<br />
             record as a partner businesses<br />
-            can depend on.
           </motion.h2>
           {/* Cards row */}
           <div className="flex flex-row items-start gap-6 w-full mt-4">
@@ -280,7 +286,9 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
               maxHeight: '100%',
             }}
           >
-            <CircularKmCounter progress={progress} />
+            <div ref={counterRef}>
+              <CircularKmCounter progress={animatedProgress} />
+            </div>
           </div>
         </div>
       </div>

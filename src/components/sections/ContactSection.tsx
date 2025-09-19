@@ -129,7 +129,7 @@ const ContactSection = ({ data, siteConfig }: ContactSectionProps) => {
                 <div className="space-y-4 text-white">
                   <div>
                     <h3 className="text-2xl font-semibold mb-1">Al Salamah Transport</h3>
-                    <p className="text-xl text-blue-100">Jeddah, Kingdom of Saudi Arabia</p>
+                    <p className="text-xl">Jeddah, Kingdom of Saudi Arabia</p>
                   </div>
                   <div className="space-y-2">
                     <p className="text-xl">
@@ -171,7 +171,7 @@ const ContactSection = ({ data, siteConfig }: ContactSectionProps) => {
             <img
               src="/sbtc_logo.png"
               alt="SBTC Logo"
-              className="h-10 w-auto"
+              className="h-16 w-auto"
             />
           </motion.div>
         </div>

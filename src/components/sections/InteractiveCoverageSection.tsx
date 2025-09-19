@@ -191,7 +191,7 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
       branches: 1,
       subBranches: 1,
       color: "#B8860B",
-      coordinates: [27.468985, 41.741673],
+      coordinates: [28.4, 36.522],
       zoom: 7,
       bounds: [
         [20.2, 45.0],
@@ -257,13 +257,13 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
       'dawadmi': 'https://www.google.com/maps/place/24%C2%B029\'22.9%22N+45%C2%B032\'19.9%22E/@24.489696,45.54579,830m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s24%C2%B029\'22.9%22N+45%C2%B032\'19.9%22E!3b1!8m2!3d24.489696!4d45.54579!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d24.489696!4d45.54579!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB'
     },
     'Eastern Region': {
-      'Dammam': 'https://www.google.com/maps/place/26%C2%B026\'13.4%22N+49%C2%B058\'31.1%22E/@26.437055,49.975301,821m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s26%C2%B026\'13.4%22N+49%C2%B058\'31.1%22E!3b1!8m2!3d26.437055!4d49.975301!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d26.437055!4d49.975301!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
+      'Dammam': 'https://www.google.com/maps/place/26%C2%B026\'13.4%22N+49%C2%B057\'31.1%22E/@26.437055,49,821m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s26%C2%B026\'13.4%22N+49%C2%B057\'31.1%22E!3b1!8m2!3d26.437055!4d49.958634!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d26.437055!4d49.958634!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
       'HUFJF': 'https://www.google.com/maps/place/25%C2%B023\'55.9%22N+49%C2%B034\'53.6%22E/@25.398858,49.581558,859m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s25%C2%B023\'55.9%22N+49%C2%B034\'53.6%22E!3b1!8m2!3d25.398858!4d49.581558!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d25.398858!4d49.581558!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
       'Khobar': 'https://www.google.com/maps/place/26%C2%B029\'09.9%22N+50%C2%B000\'09.3%22E/@26.486083,50.002574,820m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s26%C2%B029\'09.9%22N+50%C2%B000\'09.3%22E!3b1!8m2!3d26.486083!4d50.002574!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d26.486083!4d50.002574!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
       'Jubail': 'https://www.google.com/maps/place/27%C2%B000\'55.5%22N+49%C2%B039\'05.4%22E/@27.01542,49.6515,822m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s27%C2%B000\'55.5%22N+49%C2%B039\'05.4%22E!3b1!8m2!3d27.01542!4d49.6515!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d27.01542!4d49.6515!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB'
     },
     'Southern Region': {
-      'Abha': 'https://www.google.com/maps/place/18%C2%B016\'06.3%22N+42%C2%B030\'01.2%22E/@18.268407,42.50032,861m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s18%C2%B016\'06.3%22N+42%C2%B030\'01.2%22E!3b1!8m2!3d18.268407!4d42.50032!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d18.268407!4d42.50032!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
+      'Abha': 'https://www.google.com/maps/place/18%C2%B016\'06.3%22N+42%C2%B030\'01.2%22E/@18,42.20032,861m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s18%C2%B016\'06.3%22N+42%C2%B030\'01.2%22E!3b1!8m2!3d18.268407!4d42.50032!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d18.268407!4d42.50032!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
       'Jizan': 'https://www.google.com/maps/place/17%C2%B002\'59.5%22N+42%C2%B034\'59.9%22E/@17.049872,42.583307,875m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s17%C2%B002\'59.5%22N+42%C2%B034\'59.9%22E!3b1!8m2!3d17.049872!4d42.583307!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d17.049872!4d42.583307!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
       'Najran': 'https://www.google.com/maps/place/17%C2%B029\'55.3%22N+44%C2%B026\'16.9%22E/@17.498687,44.438029,870m/data=!3m1!1e3!4m14!1m7!3m6!1s0x0:0xba1e62c9535f20c8!2s17%C2%B029\'55.3%22N+44%C2%B026\'16.9%22E!3b1!8m2!3d17.498687!4d44.438029!16s%2Fg%2F11vmlkcrns!4m5!3m4!1s0x0:0x0!8m2!3d17.498687!4d44.438029!16s%2Fg%2F11vmlkcrns?entry=ttu&og=EgoyMDExODA5NjM5ODYwMjE0NTE4EgQKAggB',
       'Khamis Mushayt': 'https://www.google.com/maps/@18.246515,42.715014,81-178501-44z',

@@ -72,7 +72,7 @@ const HeroSection = ({ data, siteConfig }: HeroSectionProps) => {
 
         {/* Main Title - left aligned, full width, NOT bold, thinner font */}
         <motion.h1
-          className="w-full text-left text-[clamp(2.5rem,8vw,6rem)] lg:text-[clamp(3rem,8vw,7rem)] font-light leading-[1.05] mb-8 text-white"
+          className="w-full text-left text-[clamp(3.5rem,10vw,8rem)] lg:text-[clamp(4rem,10vw,9rem)] font-light leading-[1.05] mb-8 mt-8 text-white"
           style={{ 
             fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
             lineHeight: 1.05,

@@ -1,4 +1,4 @@
-export const siteData = {
+export const staticSiteData = {
     "siteConfig": null,
     "menu": [],
     "sections": {
