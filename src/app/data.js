@@ -5,7 +5,7 @@ export const staticSiteData = {
         "hero": {
             "id": "hero-1",
             "title": "Driving Reliable Distribution",
-            "subtitle": "Across Saudi Arabia for 20 Years & Beyond.",
+            "subtitle": "Across Saudi Arabia for 20 Years & Beyondss.",
             "yearText": "",
             "scrollText": "SCROLL DOWN",
             "createdAt": "2025-08-12T15:01:20.732Z",

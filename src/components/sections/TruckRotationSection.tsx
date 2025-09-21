@@ -47,8 +47,8 @@ const TruckRotationSection = () => {
 
   // PHASES: Using the same checkpoints from the original TruckScene
   const PHASE2_START = 0.12;      // Truck appears from right, sliding in
-  const PHASE3_START = 0.3;       // Start moving left and out of view
-  const PHASE3_END = 0.6;         // Truck exits view
+  const PHASE3_START = 0.8;       // Start moving left and out of view
+  const PHASE3_END = 1;         // Truck exits view
 
   // Phase 2: Slide in from right positions (in viewport percentages)
   const SLIDEIN_START_X = 120; // Start offscreen right (120% of viewport width)

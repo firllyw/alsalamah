@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { useScroll, MotionValue } from 'framer-motion';
+import { useState, useRef } from 'react';
+import { useScroll } from 'framer-motion';
 import { homeContent } from '@/data/content';
 import { Bricolage_Grotesque } from 'next/font/google';
 
@@ -21,31 +21,8 @@ const MAX_PREVIEW_CHARS = 200;
 const TruckRevealSection = ({ data }: TruckRevealSectionProps) => {
   const truckReveal = data || homeContent.truckReveal;
   const [expanded, setExpanded] = useState(false);
-  const [truckOpacity, setTruckOpacity] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll();
-
-  // Phase 1 animation logic for truck_reveal.png
-  const PHASE1_START = 0.05;
-  const PHASE1_END = 0.12;
-
-  useEffect(() => {
-    const unsubscribe = scrollYProgress.on('change', (scrollValue) => {
-      if (scrollValue <= PHASE1_START) {
-        setTruckOpacity(1); // Fully visible before fade starts
-      } else if (scrollValue < PHASE1_END) {
-        const phase1Progress = Math.min(
-          Math.max((scrollValue - PHASE1_START) / (PHASE1_END - PHASE1_START), 0),
-          1
-        );
-        setTruckOpacity(1 - phase1Progress); // Fade out
-      } else {
-        setTruckOpacity(0); // Hidden after phase 1 ends
-      }
-    });
-
-    return () => unsubscribe();
-  }, [scrollYProgress]);
+  useScroll(); // keep for possible future use, but not used now
 
   // Split content for "Read more"
   const content = truckReveal.content || '';
@@ -57,7 +34,7 @@ const TruckRevealSection = ({ data }: TruckRevealSectionProps) => {
     <section
       id="about"
       ref={sectionRef}
-      className={`reveal-section relative min-h-[100vh] flex flex-col justify-end items-center bg-transparent ${bricolage.className}`}
+      className={`reveal-section relative min-h-[100vh] flex flex-col items-center bg-transparent ${bricolage.className}`}
       style={{
         paddingTop: '6rem',
         paddingBottom: '6rem',
@@ -65,12 +42,10 @@ const TruckRevealSection = ({ data }: TruckRevealSectionProps) => {
     >
       {/* Truck Reveal Image */}
       <div
-        className="absolute inset-0 flex justify-center z-5 pointer-events-none"
-        style={{ 
-          opacity: truckOpacity, 
-          transition: 'opacity 0.1s ease-out',
+        className="absolute left-0 right-0 flex justify-center z-5 pointer-events-none"
+        style={{
           alignItems: 'flex-start',
-          paddingTop: '15vh'
+          paddingTop: '0vh', // Move image higher
         }}
       >
         <img
@@ -87,8 +62,8 @@ const TruckRevealSection = ({ data }: TruckRevealSectionProps) => {
       </div>
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10 flex flex-col items-center justify-end h-full">
-        {/* Spacer to push content lower, now with h-full and flex-1 */}
-        <div className="flex-1 h-full" />
+        {/* Spacer to push content lower */}
+        <div style={{ height: '60vh' }} />
         <div
           className="
             w-full
