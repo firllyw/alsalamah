@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Bricolage_Grotesque } from 'next/font/google';
 
 const bricolage = Bricolage_Grotesque({
@@ -11,38 +11,31 @@ const bricolage = Bricolage_Grotesque({
   display: 'swap',
 });
 
-const stats = [
+// Fallback stats in case data fails to load
+const fallbackStats = [
   {
     value: '27',
-    label: 'Distribution\nBranches',
+    label: 'Domestic\nClients',
   },
   {
-    value: '10+',
-    label: 'Sub-\nBranches',
+    value: '5+',
+    label: 'Cross Boarder\nClients',
   },
   {
     value: '45+',
     label: 'Employees',
   },
   {
-    value: '19000',
-    label: 'Global\nCustomers',
-  },
-  {
     value: '30+',
     label: 'Vehicle\nFleet',
   },
   {
-    value: '4',
-    label: 'Sales SPV',
+    value: '2+2',
+    label: 'Domestic SPV &\nCross Boarder SPV',
   },
   {
-    value: '225',
-    label: 'Merchandiser',
-  },
-  {
-    value: '93',
-    label: 'Deliverymen',
+    value: '2',
+    label: 'Jeddah HQ\nDammam Rep. Office',
   },
 ];
 
@@ -52,7 +45,27 @@ interface StatSectionProps {
 
 const StatSection = ({ data }: StatSectionProps) => {
   const [hoveredStat, setHoveredStat] = useState<number | null>(null);
-  const statsData = data?.data || stats;
+  const [statsData, setStatsData] = useState(fallbackStats);
+
+  useEffect(() => {
+    // If data is passed as prop, use it
+    if (data?.data) {
+      setStatsData(data.data);
+    } else {
+      // Otherwise fetch from static JSON
+      fetch('/data.json')
+        .then(response => response.json())
+        .then(jsonData => {
+          if (jsonData.stats?.data) {
+            setStatsData(jsonData.stats.data);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching stats data:', error);
+          // Keep fallback data
+        });
+    }
+  }, [data]);
 
   return (
     <section
@@ -61,12 +74,12 @@ const StatSection = ({ data }: StatSectionProps) => {
     >
       <div className="w-full max-w-7xl">
         <div
-          className="grid grid-cols-4 grid-rows-2 gap-0 border border-[#b2b9e6]/40 rounded-2xl overflow-hidden"
+          className="grid grid-cols-3 grid-rows-2 gap-0 border border-[#b2b9e6]/40 rounded-2xl overflow-hidden"
           style={{
             minHeight: '60vh',
           }}
         >
-          {stats.map((stat, i) => {
+          {statsData.map((stat, i) => {
             const isHighlighted = hoveredStat === i;
             return (
               <div

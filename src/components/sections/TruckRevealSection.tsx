@@ -65,15 +65,20 @@ const TruckRevealSection = ({ data }: TruckRevealSectionProps) => {
     >
       {/* Truck Reveal Image */}
       <div
-        className="absolute inset-0 flex items-center justify-center z-5 pointer-events-none"
-        style={{ opacity: truckOpacity, transition: 'opacity 0.1s ease-out' }}
+        className="absolute inset-0 flex justify-center z-5 pointer-events-none"
+        style={{ 
+          opacity: truckOpacity, 
+          transition: 'opacity 0.1s ease-out',
+          alignItems: 'flex-start',
+          paddingTop: '15vh'
+        }}
       >
         <img
           src="/truck_reveal.png"
           alt="Truck Reveal"
           style={{
-            maxWidth: '400px',
-            maxHeight: '300px',
+            maxWidth: '800px',
+            maxHeight: '600px',
             width: 'auto',
             height: 'auto',
             objectFit: 'contain',

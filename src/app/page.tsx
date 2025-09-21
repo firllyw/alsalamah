@@ -87,12 +87,12 @@ export default function Home() {
               <TruckRotationSection />
 
               {/* Additional sections */}
-              <ServicesSection data={siteData?.services} />
+              <ServicesSection />
 
               {/* Part 4: Showcase with images and achievements */}
-              <ShowcaseSection data={siteData?.showcase} />
+              <ShowcaseSection />
 
-              <StatSection data={siteData?.stats} />
+              <StatSection />
 
               <RecordSection data={siteData?.record} />
 

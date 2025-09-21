@@ -151,7 +151,7 @@ const ContactSection = ({ data, siteConfig }: ContactSectionProps) => {
               transition={{ duration: 1, delay: 0.7 }}
             >
               <img
-                src={"/footer_truck.png"}
+                src={"/truck_footer.png"}
                 alt="Truck illustration"
                 className="w-full h-auto max-w-md sm:max-w-lg lg:max-w-none lg:w-[600px] object-contain"
               />

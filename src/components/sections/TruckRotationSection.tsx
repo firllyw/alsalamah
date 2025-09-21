@@ -121,6 +121,9 @@ const TruckRotationSection = () => {
             top: `${truckPosition.y}%`,
             left: `${truckPosition.x}%`,
             transform: 'translate(-50%, -50%)',
+            background: 'transparent',
+            border: 'none',
+            outline: 'none',
           }}
         >
           <img
@@ -132,6 +135,11 @@ const TruckRotationSection = () => {
               width: 'auto',
               height: 'auto',
               objectFit: 'contain',
+              display: 'block',
+              border: 'none',
+              outline: 'none',
+              backgroundColor: 'transparent',
+              backgroundImage: 'none',
             }}
           />
         </div>

@@ -15,8 +15,8 @@ const bricolage = Bricolage_Grotesque({
 const MAX_KM = 2000;
 const CIRCLE_RADIUS = 200; // Increased from 140
 
-// Service cards content as JSON for easy editing
-const SERVICES = [
+// Fallback service cards content
+const FALLBACK_SERVICES = [
   {
     title: "Domestic Service",
     description:
@@ -25,7 +25,7 @@ const SERVICES = [
   {
     title: "Cross-Border Service",
     description:
-      "Connects Saudi Arabia with the Levant, Iraq region, as well as Jordan and the broader Middle East, ensuring smooth, secure, and timely cross-border logistics.",
+      "Connects Saudi Arabia with the GCC Countries, Iraq region, as well as Jordan and the broader Middle East, ensuring smooth, secure, and timely cross-border logistics.",
   },
 ];
 
@@ -137,10 +137,30 @@ interface ServicesSectionProps {
 const ServicesSection = ({ data }: ServicesSectionProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [services, setServices] = useState(FALLBACK_SERVICES);
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+    
+    // If data is passed as prop, use it
+    if (data?.data) {
+      setServices(data.data);
+    } else {
+      // Otherwise fetch from static JSON
+      fetch('/data.json')
+        .then(response => response.json())
+        .then(jsonData => {
+          if (jsonData.servicesSection?.services) {
+            console.log('jsonData.servicesSection.services', jsonData.servicesSection.services);
+            setServices(jsonData.servicesSection.services);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching services data:', error);
+          // Keep fallback data
+        });
+    }
+  }, [data]);
 
   // Use intersection observer to trigger animation when in view
   const counterRef = useRef(null);
@@ -160,9 +180,6 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
       progress.set(1);
     }
   }, [isInView, progress]);
-
-  // Use SERVICES constant for cards
-  const services = SERVICES;
 
   return (
     <section
