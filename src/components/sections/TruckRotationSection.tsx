@@ -36,6 +36,22 @@ const TruckRotationSection = () => {
   const sectionRef = useRef(null);
   const [truckOpacity, setTruckOpacity] = useState(0);
   const [truckPosition, setTruckPosition] = useState({ x: 120, y: 50 });
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile screen size
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768); // 768px is md breakpoint in Tailwind
+    };
+
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
+
+  // Get responsive stationary position
+  const getStationaryX = () => isMobile ? TRUCK_STATIONARY_X_MOBILE : TRUCK_STATIONARY_X_DESKTOP;
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -45,49 +61,68 @@ const TruckRotationSection = () => {
   // Global scroll progress for truck animation (using the same phase timing as before)
   const { scrollYProgress: globalScrollProgress } = useScroll();
 
-  // PHASES: Using the same checkpoints from the original TruckScene
-  const PHASE2_START = 0.12;      // Truck appears from right, sliding in
-  const PHASE3_START = 0.8;       // Start moving left and out of view
-  const PHASE3_END = 1;         // Truck exits view
+  // PHASES: Truck slides in from right, stays stationary, then exits left
+  const PHASE1_START = 0.12;     // Start sliding in from right
+  const PHASE1_END = 0.18;       // Finish sliding in to stationary position
+  const PHASE2_STATIONARY_END = 0.4; // Truck stays in position until this point
+  const PHASE3_START = 0.4;      // Start moving left and out of view
+  const PHASE3_END = 0.42;        // Truck exits view
 
-  // Phase 2: Slide in from right positions (in viewport percentages)
-  const SLIDEIN_START_X = 120; // Start offscreen right (120% of viewport width)
-  const SLIDEIN_END_X = 80;    // Final position (80% of viewport width, in right area)
+  // Truck positions (in viewport percentages)
+  const TRUCK_START_X = 150;     // Starting position (off-screen right)
+  const TRUCK_STATIONARY_X_DESKTOP = 100; // Stationary position for desktop (visible on screen)
+  const TRUCK_STATIONARY_X_MOBILE = 180;   // Stationary position for mobile (right edge)
+  const TRUCK_EXIT_X = -50;      // Final exit position (offscreen left)
 
   useEffect(() => {
     const unsubscribe = globalScrollProgress.on('change', (scrollValue) => {
-      if (scrollValue < PHASE2_START) {
-        // Before Phase 2: hidden
+      const stationaryX = getStationaryX();
+
+      if (scrollValue < PHASE1_START) {
+        // Before Phase 1: hidden, positioned off-screen right
         setTruckOpacity(0);
-      } else if (scrollValue < PHASE3_START) {
-        // Phase 2: Show truck_side.png sliding in from right
-        const phase2Progress = Math.min(
-          Math.max((scrollValue - PHASE2_START) / (PHASE3_START - PHASE2_START), 0),
+        setTruckPosition({ x: TRUCK_START_X, y: 50 });
+      } else if (scrollValue < PHASE1_END) {
+        // Phase 1: Slide in from right to stationary position
+        const phase1Progress = Math.min(
+          Math.max((scrollValue - PHASE1_START) / (PHASE1_END - PHASE1_START), 0),
           1
         );
-        
-        setTruckOpacity(1); // Fully visible during slide
-        
-        // Linear interpolation for slide-in position
-        const currentX = SLIDEIN_START_X - (SLIDEIN_START_X - SLIDEIN_END_X) * phase2Progress;
-        setTruckPosition({ x: currentX, y: 50 }); // Slide horizontally, keep vertically centered
-      } else {
-        // Phase 3: Move truck further left and out of view
+
+        setTruckOpacity(1); // Show truck as it slides in
+
+        // Move from start position to stationary position (right to left)
+        const currentX = TRUCK_START_X - (TRUCK_START_X - stationaryX) * phase1Progress;
+        setTruckPosition({ x: currentX, y: 50 });
+      } else if (scrollValue < PHASE2_STATIONARY_END) {
+        // Phase 2: Truck stays stationary at current position
+        setTruckOpacity(1);
+        setTruckPosition({ x: stationaryX, y: 50 });
+      } else if (scrollValue < PHASE3_START) {
+        // Transition phase: still stationary but preparing to move
+        setTruckOpacity(1);
+        setTruckPosition({ x: stationaryX, y: 50 });
+      } else if (scrollValue < PHASE3_END) {
+        // Phase 3: Move truck left and out of view
         const phase3Progress = Math.min(
           Math.max((scrollValue - PHASE3_START) / (PHASE3_END - PHASE3_START), 0),
           1
         );
-        
+
         setTruckOpacity(1); // Keep visible during exit
-        
-        // Continue moving left until off-screen
-        const currentX = SLIDEIN_END_X - (SLIDEIN_END_X + 50) * phase3Progress; // Move to -50% (offscreen left)
+
+        // Move from stationary position to exit position (left to further left)
+        const currentX = stationaryX - (stationaryX - TRUCK_EXIT_X) * phase3Progress;
         setTruckPosition({ x: currentX, y: 50 });
+      } else {
+        // After Phase 3: truck is off-screen left
+        setTruckOpacity(0);
+        setTruckPosition({ x: TRUCK_EXIT_X, y: 50 });
       }
     });
 
     return () => unsubscribe();
-  }, [globalScrollProgress]);
+  }, [globalScrollProgress, isMobile]);
 
   const getOpacity = (idx: number) => {
     return useTransform(
@@ -112,7 +147,7 @@ const TruckRotationSection = () => {
         className="fixed inset-0 flex items-center justify-center pointer-events-none z-0"
         style={{ 
           opacity: truckOpacity, 
-          transition: 'opacity 0.1s ease-out',
+          transition: 'opacity 0.05s ease-out',
         }}
       >
         <div

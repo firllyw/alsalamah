@@ -51,9 +51,8 @@ const TruckRevealSection = ({ data }: TruckRevealSectionProps) => {
         <img
           src="/truck_reveal.png"
           alt="Truck Reveal"
+          className="max-w-[320px] max-h-[240px] md:max-w-[600px] md:max-h-[450px] lg:max-w-[800px] lg:max-h-[600px]"
           style={{
-            maxWidth: '800px',
-            maxHeight: '600px',
             width: 'auto',
             height: 'auto',
             objectFit: 'contain',
@@ -63,30 +62,32 @@ const TruckRevealSection = ({ data }: TruckRevealSectionProps) => {
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10 flex flex-col items-center justify-end h-full">
         {/* Spacer to push content lower */}
-        <div style={{ height: '60vh' }} />
+        <div className="h-[25vh] md:h-[45vh] lg:h-[75vh]" />
         <div
           className="
             w-full
             max-w-4xl
             md:max-w-5xl
             text-center
-            p-8
-            md:p-12
+            p-4
+            sm:p-6
+            md:p-8
+            lg:p-12
           "
           style={{
             fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
             color: '#273d97',
           }}
         >
-          <p className="text-lg lg:text-xl leading-relaxed" style={{ color: '#273d97', textAlign: 'justify' }}>
+          <p className="text-base sm:text-lg lg:text-xl leading-relaxed" style={{ color: '#273d97', textAlign: 'justify' }}>
             {preview}
             {!expanded && isLong && <span className="text-[#273d97]/70">... </span>}
             {expanded && rest}
           </p>
           {isLong && (
-            <div className="w-full flex justify-center mt-15">
+            <div className="w-full flex justify-center mt-8 sm:mt-12 lg:mt-15">
               <button
-                className="text-base font-semibold text-[#273d97] underline underline-offset-4 hover:text-[#1a285c] transition border border-[#273d97] rounded-full px-4 py-2"
+                className="text-sm sm:text-base font-semibold text-[#273d97] underline underline-offset-4 hover:text-[#1a285c] transition border border-[#273d97] rounded-full px-3 py-1 sm:px-4 sm:py-2"
                 onClick={() => setExpanded((v) => !v)}
                 aria-expanded={expanded}
               >

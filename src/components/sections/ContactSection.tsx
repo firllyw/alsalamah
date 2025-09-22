@@ -30,13 +30,19 @@ const ContactSection = ({ data, siteConfig }: ContactSectionProps) => {
       
 
       {/* Hero image layer (between background and content) */}
-      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 5 }}>
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{ zIndex: 5 }}
+        initial={{ x: -100, opacity: 0 }}
+        animate={isInView ? { x: 0, opacity: 1 } : {}}
+        transition={{ duration: 2, ease: "easeOut" }}
+      >
         <img
           src="/arro_hero.png"
           alt="Hero background graphics"
           className="w-full h-full object-cover opacity-100"
         />
-      </div>
+      </motion.div>
 
       <div className="relative z-10 flex flex-col min-h-screen pt-20 pb-10">
         <div className="w-full max-w-7xl mx-auto px-8 lg:px-12">
@@ -128,7 +134,7 @@ const ContactSection = ({ data, siteConfig }: ContactSectionProps) => {
                 <h2 className="text-3xl font-bold text-white mb-4">CONTACT:</h2>
                 <div className="space-y-4 text-white">
                   <div>
-                    <h3 className="text-2xl font-semibold mb-1">Al Salamah Transport</h3>
+                    <h3 className="text-2xl font-semibold mb-1">Al Salamah Transportation</h3>
                     <p className="text-xl">Jeddah, Kingdom of Saudi Arabia</p>
                   </div>
                   <div className="space-y-2">

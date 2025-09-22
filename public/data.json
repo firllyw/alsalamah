@@ -335,61 +335,50 @@
     "data": {
       "features": [
         {
-          "title": "On Time Delivery",
-          "icon": "clock"
+          "label": "On-time",
+          "title": "PROVEN TRACK RECORD",
+          "subtitle": "",
+          "description": "Decades of experience in time-sensitive and mission-critical shipments, ensuring your goods arrive exactly when and where they're needed.",
+          "image": "/1.png",
+          "icon": "technology/time"
         },
         {
-          "title": "Quality Service",
-          "icon": "shield"
+          "label": "Fleet",
+          "title": "IN-HOUSE LOGISTICS TEAM",
+          "subtitle": "",
+          "description": "Our dedicated team manages every delivery from start to finish, enabling swift response and efficient dispatch.",
+          "image": "/2.png",
+          "icon": "technology/truck"
         },
         {
-          "title": "Reliable Support",
-          "icon": "check"
+          "label": "Network",
+          "title": "SEAMLESS COORDINATION",
+          "subtitle": "",
+          "description": "We maintain strong operational links with trusted warehousing facilities, ensuring smooth cargo handovers and optimized supply chain flow.",
+          "image": "/3.png",
+          "icon": "technology/puzzle"
         },
         {
-          "title": "Secure Transport",
-          "icon": "lock"
+          "label": "Secure",
+          "title": "SFDA-COMPLIANT",
+          "subtitle": "",
+          "description": "All processes follow strict Saudi Food & Drug Authority guidelines, meeting the highest standards for safety and compliance.",
+          "image": "/4.png",
+          "icon": "technology/guard"
         }
       ]
     }
   },
   "areaCoverage": {
     "data": {
-      "regions": [
-        {
-          "id": "riyadh",
-          "name": "Riyadh",
-          "lat": 24.7136,
-          "lng": 46.6753,
-          "branches": 5,
-          "subBranches": 12,
-          "description": "Capital region with comprehensive coverage"
-        },
-        {
-          "id": "jeddah",
-          "name": "Jeddah",
-          "lat": 21.4858,
-          "lng": 39.1925,
-          "branches": 3,
-          "subBranches": 8,
-          "description": "Commercial hub on the Red Sea coast"
-        },
-        {
-          "id": "dammam",
-          "name": "Dammam",
-          "lat": 26.4207,
-          "lng": 50.0888,
-          "branches": 2,
-          "subBranches": 6,
-          "description": "Eastern province industrial center"
-        }
-      ],
       "headquarters": {
         "name": "Al Salamah Headquarters",
         "address": "Riyadh, Saudi Arabia",
         "lat": 24.7136,
-        "lng": 46.6753
+        "lng": 46.6753,
+        "color": "#dc2626"
       }
+      
     }
   },
   "contact": null,

@@ -92,9 +92,11 @@ export default function Home() {
               {/* Part 4: Showcase with images and achievements */}
               <ShowcaseSection />
 
-              <StatSection />
+              <div style={{ position: 'relative', zIndex: 20 }}>
+                <StatSection />
+              </div>
 
-              <RecordSection data={siteData?.record} />
+              <RecordSection />
 
               <InteractiveCoverageSection />
 
