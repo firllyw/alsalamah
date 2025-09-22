@@ -165,29 +165,6 @@
       "createdAt": "2025-08-12T15:02:06.264Z",
       "updatedAt": "2025-08-14T02:37:12.416Z"
     },
-    "record": {
-      "id": "record-1",
-      "features": [
-        {
-          "title": "On Time Delivery",
-          "icon": "clock"
-        },
-        {
-          "title": "Quality Service",
-          "icon": "shield"
-        },
-        {
-          "title": "Reliable Support",
-          "icon": "check"
-        },
-        {
-          "title": "Secure Transport",
-          "icon": "lock"
-        }
-      ],
-      "createdAt": "2025-08-12T15:02:06.268Z",
-      "updatedAt": "2025-08-12T15:02:06.268Z"
-    },
     "area_coverage": {
       "id": "coverage-1",
       "regions": [
