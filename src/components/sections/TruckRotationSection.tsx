@@ -72,7 +72,7 @@ const TruckRotationSection = () => {
   const TRUCK_START_X = 150;     // Starting position (off-screen right)
   const TRUCK_STATIONARY_X_DESKTOP = 100; // Stationary position for desktop (visible on screen)
   const TRUCK_STATIONARY_X_MOBILE = 180;   // Stationary position for mobile (right edge)
-  const TRUCK_EXIT_X = -50;      // Final exit position (offscreen left)
+  const TRUCK_EXIT_X = 0;      // Final exit position (offscreen left)
 
   useEffect(() => {
     const unsubscribe = globalScrollProgress.on('change', (scrollValue) => {
