@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     description: "Driving reliable distribution across Saudi Arabia & beyond",
     type: "website",
     locale: "en_US",
+    alternateLocale: "ar_SA",
   },
 };
 

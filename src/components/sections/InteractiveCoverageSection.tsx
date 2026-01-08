@@ -52,18 +52,14 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
   const [regions, setRegions] = useState<Region[]>([]);
   const [cityUrlData, setCityUrlData] = useState<Record<string, Record<string, string>> | null>(null);
   useEffect(() => {
-    // Otherwise fetch from static JSON
-    fetch('/data.json')
-      .then(response => response.json())
-      .then(jsonData => {
-        if (jsonData.areaCoverage?.regions) {
-          console.log('jsonData.areaCoverage.regions', jsonData.areaCoverage.regions);
-          setRegions(jsonData.areaCoverage.regions);
-          setCityUrlData(jsonData.areaCoverage.cityUrlData);
-        }
-      })
-
-  }, []);
+    // Use data from props
+    if (data?.regions) {
+      console.log('data.regions', data.regions);
+      setRegions(data.regions);
+      setCityUrlData(data.cityUrlData);
+    }
+    // If no data is passed, keep empty regions
+  }, [data]);
   // Enhanced regions with polygon boundaries and zoom levels
   // const regions: Region[] = [
   //   {

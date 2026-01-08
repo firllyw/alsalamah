@@ -3,8 +3,21 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 
-// Hardcoded 3-part content for easier editing
-const SECTIONS = [
+interface TruckRotationSectionProps {
+  data?: {
+    sections?: Array<{
+      number: string;
+      title: string;
+      subtitle: string;
+      content: string;
+      main: Array<{ text: string; color: string }>;
+      caption: string;
+    }>;
+  };
+}
+
+// Fallback data for backward compatibility
+const DEFAULT_SECTIONS = [
   {
     main: [
       { text: "To be the most trusted and innovative transportation partner in Saudi Arabia", color: "#273d97" },
@@ -28,11 +41,13 @@ const SECTIONS = [
   }
 ];
 
-const sectionHeightVh = 85;
-const totalSections = SECTIONS.length;
-const totalHeightVh = sectionHeightVh * totalSections + 20;
-
-const TruckRotationSection = () => {
+const TruckRotationSection = ({ data }: TruckRotationSectionProps) => {
+  // Use data from props or fallback to default
+  const sections = data?.sections || DEFAULT_SECTIONS;
+  
+  const sectionHeightVh = 85;
+  const totalSections = sections.length;
+  const totalHeightVh = sectionHeightVh * totalSections + 20;
   const sectionRef = useRef(null);
   const [truckOpacity, setTruckOpacity] = useState(0);
   const [truckPosition, setTruckPosition] = useState({ x: 120, y: 50 });
@@ -140,6 +155,7 @@ const TruckRotationSection = () => {
         height: `${totalHeightVh}vh`,
         background: 'transparent',
         fontFamily: 'Bricolage Grotesque, sans-serif',
+        direction: 'ltr', // Force LTR layout for truck rotation section
       }}
     >
       {/* Truck Side Image */}
@@ -188,7 +204,7 @@ const TruckRotationSection = () => {
         `}
       </style>
 
-      {SECTIONS.map((section, idx) => {
+      {sections.map((section: any, idx: number) => {
         const opacity = getOpacity(idx);
         return (
           <motion.div
@@ -231,7 +247,7 @@ const TruckRotationSection = () => {
                     letterSpacing: '0rem',
                   }}
                 >
-                  {section.main.map((part, i) => (
+                  {section.main?.map((part: any, i: number) => (
                     <span
                       key={i}
                       style={{

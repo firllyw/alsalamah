@@ -121,7 +121,7 @@ truckRotation: {
     {
       number: "01",
       title: "VISION",
-      subtitle: "To be the most trusted and innovative transportation partner in Saudi Arabia.",
+      subtitle: "To be the mosssst trusted and innovative transportation partner in Saudi Arabia.",
       content: "Recognized for operational excellence, technological advancement, and an unwavering commitment to safety."
     },
     {

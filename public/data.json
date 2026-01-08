@@ -21,19 +21,31 @@
           "number": "01",
           "title": "VISION",
           "subtitle": "Our Vision",
-          "content": "To be the leading transportation company in Saudi Arabia"
+          "content": "To be the leading transportation company in Saudi Arabia",
+          "main": [
+            { "text": "To be the most trusted and innovative transportation partner in Saudi Arabia", "color": "#273d97" }
+          ],
+          "caption": "Recognized for operational excellence, technological advancement, and an unwavering commitment to quality."
         },
         {
           "number": "02",
           "title": "MISSION",
           "subtitle": "Our Mission",
-          "content": "Providing reliable and efficient transportation services"
+          "content": "Providing reliable and efficient transportation services",
+          "main": [
+            { "text": "To provide reliable transportation and distribution services.", "color": "#273d97" }
+          ],
+          "caption": "Empowering businesses, strengthen supply chains, and connect communities across Saudi Arabia and the region — delivering on time, every time."
         },
         {
           "number": "03",
           "title": "COMMITMENT",
           "subtitle": "Our Commitment",
-          "content": "Committed to excellence in every delivery"
+          "content": "Committed to excellence in every delivery",
+          "main": [
+            { "text": "Reliability and safety are more than promises - they are our operating principles.", "color": "#273d97" }
+          ],
+          "caption": "We invest in a well-maintained, modern fleet equipped with real-time tracking technology, ensuring predictable delivery schedules and transparent communication."
         }
       ],
       "createdAt": "2025-08-12T15:02:06.280Z",
@@ -184,19 +196,31 @@
           "number": "01",
           "title": "VISION",
           "subtitle": "Our Vision",
-          "content": "To be the leading transportation company in Saudi Arabia"
+          "content": "To be the leading transportation company in Saudi Arabia",
+          "main": [
+            { "text": "To be the most trusted and innovative transportation partner in Saudi Arabia", "color": "#273d97" }
+          ],
+          "caption": "Recognized for operational excellence, technological advancement, and an unwavering commitment to quality."
         },
         {
           "number": "02",
           "title": "MISSION",
           "subtitle": "Our Mission",
-          "content": "Providing reliable and efficient transportation services"
+          "content": "Providing reliable and efficient transportation services",
+          "main": [
+            { "text": "To provide reliable transportation and distribution services.", "color": "#273d97" }
+          ],
+          "caption": "Empowering businesses, strengthen supply chains, and connect communities across Saudi Arabia and the region — delivering on time, every time."
         },
         {
           "number": "03",
           "title": "COMMITMENT",
           "subtitle": "Our Commitment",
-          "content": "Committed to excellence in every delivery"
+          "content": "Committed to excellence in every delivery",
+          "main": [
+            { "text": "Reliability and safety are more than promises - they are our operating principles.", "color": "#273d97" }
+          ],
+          "caption": "We invest in a well-maintained, modern fleet equipped with real-time tracking technology, ensuring predictable delivery schedules and transparent communication."
         }
       ]
     }

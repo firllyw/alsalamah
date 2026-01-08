@@ -38,6 +38,7 @@ const HeroSection = ({ data, siteConfig }: HeroSectionProps) => {
       ref={sectionRef}
       id="home" 
       className={`hero-section relative h-screen flex items-center hero-blue-bg overflow-hidden ${montserrat.className}`}
+      style={{ direction: 'ltr' }} // Force LTR layout for hero section
     >
       {/* Solid background layer - always covers truck */}
       <div className="absolute inset-0 hero-blue-bg" />

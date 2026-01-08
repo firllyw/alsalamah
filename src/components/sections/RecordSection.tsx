@@ -24,18 +24,12 @@ const RecordSection = ({ data }: RecordSectionProps) => {
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
-  // Load features from data.json
+  // Load features from passed data
   useEffect(() => {
-      fetch('/data.json')
-        .then(response => response.json())
-        .then(jsonData => {
-          if (jsonData.record?.data?.features) {
-            setFeatures(jsonData.record.data.features);
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching record data:', error);
-        });
+    if (data?.data?.features) {
+      setFeatures(data.data.features);
+    }
+    // If no data is passed, keep fallback features
   }, [data]);
 
   // Smoothly transition between active features

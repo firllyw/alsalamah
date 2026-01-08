@@ -51,20 +51,8 @@ const StatSection = ({ data }: StatSectionProps) => {
     // If data is passed as prop, use it
     if (data?.data) {
       setStatsData(data.data);
-    } else {
-      // Otherwise fetch from static JSON
-      fetch('/data.json')
-        .then(response => response.json())
-        .then(jsonData => {
-          if (jsonData.stats?.data) {
-            setStatsData(jsonData.stats.data);
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching stats data:', error);
-          // Keep fallback data
-        });
     }
+    // If no data is passed, keep fallback stats
   }, [data]);
 
   return (

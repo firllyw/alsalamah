@@ -117,6 +117,16 @@ const ContactSection = ({ data, siteConfig }: ContactSectionProps) => {
               >
                 CONTACT
               </motion.a>
+              <motion.a
+                href="https://www.linkedin.com/company/al-salamah-transportation-ksa/about"
+                target="_blank"
+                className="block text-white text-xl font-medium text-blue-200"
+                initial={{ opacity: 0, x: -30 }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.7 }}
+              >
+                LINKEDIN
+              </motion.a>
             </nav>
           </div>
 

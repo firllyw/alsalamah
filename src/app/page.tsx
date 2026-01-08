@@ -14,8 +14,7 @@ import ContactSection from '@/components/sections/ContactSection';
 import StatSection from '@/components/sections/StatSection';
 import RecordSection from '@/components/sections/RecordSection';
 import InteractiveCoverageSection from '@/components/sections/InteractiveCoverageSection';
-import Lenis from 'lenis';// Static data import
-import { staticSiteData } from './data.js';
+import Lenis from 'lenis';
 
 // Dynamic imports for better performance
 const TruckScene = dynamic(() => import('@/components/TruckScene'), {
@@ -23,19 +22,69 @@ const TruckScene = dynamic(() => import('@/components/TruckScene'), {
   loading: () => <div className="canvas-container" />
 });
 
+interface SiteData {
+  hero?: any;
+  truckReveal?: any;
+  truckRotation?: any;
+  contact?: any;
+  siteConfig?: any;
+  servicesSection?: any;
+  [key: string]: any;
+}
+
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
-  const [siteData] = useState(staticSiteData);
+  const [englishData, setEnglishData] = useState<SiteData | null>(null);
+  const [currentLanguage, setCurrentLanguage] = useState<'en' | 'ar'>('en');
+  const [arabicData, setArabicData] = useState<SiteData | null>(null);
 
-  // Initialize with static data
+  // Load both English and Arabic data from JSON files
   useEffect(() => {
-    // Simulate loading for smooth transition
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 100);
+    const loadData = async () => {
+      try {
+        // Load English data
+        const englishResponse = await fetch('/data.json');
+        const englishDataResult = await englishResponse.json();
+        setEnglishData(englishDataResult);
+
+        // Load Arabic data
+        const arabicResponse = await fetch('/data_ar.json');
+        const arabicDataResult = await arabicResponse.json();
+        setArabicData(arabicDataResult);
+      } catch (error) {
+        console.error('Failed to load data:', error);
+      }
+    };
     
-    return () => clearTimeout(timer);
+    loadData();
   }, []);
+
+  // Set loading to false when English data is loaded
+  useEffect(() => {
+    if (englishData) {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 100);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [englishData]);
+
+  // Handle language change
+  const handleLanguageChange = (language: 'en' | 'ar') => {
+    setCurrentLanguage(language);
+    // Update document direction for Arabic
+    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = language;
+  };
+
+  // Get current data based on language
+  const getCurrentData = (): SiteData | null => {
+    if (currentLanguage === 'ar' && arabicData) {
+      return arabicData;
+    }
+    return englishData;
+  };
 
   // Initialize Lenis smooth scrolling
   useEffect(() => {
@@ -73,34 +122,38 @@ export default function Home() {
           {/* Content Layer */}
           <div className="content-layer">
             {/* Header */}
-            <Header siteData={siteData} />
+            <Header 
+              siteData={getCurrentData()} 
+              currentLanguage={currentLanguage}
+              onLanguageChange={handleLanguageChange}
+            />
 
             {/* Main Content */}
             <main>
               {/* Part 1: Hero with arrows and blue background */}
-              <HeroSection data={siteData?.hero} siteConfig={siteData?.siteConfig} />
+              <HeroSection data={getCurrentData()?.hero} siteConfig={getCurrentData()?.siteConfig} />
 
               {/* Part 2: Truck reveal with vision content */}
-              <TruckRevealSection data={siteData?.truckReveal} />
+              <TruckRevealSection data={getCurrentData()?.truckReveal} />
 
               {/* Part 3: Truck rotation with mission content */}
-              <TruckRotationSection />
+              <TruckRotationSection data={getCurrentData()?.truckRotation?.data} />
 
               {/* Additional sections */}
-              <ServicesSection />
+              <ServicesSection data={getCurrentData()?.servicesSection} />
 
               {/* Part 4: Showcase with images and achievements */}
-              <ShowcaseSection />
+              <ShowcaseSection data={getCurrentData()?.showcase} />
 
               <div style={{ position: 'relative', zIndex: 20 }}>
-                <StatSection />
+                <StatSection data={getCurrentData()?.stats} />
               </div>
 
-              <RecordSection />
+              <RecordSection data={getCurrentData()?.record} />
 
-              <InteractiveCoverageSection />
+              <InteractiveCoverageSection data={getCurrentData()?.areaCoverage} />
 
-              <ContactSection data={siteData?.contact} siteConfig={siteData?.siteConfig} />
+              <ContactSection data={getCurrentData()?.contact} siteConfig={getCurrentData()?.siteConfig} />
             </main>
           </div>
         </div>

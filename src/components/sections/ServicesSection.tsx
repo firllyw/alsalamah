@@ -175,23 +175,12 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
 
   useEffect(() => {
     // If data is passed as prop, use it
-    if (data?.data) {
+    if (data?.services) {
+      setServices(data.services);
+    } else if (data?.data) {
       setServices(data.data);
-    } else {
-      // Otherwise fetch from static JSON
-      fetch('/data.json')
-        .then(response => response.json())
-        .then(jsonData => {
-          if (jsonData.servicesSection?.services) {
-            console.log('jsonData.servicesSection.services', jsonData.servicesSection.services);
-            setServices(jsonData.servicesSection.services);
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching services data:', error);
-          // Keep fallback data
-        });
     }
+    // If no data is passed, keep fallback services
   }, [data]);
 
   // Navigation functions for mobile
