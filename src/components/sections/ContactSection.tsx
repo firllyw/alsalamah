@@ -131,7 +131,7 @@ const ContactSection = ({ data, siteConfig }: ContactSectionProps) => {
           </div>
 
           {/* Center Content and Image */}
-          <div className="flex-1 flex flex-col lg:flex-row items-start justify-between w-full space-y-12 lg:space-y-0 lg:space-x-12">
+          <div className="flex-1 flex flex-col lg:flex-row items-start justify-between w-full space-y-12 lg:space-y-0 lg:gap-x-12">
             
             {/* Contact Details */}
             <motion.div
@@ -178,7 +178,7 @@ const ContactSection = ({ data, siteConfig }: ContactSectionProps) => {
         {/* Partnership Section */}
         <div className="w-full max-w-7xl mx-auto px-8 lg:px-12 mt-16">
           <motion.div 
-            className="flex items-center space-x-4"
+            className="flex items-center gap-x-4"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.6 }}

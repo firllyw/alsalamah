@@ -72,8 +72,8 @@ const HeroSection = ({ data, siteConfig }: HeroSectionProps) => {
         </motion.div>
 
         {/* Main Title - left aligned, full width, NOT bold, thinner font */}
-        <motion.h1
-          className="w-full text-left text-[clamp(3.5rem,10vw,8rem)] lg:text-[clamp(4rem,10vw,9rem)] font-light leading-[1.05] mb-8 mt-8 text-white"
+        <motion.h1 dir="auto"
+          className="w-full text-start text-[clamp(3.5rem,10vw,8rem)] lg:text-[clamp(4rem,10vw,9rem)] font-light leading-[1.05] mb-8 mt-8 text-white"
           style={{ 
             fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
             lineHeight: 1.05,
@@ -88,8 +88,8 @@ const HeroSection = ({ data, siteConfig }: HeroSectionProps) => {
         </motion.h1>
         
         {/* Subtitle - now includes the "in 30 years" text, left aligned, lighter */}
-        <motion.p
-          className="w-full text-left text-3xl lg:text-4xl mb-24 text-white/80 font-light leading-relaxed pl-2 sm:pl-4 md:pl-6"
+        <motion.p dir="auto"
+          className="w-full text-start text-3xl lg:text-4xl mb-24 text-white/80 font-light leading-relaxed ps-2 sm:ps-4 md:ps-6"
           style={{ fontFamily: 'var(--font-bricolage-grotesque), sans-serif', fontWeight: 400 }}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -113,7 +113,7 @@ const HeroSection = ({ data, siteConfig }: HeroSectionProps) => {
       >
         {/* Animated double chevron arrow */}
         <motion.div
-          className="mr-4"
+          className="me-4"
           animate={{ y: [0, 12, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
         >

@@ -79,7 +79,7 @@ const TruckRevealSection = ({ data }: TruckRevealSectionProps) => {
             color: '#273d97',
           }}
         >
-          <p className="text-base sm:text-lg lg:text-xl leading-relaxed" style={{ color: '#273d97', textAlign: 'justify' }}>
+          <p dir="auto" className="text-base sm:text-lg lg:text-xl leading-relaxed" style={{ color: '#273d97', textAlign: 'justify' }}>
             {preview}
             {!expanded && isLong && <span className="text-[#273d97]/70">... </span>}
             {expanded && rest}

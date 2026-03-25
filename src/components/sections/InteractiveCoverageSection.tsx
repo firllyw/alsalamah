@@ -528,7 +528,7 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
                           style={{ backgroundColor: region.color, border: '1.5px solid #fff' }}
                         ></div>
                         <span
-                          className="font-medium text-left"
+                          className="font-medium text-start" dir="auto"
                           style={{
                             color: '#273d97',
                             fontFamily: 'var(--font-bricolage-grotesque)'
@@ -537,7 +537,7 @@ const InteractiveCoverageSection = ({ data }: InteractiveCoverageSectionProps) =
                           {region.name}
                         </span>
                       </div>
-                      <div className="text-right">
+                      <div className="text-end" dir="auto">
                         <div
                           className="text-sm font-bold"
                           style={{

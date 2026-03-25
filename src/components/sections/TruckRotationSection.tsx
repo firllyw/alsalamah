@@ -224,7 +224,7 @@ const TruckRotationSection = ({ data }: TruckRotationSectionProps) => {
               {/* Left: Main Content */}
               <div className="flex-1 flex flex-col justify-center max-w-[900px]">
                 {/* Title */}
-                <span
+                <span dir="auto"
                   className="tracking-wider mb-4"
                   style={{
                     color: '#FFA500',
@@ -248,7 +248,7 @@ const TruckRotationSection = ({ data }: TruckRotationSectionProps) => {
                   }}
                 >
                   {section.main?.map((part: any, i: number) => (
-                    <span
+                    <span dir="auto"
                       key={i}
                       style={{
                         color: part.color,
@@ -262,8 +262,8 @@ const TruckRotationSection = ({ data }: TruckRotationSectionProps) => {
                   ))}
                 </h3>
                 {/* Caption */}
-                <span
-                  className="text-[#6B7280] text-left max-w-2xl text-sm md:text-base"
+                <span dir="auto"
+                  className="text-[#6B7280] text-start max-w-2xl text-sm md:text-base"
                   style={{
                     fontFamily: 'Bricolage Grotesque, sans-serif',
                     fontWeight: 400,
