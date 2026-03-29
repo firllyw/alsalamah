@@ -48,7 +48,7 @@ const CircularKmCounter = ({ progress }: { progress: MotionValue<number> }) => {
   const stroke = 4;
   const normalizedRadius = radius - stroke / 2;
   const circumference = normalizedRadius * 2 * Math.PI;
-  
+
   // Transform the motion value to get offset and km values
   const offset = useTransform(progress, [0, 1], [circumference, 0]);
   const km = useTransform(progress, [0, 1], [0, MAX_KM]);
@@ -225,7 +225,7 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
   // Use intersection observer to trigger animation when in view
   const counterRef = useRef(null);
   const isInView = useInView(counterRef, { once: true, margin: "-100px" });
-  
+
   // Create animated progress value that goes from 0 to 1
   const progress = useMotionValue(0);
   const animatedProgress = useSpring(progress, {
@@ -266,9 +266,9 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
         <div
           className="absolute bottom-0 left-0 right-0 h-32 lg:h-48"
           style={{
-            background: `linear-gradient(to bottom, 
-              transparent 0%, 
-              rgba(39, 61, 151, 0.13) 50%, 
+            background: `linear-gradient(to bottom,
+              transparent 0%,
+              rgba(39, 61, 151, 0.13) 50%,
               rgba(39, 61, 151, 0.28) 100%)`
           }}
         />
@@ -286,17 +286,15 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
           {/* Subtitle */}
           {/* "OUR SERVICE" label below the cards */}
           <div
-            dir="auto"
             className="uppercase text-[#ffbd59] text-lg md:text-xl lg:text-2xl font-extrabold tracking-widest pt-6 min-w-[160px] whitespace-nowrap"
             style={{
               fontFamily: 'var(--font-bricolage-grotesque), sans-serif',
               letterSpacing: '0.12em',
             }}
           >
-            {data?.title || "OUR SERVICE"}
+            OUR SERVICE
           </div>
           <motion.h3
-            dir="auto"
             className="text-white/90 text-xs md:text-sm lg:text-base font-medium mb-2 tracking-wide uppercase"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -308,11 +306,10 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
               letterSpacing: '0.08em',
             }}
           >
-            {data?.subtitle || "BY ALIGNING OUR OPERATIONS WITH THE HIGHEST STANDARDS,"}
+            BY ALIGNING OUR OPERATIONS WITH THE HIGHEST STANDARDS,
           </motion.h3>
           {/* Title */}
           <motion.h2
-            dir="auto"
             className="text-white text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-medium mb-6 leading-normal"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -324,7 +321,8 @@ const ServicesSection = ({ data }: ServicesSectionProps) => {
               lineHeight: 1.2,
             }}
           >
-            <div dangerouslySetInnerHTML={{__html: data?.mainContent || "AST has built a 20-year track<br />record as a partner businesses<br />"}} />
+            AST has built a 20-year track<br />
+            record as a partner businesses<br />
           </motion.h2>
           {/* Cards row */}
           <div className="relative w-full mt-4">

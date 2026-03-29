@@ -141,7 +141,7 @@ const ContactSection = ({ data, siteConfig }: ContactSectionProps) => {
               transition={{ duration: 0.8, delay: 0.5 }}
             >
               <div className="mb-4">
-                <h2 className="text-3xl font-bold text-white mb-4">CONTACT:</h2>
+                <h2 dir="auto" className="text-3xl font-bold text-white mb-4">{data?.title || "CONTACT:"}</h2>
                 <div className="space-y-4 text-white">
                   <div>
                     <h3 className="text-2xl font-semibold mb-1">Al Salamah Transportation</h3>
@@ -183,7 +183,7 @@ const ContactSection = ({ data, siteConfig }: ContactSectionProps) => {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <span className="text-white text-xl font-medium">Part of</span>
+            <span dir="auto" className="text-white text-xl font-medium">{data?.partOf || "Part of"}</span>
             <img
               src="/sbtc_logo.png"
               alt="SBTC Logo"
