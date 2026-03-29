@@ -117,7 +117,7 @@ const Header = ({ siteData, currentLanguage = 'en', onLanguageChange }: HeaderPr
             </nav>
 
             {/* Language Switcher */}
-            <div className="flex items-center gap-2 ml-4">
+            <div className="flex items-center gap-2 ms-4">
               <button
                 onClick={() => onLanguageChange?.('en')}
                 className={`flex items-center gap-1 px-3 py-2 rounded-md transition-all duration-300 ${
