@@ -142,7 +142,7 @@ const TruckRotationSection = ({ data }: TruckRotationSectionProps) => {
   const getOpacity = (idx: number) => {
     return useTransform(
       scrollYProgress,
-      [(idx) / totalSections, (idx + 1) / totalSections, (idx + 1.1) / totalSections],
+      [(idx) / totalSections, (idx + 1) / totalSections, Math.min(1, (idx + 1.1) / totalSections)],
       [1, 1, 0]
     );
   };
